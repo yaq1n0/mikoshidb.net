@@ -1,0 +1,48 @@
+/*
+ * Theme definitions. Add a new theme by copying a block and changing the
+ * data-theme selector and variables; then add the id to src/themes/index.ts.
+ */
+
+:root[data-theme="arasaka"] {
+  --bg: #0a0000;
+  --bg-alt: #140303;
+  --fg: #ff1e1e;
+  --dim: #660000;
+  --accent: #ff4040;
+  --warn: #ffa030;
+  --danger: #ffffff;
+  --glow: 0 0 6px rgba(255, 30, 30, 0.65), 0 0 14px rgba(255, 30, 30, 0.3);
+}
+
+:root[data-theme="nightcity"] {
+  --bg: #070a14;
+  --bg-alt: #0d1322;
+  --fg: #fcee0a;
+  --dim: #4a4000;
+  --accent: #00f0ff;
+  --warn: #ff9f1c;
+  --danger: #ff2d55;
+  --glow: 0 0 6px rgba(252, 238, 10, 0.6), 0 0 14px rgba(0, 240, 255, 0.35);
+}
+
+:root[data-theme="netrunner"] {
+  --bg: #000000;
+  --bg-alt: #040a04;
+  --fg: #39ff14;
+  --dim: #0d3d0d;
+  --accent: #7cff6b;
+  --warn: #ffe066;
+  --danger: #ff3b3b;
+  --glow: 0 0 6px rgba(57, 255, 20, 0.65), 0 0 14px rgba(57, 255, 20, 0.3);
+}
+
+:root[data-theme="militech"] {
+  --bg: #030812;
+  --bg-alt: #071223;
+  --fg: #6fb8ff;
+  --dim: #1a3a66;
+  --accent: #ff7a1a;
+  --warn: #ffc04d;
+  --danger: #ff4d6d;
+  --glow: 0 0 6px rgba(111, 184, 255, 0.55), 0 0 14px rgba(255, 122, 26, 0.25);
+}
