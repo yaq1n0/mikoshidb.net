@@ -9,3 +9,10 @@ coverage
 
 # Ignore the public/rag/ directory. Use "rag:publish" to copy from .opensona/output/rag/ to public/rag/. This is done "prebuild" and "predev"
 public/rag/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
