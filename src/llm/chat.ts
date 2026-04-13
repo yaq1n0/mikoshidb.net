@@ -28,9 +28,13 @@ export async function* streamReply(
   systemPrompt: string,
   history: Array<{ role: "user" | "assistant"; content: string }>,
   userMessage: string,
+  lorePreamble?: string,
 ): AsyncGenerator<StreamChunk, void, void> {
+  // Lore goes BEFORE the system prompt (system prompt last = strongest voice).
+  const systemContent = lorePreamble ? `${lorePreamble}\n\n${systemPrompt}` : systemPrompt;
+
   const messages: ChatCompletionMessageParam[] = [
-    { role: "system", content: systemPrompt },
+    { role: "system", content: systemContent },
     ...history.map((m) => ({ role: m.role, content: m.content })),
     { role: "user", content: userMessage },
   ];
