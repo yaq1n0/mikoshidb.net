@@ -1,6 +1,6 @@
 import { openDB, type DBSchema, type IDBPDatabase } from "idb";
 
-export const DB_SCHEMA_VERSION = 1 as const;
+export const DB_SCHEMA_VERSION = 2 as const;
 
 export const SESSION_DB_NAME = "mikoshi-session";
 export const CACHE_DB_NAME = "mikoshi-cache";
@@ -26,14 +26,23 @@ export interface PersistedChatSession {
 }
 
 export interface PersistedRagEntry {
-  schemaVersion: 1;
+  schemaVersion: 2;
   id?: number;
+  timestamp: number;
+  query?: string;
+  engramId?: string | null;
+  cutoffEventId?: string | null;
+  resolverInput?: unknown;
+  resolverMessages?: unknown;
+  resolverRaw?: string;
+  resolverOutput?: unknown;
+  resolverFallback?: "none" | "empty-directive" | "parse-error" | "throw";
+  resolvedEntities?: Array<{ alias: string; articleId: string }>;
+  traversalNodes?: unknown;
+  selected?: unknown;
   preamble?: string;
   systemPrompt?: string;
   timing?: Record<string, number>;
-  query?: string;
-  response?: string;
-  timestamp: number;
 }
 
 export interface PersistedBundleAsset {
@@ -71,7 +80,7 @@ export interface CacheDbSchema extends DBSchema {
 
 export function openSessionDb(): Promise<IDBPDatabase<SessionDbSchema>> {
   return openDB<SessionDbSchema>(SESSION_DB_NAME, DB_SCHEMA_VERSION, {
-    upgrade(db) {
+    upgrade(db, oldVersion) {
       if (!db.objectStoreNames.contains("scrollback")) {
         const scrollback = db.createObjectStore("scrollback", {
           keyPath: "id",
@@ -82,6 +91,11 @@ export function openSessionDb(): Promise<IDBPDatabase<SessionDbSchema>> {
       if (!db.objectStoreNames.contains("chat-session")) {
         // out-of-line key; single record under "current"
         db.createObjectStore("chat-session");
+      }
+      // v1 → v2: rag-log schema changed from embedding-rag shape to graph-rag.
+      // Wipe the store so stale records don't leak into the new UI.
+      if (oldVersion < 2 && db.objectStoreNames.contains("rag-log")) {
+        db.deleteObjectStore("rag-log");
       }
       if (!db.objectStoreNames.contains("rag-log")) {
         db.createObjectStore("rag-log", {
