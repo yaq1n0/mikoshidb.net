@@ -11,14 +11,15 @@ Currently validated against the [Cyberpunk 2077 Fandom wiki](https://cyberpunk.f
 
 ## Installation
 
-opensona is a workspace package in the mikoshidb.net monorepo:
-
 ```bash
-# From the repo root
-pnpm install
+npm install opensona
+# or
+pnpm add opensona
 ```
 
-It's consumed as `"opensona": "workspace:*"` in the root `package.json`.
+Requires Node 22+. The `opensona` CLI is available via `npx opensona` after install.
+
+Within the mikoshidb.net monorepo, opensona is consumed as a workspace package (`"opensona": "workspace:*"`).
 
 ## Quick overview
 
@@ -27,9 +28,10 @@ It's consumed as `"opensona": "workspace:*"` in the root `package.json`.
 Transform a Fandom wiki XML dump into a query-ready RAG bundle:
 
 ```bash
-tsx packages/opensona/src/cli/index.ts download --wiki cyberpunk
-tsx packages/opensona/src/cli/index.ts prebuild --config <path> --output <dir>
-tsx packages/opensona/src/cli/index.ts build --config <path> --output <dir>
+npx opensona download --wiki cyberpunk
+npx opensona prebuild --config <path> --output <dir>
+npx opensona build --config <path> --output <dir>
+npx opensona verify --cases <path> --bundle <dir>
 ```
 
 See [BUILD.md](docs/BUILD.md) for the full pipeline, all CLI flags, and configuration schema.
@@ -47,7 +49,8 @@ const results = await rt.query("who is Adam Smasher", {
   cutoffEventId: "arasaka-tower-raid",
 });
 
-const preamble = assembleLorePreamble(results.map((r) => r.chunk));
+const { source, license } = rt.manifest()!;
+const preamble = assembleLorePreamble(results, { source, license });
 ```
 
 See [QUERY.md](docs/QUERY.md) for the full API reference, retrieval algorithm, and type definitions.

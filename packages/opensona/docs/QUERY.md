@@ -21,7 +21,7 @@ import { createRuntime, assembleLorePreamble } from "opensona/runtime";
 
 ### `createRuntime()`
 
-Returns an `OpersonaRuntime` instance with the following methods:
+Returns an `OpensonaRuntime` instance with the following methods:
 
 #### `runtime.load(bundlePath, onProgress?)`
 
@@ -62,9 +62,14 @@ const { dense, bm25, fused } = await rt.inspect("soulkiller");
 
 Returns the loaded `Manifest` object (includes timeline, build metadata, file checksums), or `null` if not yet loaded.
 
-### `assembleLorePreamble(chunks)`
+### `assembleLorePreamble(chunks, meta)`
 
-Formats retrieved chunks into a `<lore>` block for use as an LLM system message preamble.
+Formats retrieved chunks into a `<lore>` block for use as an LLM system message preamble. `meta` is `{ source, license }` — typically sourced from `runtime.manifest()`. Returns an empty string when `chunks` is empty.
+
+```typescript
+const { source, license } = rt.manifest()!;
+const preamble = assembleLorePreamble(results, { source, license });
+```
 
 ### `QueryOptions`
 
