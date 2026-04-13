@@ -14,7 +14,7 @@ const SESSION_KEY = "current";
  * Kept deliberately tiny — we don't need Intl.RelativeTimeFormat's localization
  * surface for a single in-world English prompt.
  */
-const formatTimeAgo = (thenMs: number, nowMs: number = Date.now()): string => {
+export const formatTimeAgo = (thenMs: number, nowMs: number = Date.now()): string => {
   const diffSec = Math.max(0, Math.round((nowMs - thenMs) / 1000));
   if (diffSec < 30) return "just now";
   if (diffSec < 60) return `${diffSec} seconds ago`;
