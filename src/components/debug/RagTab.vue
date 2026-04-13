@@ -96,10 +96,7 @@ function fmtTime(ts: number): string {
         </button>
 
         <!-- Expanded chunks -->
-        <div
-          v-if="debug.isEntryExpanded(entry.id)"
-          class="border-t border-dim px-2 py-2 space-y-2"
-        >
+        <div v-if="debug.isEntryExpanded(entry.id)" class="border-t border-dim px-2 py-2 space-y-2">
           <div v-if="entry.cutoffEventId" class="text-xs">
             <span class="text-dim">cutoffEventId: </span>
             <span class="text-fg break-all">{{ entry.cutoffEventId }}</span>

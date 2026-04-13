@@ -87,7 +87,9 @@ export const useCacheStore = defineStore("cache", () => {
     const manifest = ragRef.value?.manifest();
     if (!manifest) return 0;
     const keepShas = new Set<string>(
-      Object.values(manifest.files).map((f) => f.sha256).filter(Boolean),
+      Object.values(manifest.files)
+        .map((f) => f.sha256)
+        .filter(Boolean),
     );
     const deleted = await evictStaleBundle(keepShas);
     await refresh();

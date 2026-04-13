@@ -58,7 +58,8 @@ function barWidthPx(value: number, max: number): number {
             <pre
               v-if="debug.isTextExpanded(`${entry.id}:preamble`)"
               class="mt-1 text-xs text-fg/80 whitespace-pre-wrap break-words border border-dim/60 rounded px-2 py-1"
-              >{{ entry.preamble }}</pre>
+              >{{ entry.preamble }}</pre
+            >
           </div>
           <div v-else class="text-xs text-dim italic">preamble: (none)</div>
 
@@ -76,7 +77,8 @@ function barWidthPx(value: number, max: number): number {
             <pre
               v-if="debug.isTextExpanded(`${entry.id}:systemPrompt`)"
               class="mt-1 text-xs text-fg/80 whitespace-pre-wrap break-words border border-dim/60 rounded px-2 py-1"
-              >{{ entry.systemPrompt }}</pre>
+              >{{ entry.systemPrompt }}</pre
+            >
           </div>
           <div v-else class="text-xs text-dim italic">systemPrompt: (none)</div>
 

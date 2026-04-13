@@ -95,10 +95,7 @@ onMounted(() => {
 
     <div class="flex-1 overflow-y-auto px-3 py-2 space-y-3 text-xs">
       <!-- Feature-detect bail-out -->
-      <div
-        v-if="!cacheApiAvailable"
-        class="border border-dim rounded px-2 py-2 text-dim italic"
-      >
+      <div v-if="!cacheApiAvailable" class="border border-dim rounded px-2 py-2 text-dim italic">
         cache API unavailable in this browser
       </div>
 
@@ -156,8 +153,10 @@ onMounted(() => {
                 <span class="text-dim">est size: </span>
                 <span class="text-fg">{{ fmtBytes(cache.webllm.estSizeBytes) }}</span>
                 <span
-v-if="cache.webllm.estSizeBytes === 0 && cache.webllm.entries > 0"
-                      class="text-dim ml-1">(no Content-Length headers)</span>
+                  v-if="cache.webllm.estSizeBytes === 0 && cache.webllm.entries > 0"
+                  class="text-dim ml-1"
+                  >(no Content-Length headers)</span
+                >
               </div>
             </template>
             <div v-else class="text-dim italic">no data — click refresh</div>
@@ -192,7 +191,8 @@ v-if="cache.webllm.estSizeBytes === 0 && cache.webllm.entries > 0"
                 <span
                   v-if="cache.transformers.estSizeBytes === 0 && cache.transformers.entries > 0"
                   class="text-dim ml-1"
-                >(no Content-Length headers)</span>
+                  >(no Content-Length headers)</span
+                >
               </div>
             </template>
             <div v-else class="text-dim italic">no data — click refresh</div>
@@ -207,7 +207,11 @@ v-if="cache.webllm.estSizeBytes === 0 && cache.webllm.entries > 0"
               <button
                 class="text-xs px-2 py-0.5 border border-dim rounded text-dim hover:text-fg hover:border-fg cursor-pointer disabled:opacity-50"
                 :disabled="cache.loading || !ragLoaded"
-                :title="ragLoaded ? 'Sweep entries not referenced by current runtime' : 'no runtime loaded — load firmware + jack-in first'"
+                :title="
+                  ragLoaded
+                    ? 'Sweep entries not referenced by current runtime'
+                    : 'no runtime loaded — load firmware + jack-in first'
+                "
                 @click="onEvictBundleStale"
               >
                 evict stale

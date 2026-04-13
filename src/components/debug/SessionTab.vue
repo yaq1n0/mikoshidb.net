@@ -40,8 +40,12 @@ async function onClearScrollback(): Promise<void> {
       <section class="border border-dim rounded">
         <div class="px-2 py-1 border-b border-dim text-accent font-bold">session</div>
         <div class="px-2 py-1.5 space-y-0.5">
-          <div><span class="text-dim">mode: </span><span class="text-fg">{{ session.mode }}</span></div>
-          <div><span class="text-dim">theme: </span><span class="text-fg">{{ session.theme }}</span></div>
+          <div>
+            <span class="text-dim">mode: </span><span class="text-fg">{{ session.mode }}</span>
+          </div>
+          <div>
+            <span class="text-dim">theme: </span><span class="text-fg">{{ session.theme }}</span>
+          </div>
           <div>
             <span class="text-dim">currentEngramId: </span>
             <span class="text-fg break-all">{{ fmtMaybe(session.currentEngramId) }}</span>
