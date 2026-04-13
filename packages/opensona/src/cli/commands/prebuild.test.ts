@@ -64,7 +64,7 @@ describe("prebuild run()", () => {
 
   it("throws CliError when the timeline article is missing from the dump", async () => {
     loadConfigMock.mockResolvedValue(makeConfig());
-    parseDumpMock.mockResolvedValue([{ title: "SomethingElse", sections: [] }]);
+    parseDumpMock.mockResolvedValue({ articles: [{ title: "SomethingElse", sections: [] }], redirects: [] });
 
     await expect(run({ config: "cfg.json", output: "/tmp/out" })).rejects.toThrow(CliError);
     await expect(run({ config: "cfg.json", output: "/tmp/out" })).rejects.toThrow(/Timeline/);
@@ -80,7 +80,7 @@ describe("prebuild run()", () => {
       }),
     );
 
-    parseDumpMock.mockResolvedValue([{ title: "Timeline", sections: [] }]);
+    parseDumpMock.mockResolvedValue({ articles: [{ title: "Timeline", sections: [] }], redirects: [] });
     generateTimelineMock.mockReturnValue({
       events: [
         { id: "e1", name: "X", year: 2005, order: 1 },
@@ -101,7 +101,7 @@ describe("prebuild run()", () => {
 
   it("writes timeline.json and category-map.json to opts.output", async () => {
     loadConfigMock.mockResolvedValue(makeConfig());
-    parseDumpMock.mockResolvedValue([{ title: "Timeline", sections: [] }]);
+    parseDumpMock.mockResolvedValue({ articles: [{ title: "Timeline", sections: [] }], redirects: [] });
     generateTimelineMock.mockReturnValue({ events: [] });
     generateCategoryEventMapMock.mockReturnValue({ mapping: {}, skipped: [] });
 
@@ -115,7 +115,7 @@ describe("prebuild run()", () => {
 
   it("matches timeline article case-insensitively", async () => {
     loadConfigMock.mockResolvedValue(makeConfig({ timelineArticleTitle: "Timeline" }));
-    parseDumpMock.mockResolvedValue([{ title: "timeline", sections: [] }]);
+    parseDumpMock.mockResolvedValue({ articles: [{ title: "timeline", sections: [] }], redirects: [] });
     generateTimelineMock.mockReturnValue({ events: [] });
     generateCategoryEventMapMock.mockReturnValue({ mapping: {}, skipped: [] });
 
