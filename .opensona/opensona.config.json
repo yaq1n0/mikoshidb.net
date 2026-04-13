@@ -1,0 +1,72 @@
+{
+  "source": "https://cyberpunk.fandom.com",
+  "license": "CC-BY-SA",
+  "timelineArticleTitle": "Timeline",
+  "editionEras": [
+    {
+      "prefix": "Cyberpunk 2077 Phantom Liberty",
+      "label": "Cyberpunk 2077 Phantom Liberty (2077)",
+      "startYear": 2077,
+      "endYear": 2077
+    },
+    {
+      "prefix": "Cyberpunk 2077",
+      "label": "Cyberpunk 2077 era (2077)",
+      "startYear": 2077,
+      "endYear": 2077
+    },
+    {
+      "prefix": "Cyberpunk Edgerunners",
+      "label": "Edgerunners era (2076)",
+      "startYear": 2076,
+      "endYear": 2076
+    },
+    {
+      "prefix": "Cyberpunk RED",
+      "label": "Cyberpunk RED era (2040-2050)",
+      "startYear": 2040,
+      "endYear": 2050
+    },
+    {
+      "prefix": "Cyberpunk 2020",
+      "label": "Cyberpunk 2020 era (2020-2025)",
+      "startYear": 2020,
+      "endYear": 2025
+    },
+    {
+      "prefix": "Cyberpunk 2013",
+      "label": "Cyberpunk 2013 era (2013-2019)",
+      "startYear": 2013,
+      "endYear": 2019
+    }
+  ],
+  "categorySkip": {
+    "prefixes": [
+      "CyberGeneration",
+      "Cyberpunk V3.0",
+      "Cyberpunk Mobile",
+      "Elflines Online",
+      "YoGangs",
+      "Roach Race",
+      "Real world",
+      "Night City Wire"
+    ],
+    "suffixes": ["images", "videos", "templates"],
+    "exact": [
+      "Disambiguations",
+      "Article stubs",
+      "Candidates for deletion",
+      "Hidden categories",
+      "Blog posts",
+      "Community",
+      "Forums",
+      "Help",
+      "Policy",
+      "Templates",
+      "Concept Art",
+      "Voice Actors of Cyberpunk 2077",
+      "Video Games",
+      "Pen and Paper RPG"
+    ]
+  }
+}
