@@ -1,56 +1,37 @@
-import { ref } from "vue";
-import type { RetrievedChunk } from "opensona/runtime";
+/**
+ * Compat shim — the real store lives in `@/stores/rag`.
+ *
+ * Step 6 of the state-management migration moved the rag log to Pinia + IDB.
+ * DebugSidebar.vue and any other callers still import from this module; this
+ * shim delegates to the store so nothing else has to change until the Step 9
+ * UI rewrite.
+ *
+ * Legacy localStorage key `mikoshi.rag.log` is dropped silently per PLAN §2.
+ */
+import { computed } from "vue";
+import { useRagStore, type RagLogEntry } from "@/stores/rag";
 
-const STORAGE_KEY = "mikoshi.rag.log";
-const MAX_ENTRIES = 200;
+export type { RagLogEntry };
 
-export interface RagLogEntry {
-  id: number;
-  timestamp: number;
-  query: string;
-  engramId: string | null;
-  cutoffEventId: string | null;
-  chunks: RetrievedChunk[];
-}
+/**
+ * Reactive view over the store's newest-first array. DebugSidebar.vue uses
+ * `ragLog.length` and `v-for="entry in ragLog"` — a computed ref preserves
+ * both (Vue unwraps computeds in templates, and `.value` in script).
+ */
+export const ragLog = computed<RagLogEntry[]>(() => useRagStore().ragLog);
 
-function loadFromStorage(): RagLogEntry[] {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? (parsed as RagLogEntry[]) : [];
-  } catch {
-    return [];
-  }
-}
-
-function saveToStorage(entries: RagLogEntry[]): void {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-  } catch (err) {
-    console.warn("[ragLog] persist failed:", err);
-  }
-}
-
-export const ragLog = ref<RagLogEntry[]>(loadFromStorage());
-
-let seq = ragLog.value.reduce((m, e) => Math.max(m, e.id), 0);
-
-export function appendRagLog(entry: Omit<RagLogEntry, "id" | "timestamp">): void {
-  const full: RagLogEntry = {
-    id: ++seq,
-    timestamp: Date.now(),
-    ...entry,
-  };
-  ragLog.value = [full, ...ragLog.value].slice(0, MAX_ENTRIES);
-  saveToStorage(ragLog.value);
+/**
+ * Fire-and-forget; callers historically didn't await. The store performs an
+ * IDB write and reactive update; any failure is logged inside the store.
+ */
+export function appendRagLog(entry: Omit<RagLogEntry, "id" | "timestamp" | "schemaVersion">): void {
+  void useRagStore().appendEntry(entry);
 }
 
 export function clearRagLog(): void {
-  ragLog.value = [];
-  saveToStorage(ragLog.value);
+  void useRagStore().clear();
 }
 
 export function exportRagLogJson(): string {
-  return JSON.stringify(ragLog.value, null, 2);
+  return useRagStore().exportJson();
 }
