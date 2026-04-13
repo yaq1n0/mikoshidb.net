@@ -116,9 +116,7 @@ function makeMiniSearch(chunks: Chunk[]): MiniSearch {
     fields: ["title", "header", "text"],
     storeFields: ["title", "header", "text"],
   });
-  ms.addAll(
-    chunks.map((c) => ({ id: c.id, title: c.title, header: c.header, text: c.text })),
-  );
+  ms.addAll(chunks.map((c) => ({ id: c.id, title: c.title, header: c.header, text: c.text })));
   return ms;
 }
 
@@ -186,9 +184,7 @@ describe("resolveCutoffOrder()", () => {
   });
 
   it("throws when cutoffEventId is not present in the timeline", () => {
-    expect(() => resolveCutoffOrder(manifest, "does-not-exist")).toThrow(
-      /cutoffEventId not found/,
-    );
+    expect(() => resolveCutoffOrder(manifest, "does-not-exist")).toThrow(/cutoffEventId not found/);
   });
 });
 

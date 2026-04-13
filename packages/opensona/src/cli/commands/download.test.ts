@@ -80,9 +80,7 @@ describe("download run()", () => {
 
   it("throws CliError with HTTP status when siteinfo returns 404", async () => {
     statMock.mockRejectedValue(new Error("ENOENT"));
-    (fetch as unknown as ReturnType<typeof vi.fn>).mockResolvedValue(
-      jsonResponse({}, false, 404),
-    );
+    (fetch as unknown as ReturnType<typeof vi.fn>).mockResolvedValue(jsonResponse({}, false, 404));
 
     const err = await run({ wiki: "nope", output: "/tmp/out.xml" }).catch((e) => e);
     expect(err).toBeInstanceOf(CliError);
@@ -114,9 +112,7 @@ describe("download run()", () => {
       }),
     );
     // 4) allpages page 3 → one title, no continue → terminate
-    fetchMock.mockResolvedValueOnce(
-      jsonResponse({ query: { allpages: [{ title: "P3" }] } }),
-    );
+    fetchMock.mockResolvedValueOnce(jsonResponse({ query: { allpages: [{ title: "P3" }] } }));
     // 5) One batch fetch for all 3 titles (batchSize=50)
     fetchMock.mockResolvedValueOnce(
       jsonResponse({
@@ -218,9 +214,7 @@ describe("download run()", () => {
     createWriteStreamMock.mockReturnValue(stream);
 
     fetchMock.mockResolvedValueOnce(jsonResponse({ query: { general: { sitename: "W" } } }));
-    fetchMock.mockResolvedValueOnce(
-      jsonResponse({ query: { allpages: [{ title: "A" }] } }),
-    );
+    fetchMock.mockResolvedValueOnce(jsonResponse({ query: { allpages: [{ title: "A" }] } }));
     fetchMock.mockResolvedValueOnce(jsonResponse({}, false, 500));
 
     await expect(run({ wiki: "w", output: "/tmp/o.xml" })).rejects.toThrow(/HTTP 500/);

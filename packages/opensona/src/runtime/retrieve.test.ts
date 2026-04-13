@@ -321,9 +321,7 @@ describe("retrieve()", () => {
       fields: ["title", "header", "text"],
       storeFields: ["title", "header", "text"],
     });
-    bm25.addAll(
-      chunks.map((c) => ({ id: c.id, title: c.title, header: c.header, text: c.text })),
-    );
+    bm25.addAll(chunks.map((c) => ({ id: c.id, title: c.title, header: c.header, text: c.text })));
     const manifest: Manifest = {
       version: 1,
       buildDate: "2025-01-01",
@@ -425,9 +423,7 @@ describe("retrieve()", () => {
       fields: ["title", "header", "text"],
       storeFields: ["title", "header", "text"],
     });
-    bm25.addAll(
-      chunks.map((c) => ({ id: c.id, title: c.title, header: c.header, text: c.text })),
-    );
+    bm25.addAll(chunks.map((c) => ({ id: c.id, title: c.title, header: c.header, text: c.text })));
     const manifest: Manifest = {
       version: 1,
       buildDate: "2025-01-01",
@@ -464,4 +460,3 @@ describe("retrieve()", () => {
     expect(result.fused).toEqual([]);
   });
 });
-

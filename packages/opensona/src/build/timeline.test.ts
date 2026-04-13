@@ -197,7 +197,7 @@ describe("generateTimeline()", () => {
     expect(octember!.order).toBe(204002);
   });
 
-  it("strips <ref name=\"x\">...</ref> and self-closing <ref/> from event names", () => {
+  it('strips <ref name="x">...</ref> and self-closing <ref/> from event names', () => {
     const bullets = [
       '* A thing happened<ref name="src1">Citation data inside</ref> in the street.',
       '* Another thing occurred<ref name="src2"/> today.',

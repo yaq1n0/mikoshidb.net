@@ -28,7 +28,9 @@ import { run } from "./prebuild.ts";
 
 const parseDumpMock = parseDump as unknown as ReturnType<typeof vi.fn>;
 const generateTimelineMock = generateTimeline as unknown as ReturnType<typeof vi.fn>;
-const generateCategoryEventMapMock = generateCategoryEventMap as unknown as ReturnType<typeof vi.fn>;
+const generateCategoryEventMapMock = generateCategoryEventMap as unknown as ReturnType<
+  typeof vi.fn
+>;
 const loadConfigMock = loadConfig as unknown as ReturnType<typeof vi.fn>;
 const mkdirMock = mkdir as unknown as ReturnType<typeof vi.fn>;
 const writeFileMock = writeFile as unknown as ReturnType<typeof vi.fn>;
@@ -64,12 +66,8 @@ describe("prebuild run()", () => {
     loadConfigMock.mockResolvedValue(makeConfig());
     parseDumpMock.mockResolvedValue([{ title: "SomethingElse", sections: [] }]);
 
-    await expect(
-      run({ config: "cfg.json", output: "/tmp/out" }),
-    ).rejects.toThrow(CliError);
-    await expect(
-      run({ config: "cfg.json", output: "/tmp/out" }),
-    ).rejects.toThrow(/Timeline/);
+    await expect(run({ config: "cfg.json", output: "/tmp/out" })).rejects.toThrow(CliError);
+    await expect(run({ config: "cfg.json", output: "/tmp/out" })).rejects.toThrow(/Timeline/);
   });
 
   it("logs era breakdown when editionEras.length > 0", async () => {

@@ -32,5 +32,4 @@ describe("gunzip()", () => {
     expect(view[0]).toBe("x".charCodeAt(0));
     expect(view[view.length - 1]).toBe("x".charCodeAt(0));
   });
-
 });

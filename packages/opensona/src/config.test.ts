@@ -18,14 +18,44 @@ async function withTempFile<T>(contents: string, fn: (path: string) => Promise<T
 describe("deepMerge()", () => {
   it.each([
     ["scalars: source overwrites target", { a: 1 }, { a: 2 }, { a: 2 }],
-    ["scalars: target key preserved when absent from source", { a: 1, b: 2 }, { a: 9 }, { a: 9, b: 2 }],
+    [
+      "scalars: target key preserved when absent from source",
+      { a: 1, b: 2 },
+      { a: 9 },
+      { a: 9, b: 2 },
+    ],
     ["scalars: new key from source is added", { a: 1 }, { b: 2 }, { a: 1, b: 2 }],
-    ["nested object: deep merge, not replace", { x: { a: 1, b: 2 } }, { x: { b: 99 } }, { x: { a: 1, b: 99 } }],
-    ["nested object: multiple levels deep", { x: { y: { a: 1, b: 2 } } }, { x: { y: { b: 9 } } }, { x: { y: { a: 1, b: 9 } } }],
-    ["arrays: replaced wholesale, not concatenated", { arr: [1, 2, 3] }, { arr: [4, 5] }, { arr: [4, 5] }],
-    ["arrays: target array preserved when source omits key", { arr: [1, 2] }, { x: 1 }, { arr: [1, 2], x: 1 }],
+    [
+      "nested object: deep merge, not replace",
+      { x: { a: 1, b: 2 } },
+      { x: { b: 99 } },
+      { x: { a: 1, b: 99 } },
+    ],
+    [
+      "nested object: multiple levels deep",
+      { x: { y: { a: 1, b: 2 } } },
+      { x: { y: { b: 9 } } },
+      { x: { y: { a: 1, b: 9 } } },
+    ],
+    [
+      "arrays: replaced wholesale, not concatenated",
+      { arr: [1, 2, 3] },
+      { arr: [4, 5] },
+      { arr: [4, 5] },
+    ],
+    [
+      "arrays: target array preserved when source omits key",
+      { arr: [1, 2] },
+      { x: 1 },
+      { arr: [1, 2], x: 1 },
+    ],
     ["null source value: overwrites target", { a: 1 }, { a: null }, { a: null }],
-    ["null target value: source object not recursed into", { a: null }, { a: { b: 1 } }, { a: { b: 1 } }],
+    [
+      "null target value: source object not recursed into",
+      { a: null },
+      { a: { b: 1 } },
+      { a: { b: 1 } },
+    ],
     ["undefined source value: target preserved", { a: 1 }, { a: undefined }, { a: 1 }],
     ["empty source: returns target clone", { a: 1 }, {}, { a: 1 }],
     ["empty target: returns source clone", {}, { a: 1 }, { a: 1 }],
@@ -61,9 +91,9 @@ describe("loadConfig()", () => {
   });
 
   it("rejects unknown top-level keys in override", async () => {
-    await expect(
-      withTempFile(JSON.stringify({ editonEras: [] }), loadConfig),
-    ).rejects.toThrow(/editonEras/);
+    await expect(withTempFile(JSON.stringify({ editonEras: [] }), loadConfig)).rejects.toThrow(
+      /editonEras/,
+    );
   });
 
   it("rejects invalid values (e.g. non-URL source)", async () => {

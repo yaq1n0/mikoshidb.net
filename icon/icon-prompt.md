@@ -2,20 +2,20 @@
 
 ## Context
 
-**mikoshidb.net** is a fictional terminal interface for **Mikoshi** — Arasaka Corporation's soul-prison server from the *Cyberpunk 2077* universe. Mikoshi is a cyberspace construct deep in the Net where digitised human consciousnesses (engrams) are stored. The aesthetic is cold, corporate, and Japanese-gothic: Arasaka's brutal precision meets the neon decay of the Net.
+**mikoshidb.net** is a fictional terminal interface for **Mikoshi** — Arasaka Corporation's soul-prison server from the _Cyberpunk 2077_ universe. Mikoshi is a cyberspace construct deep in the Net where digitised human consciousnesses (engrams) are stored. The aesthetic is cold, corporate, and Japanese-gothic: Arasaka's brutal precision meets the neon decay of the Net.
 
 ---
 
 ## Design Language
 
-| Element         | Value                                                  |
-|----------------|--------------------------------------------------------|
-| Background      | Near-black `#06060f` — deep digital void               |
-| Primary accent  | Arasaka red `#c8001e` — danger, authority, blood       |
-| Secondary accent| Cyan `#00d4ff` — the Net, data streams, ICE            |
-| Typography      | Monospace / Courier — terminal readout aesthetic       |
-| Geometry        | Sharp, rectilinear, no organic curves                  |
-| Mood            | Corporate surveillance + cyberspace horror             |
+| Element          | Value                                            |
+| ---------------- | ------------------------------------------------ |
+| Background       | Near-black `#06060f` — deep digital void         |
+| Primary accent   | Arasaka red `#c8001e` — danger, authority, blood |
+| Secondary accent | Cyan `#00d4ff` — the Net, data streams, ICE      |
+| Typography       | Monospace / Courier — terminal readout aesthetic |
+| Geometry         | Sharp, rectilinear, no organic curves            |
+| Mood             | Corporate surveillance + cyberspace horror       |
 
 ---
 
@@ -62,15 +62,15 @@ Output: valid SVG only, no explanation.
 
 ## Files
 
-| File         | Purpose                               |
-|-------------|---------------------------------------|
-| `icon.svg`  | Master scalable icon (512×512 viewBox)|
-| `favicon.ico`| Multi-resolution ICO (16/32/48/256px)|
+| File          | Purpose                                |
+| ------------- | -------------------------------------- |
+| `icon.svg`    | Master scalable icon (512×512 viewBox) |
+| `favicon.ico` | Multi-resolution ICO (16/32/48/256px)  |
 
 Place `favicon.ico` in the web root. Reference `icon.svg` in `<head>` for high-res contexts:
 
 ```html
-<link rel="icon" type="image/x-icon" href="/favicon.ico">
-<link rel="icon" type="image/svg+xml" href="/icon.svg">
-<link rel="apple-touch-icon" href="/icon.svg">
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="icon" type="image/svg+xml" href="/icon.svg" />
+<link rel="apple-touch-icon" href="/icon.svg" />
 ```
