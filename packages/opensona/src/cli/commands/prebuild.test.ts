@@ -92,7 +92,7 @@ describe("prebuild run()", () => {
 
     await run({ config: "cfg.json", output: "/tmp/out" });
 
-    const allLogs = logSpy.mock.calls.map((c) => String(c[0])).join("\n");
+    const allLogs = logSpy.mock.calls.map((c: unknown[]) => String(c[0])).join("\n");
     expect(allLogs).toContain("--- Era breakdown ---");
     expect(allLogs).toContain("Era A");
     expect(allLogs).toContain("Era B");

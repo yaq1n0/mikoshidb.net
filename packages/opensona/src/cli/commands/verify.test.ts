@@ -80,7 +80,7 @@ describe("verify run()", () => {
 
     await run({ cases: "/tmp/cases.json", bundle: "/tmp/bundle" });
 
-    const allLogs = logSpy.mock.calls.map((c) => c.join(" ")).join("\n");
+    const allLogs = logSpy.mock.calls.map((c: unknown[]) => c.join(" ")).join("\n");
     expect(allLogs).toContain("--- Verify Summary ---");
     expect(allLogs).toContain("Passed: 3/3");
     expect(allLogs).toContain("Failed: 0/3");
@@ -115,7 +115,7 @@ describe("verify run()", () => {
     await expect(run({ cases: "/tmp/cases.json", bundle: "/tmp/bundle" })).rejects.toThrow(
       CliError,
     );
-    const allLogs = logSpy.mock.calls.map((c) => c.join(" ")).join("\n");
+    const allLogs = logSpy.mock.calls.map((c: unknown[]) => c.join(" ")).join("\n");
     expect(allLogs).toContain("FAIL");
     expect(allLogs).toContain("chunk-x");
     expect(allLogs).toContain("assertion failed");
