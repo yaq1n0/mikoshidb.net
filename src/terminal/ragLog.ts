@@ -24,14 +24,18 @@ export const ragLog = computed<RagLogEntry[]>(() => useRagStore().ragLog);
  * Fire-and-forget; callers historically didn't await. The store performs an
  * IDB write and reactive update; any failure is logged inside the store.
  */
-export function appendRagLog(entry: Omit<RagLogEntry, "id" | "timestamp" | "schemaVersion">): void {
+export const appendRagLog = (
+  entry: Omit<RagLogEntry, "id" | "timestamp" | "schemaVersion">,
+): void => {
   void useRagStore().appendEntry(entry);
-}
+};
 
-export function clearRagLog(): void {
+/** Clears rag log. */
+export const clearRagLog = (): void => {
   void useRagStore().clear();
-}
+};
 
-export function exportRagLogJson(): string {
+/** Export rag log json. */
+export const exportRagLogJson = (): string => {
   return useRagStore().exportJson();
-}
+};

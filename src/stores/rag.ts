@@ -1,46 +1,43 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import type { IDBPDatabase } from "idb";
-import type { RetrievedChunk } from "opensona/runtime";
+import type { ResolverInput, RetrievedChunk, TraversalDirective } from "opensona/runtime";
+import type { ResolverMessage, TraverseTrace } from "opensona/runtime";
 import { openSessionDb, type PersistedRagEntry, type SessionDbSchema } from "@/storage/db";
 
 /** Per PLAN §5 — raised from the legacy cap of 200. */
 const MAX_ENTRIES = 500;
-const SCHEMA_VERSION = 1 as const;
+const SCHEMA_VERSION = 2 as const;
+
+/** Outcome marker for the resolver round-trip. */
+export type ResolverFallback = "none" | "empty-directive" | "parse-error" | "throw";
 
 /**
- * Per-turn RAG diagnostic record.
+ * Per-turn RAG diagnostic record — graph-rag shape (schemaVersion 2).
  *
- * `id` is the IDB autoinc key (assigned post-write). The legacy module keyed
- * the UI off a numeric `id`; we continue doing so via IDB autoinc, which keeps
- * DebugSidebar.vue's `v-for :key="entry.id"` stable across re-renders.
+ * `id` is the IDB autoinc key (assigned post-write). DebugSidebar.vue keys
+ * its `v-for` off `entry.id`, so the autoinc value must remain stable.
  */
-export interface RagLogEntry {
-  schemaVersion: 1;
+export type RagLogEntry = {
+  schemaVersion: 2;
   id: number;
   timestamp: number;
   query: string;
   engramId: string | null;
   cutoffEventId: string | null;
-  chunks: RetrievedChunk[];
-  /** Assembled lore preamble pushed into the system message. */
-  preamble?: string;
-  /** The engram's system prompt at dispatch time. */
-  systemPrompt?: string;
-  /** Coarse per-phase timings in ms — `{ retrieve, assemble, total, ... }`. */
-  timing?: Record<string, number>;
-}
+  resolverInput: ResolverInput | null;
+  resolverMessages: ResolverMessage[];
+  resolverRaw: string;
+  resolverOutput: TraversalDirective | { error: string; raw: string } | null;
+  resolverFallback: ResolverFallback;
+  resolvedEntities: Array<{ alias: string; articleId: string }>;
+  traversalNodes: TraverseTrace["nodes"];
+  selected: RetrievedChunk[];
+  preamble: string;
+  systemPrompt: string;
+  timing: Record<string, number>;
+};
 
-/**
- * Rag store — IDB-backed per-turn diagnostic log.
- *
- * `ragLog` is held newest-first to match DebugSidebar.vue's existing render
- * order (the legacy module prepended on append). Writes are imperative per
- * action rather than via `$subscribe` — PLAN §3 flags `$subscribe → IDB` as
- * a strategy hint, and per-action writes are simpler, avoid re-persisting
- * hydrated records, and make the MAX_ENTRIES eviction trivially atomic with
- * the IDB delete.
- */
 export const useRagStore = defineStore("rag", () => {
   const ragLog = ref<RagLogEntry[]>([]);
 
@@ -57,32 +54,32 @@ export const useRagStore = defineStore("rag", () => {
       const valid: RagLogEntry[] = [];
       let discarded = 0;
       for (const rec of all) {
-        if (rec.schemaVersion !== 1 || rec.id === undefined) {
+        if (rec.schemaVersion !== 2 || rec.id === undefined) {
           discarded++;
           continue;
         }
-        // Legacy shape: these fields aren't on PersistedRagEntry directly but
-        // the actual records we write carry them. Cast through `unknown` and
-        // defensively default the required fields.
         const full = rec as unknown as Partial<RagLogEntry> & PersistedRagEntry;
         valid.push({
-          schemaVersion: 1,
+          schemaVersion: 2,
           id: rec.id,
           timestamp: rec.timestamp,
           query: full.query ?? "",
           engramId: full.engramId ?? null,
           cutoffEventId: full.cutoffEventId ?? null,
-          chunks: Array.isArray(full.chunks) ? full.chunks : [],
-          ...(full.preamble !== undefined ? { preamble: full.preamble } : {}),
-          ...(full.systemPrompt !== undefined ? { systemPrompt: full.systemPrompt } : {}),
-          ...(full.timing !== undefined ? { timing: full.timing } : {}),
+          resolverInput: (full.resolverInput as ResolverInput | null) ?? null,
+          resolverMessages: (full.resolverMessages as ResolverMessage[]) ?? [],
+          resolverRaw: full.resolverRaw ?? "",
+          resolverOutput: (full.resolverOutput as RagLogEntry["resolverOutput"]) ?? null,
+          resolverFallback: full.resolverFallback ?? "none",
+          resolvedEntities: full.resolvedEntities ?? [],
+          traversalNodes: (full.traversalNodes as TraverseTrace["nodes"]) ?? [],
+          selected: (full.selected as RetrievedChunk[]) ?? [],
+          preamble: full.preamble ?? "",
+          systemPrompt: full.systemPrompt ?? "",
+          timing: full.timing ?? {},
         });
       }
-      // Newest-first for UI parity with the legacy module.
       valid.sort((a, b) => b.timestamp - a.timestamp);
-      // Cap at MAX_ENTRIES. If somehow more survive a crash, drop the tail in
-      // memory; we don't aggressively rewrite IDB here — the next append will
-      // eventually reconcile.
       ragLog.value = valid.slice(0, MAX_ENTRIES);
       if (discarded > 0) {
         console.warn(`[rag] hydrate: discarded ${discarded} record(s) with schema mismatch`);
@@ -99,15 +96,9 @@ export const useRagStore = defineStore("rag", () => {
   ): Promise<void> {
     const timestamp = Date.now();
     const record: Omit<RagLogEntry, "id"> = {
-      schemaVersion: 1,
+      schemaVersion: 2,
       timestamp,
-      query: entry.query,
-      engramId: entry.engramId,
-      cutoffEventId: entry.cutoffEventId,
-      chunks: entry.chunks,
-      ...(entry.preamble !== undefined ? { preamble: entry.preamble } : {}),
-      ...(entry.systemPrompt !== undefined ? { systemPrompt: entry.systemPrompt } : {}),
-      ...(entry.timing !== undefined ? { timing: entry.timing } : {}),
+      ...entry,
     };
 
     let db: IDBPDatabase<SessionDbSchema>;
@@ -118,14 +109,10 @@ export const useRagStore = defineStore("rag", () => {
       return;
     }
     try {
-      // Cast is safe: the persisted shape is a superset of PersistedRagEntry
-      // plus the legacy fields kept out of db.ts for leanness.
       const id = (await db.add("rag-log", record as unknown as PersistedRagEntry)) as number;
       const full: RagLogEntry = { ...record, id } as RagLogEntry;
-      // Prepend — newest first.
       ragLog.value = [full, ...ragLog.value];
 
-      // MAX_ENTRIES cap — evict tail from both memory and IDB.
       if (ragLog.value.length > MAX_ENTRIES) {
         const overflow = ragLog.value.slice(MAX_ENTRIES);
         ragLog.value = ragLog.value.slice(0, MAX_ENTRIES);

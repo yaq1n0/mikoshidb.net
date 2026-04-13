@@ -7,11 +7,6 @@ import {
   type WebLLMStats,
 } from "@/cache/webllmInspector";
 import {
-  getTransformersStats,
-  evictAllTransformers,
-  type TransformersStats,
-} from "@/cache/transformersInspector";
-import {
   getBundleStats,
   evictAllBundle,
   evictStaleBundle,
@@ -19,18 +14,17 @@ import {
 } from "@/cache/bundleInspector";
 import { ragRef } from "@/terminal/session";
 
-export interface StorageEstimate {
+export type StorageEstimate = {
   usage?: number;
   quota?: number;
-}
+};
 
 /**
- * Cache store — stats + eviction across WebLLM, Transformers.js, and the
- * opensona bundle cache. Per PLAN §3: derived on demand, no persistence.
+ * Cache store — stats + eviction across WebLLM and the opensona bundle cache.
+ * Derived on demand, no persistence.
  */
 export const useCacheStore = defineStore("cache", () => {
   const webllm = ref<WebLLMStats | null>(null);
-  const transformers = ref<TransformersStats | null>(null);
   const bundle = ref<BundleStats | null>(null);
   const storageEstimate = ref<StorageEstimate | null>(null);
   const loading = ref<boolean>(false);
@@ -39,22 +33,15 @@ export const useCacheStore = defineStore("cache", () => {
   async function refresh(): Promise<void> {
     loading.value = true;
     try {
-      const tasks: [
-        Promise<WebLLMStats>,
-        Promise<TransformersStats>,
-        Promise<BundleStats>,
-        Promise<StorageEstimate | null>,
-      ] = [
+      const tasks: [Promise<WebLLMStats>, Promise<BundleStats>, Promise<StorageEstimate | null>] = [
         getWebLLMStats().catch(() => ({ caches: [], entries: 0, estSizeBytes: 0 })),
-        getTransformersStats().catch(() => ({ entries: 0, estSizeBytes: 0 })),
         getBundleStats().catch(() => ({ count: 0, sizeBytes: 0 })),
         navigator?.storage?.estimate
           ? navigator.storage.estimate().catch(() => null)
           : Promise.resolve(null),
       ];
-      const [w, t, b, est] = await Promise.all(tasks);
+      const [w, b, est] = await Promise.all(tasks);
       webllm.value = w;
-      transformers.value = t;
       bundle.value = b;
       storageEstimate.value = est ?? null;
       lastRefreshedAt.value = Date.now();
@@ -66,11 +53,6 @@ export const useCacheStore = defineStore("cache", () => {
   async function evictWebLLM(modelId?: string): Promise<void> {
     if (modelId) await evictWebLLMModel(modelId);
     else await evictAllWebLLM();
-    await refresh();
-  }
-
-  async function evictTransformers(): Promise<void> {
-    await evictAllTransformers();
     await refresh();
   }
 
@@ -98,14 +80,12 @@ export const useCacheStore = defineStore("cache", () => {
 
   return {
     webllm,
-    transformers,
     bundle,
     storageEstimate,
     loading,
     lastRefreshedAt,
     refresh,
     evictWebLLM,
-    evictTransformers,
     evictBundleAll,
     evictBundleStale,
   };

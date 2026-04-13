@@ -8,6 +8,7 @@ export type { Engram } from "./types";
 
 export const engrams: Engram[] = [johnny, alt, saburo, v];
 
-export function findEngram(id: string): Engram | undefined {
+/** Finds engram. */
+export const findEngram = (id: string): Engram | undefined => {
   return engrams.find((e) => e.id === id);
-}
+};

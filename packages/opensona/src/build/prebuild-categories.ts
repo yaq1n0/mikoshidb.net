@@ -4,12 +4,13 @@
 import type { OpensonaConfig, Timeline } from "../types.ts";
 import type { ParsedArticle } from "./parse.ts";
 
-export interface CategoryEventMap {
+export type CategoryEventMap = {
   mapping: Record<string, string>; // category -> eventId
   skipped: string[]; // categories that were skipped
-}
+};
 
-function shouldSkipCategory(category: string, skip: OpensonaConfig["categorySkip"]): boolean {
+/** True if skip category. */
+const shouldSkipCategory = (category: string, skip: OpensonaConfig["categorySkip"]): boolean => {
   if (skip.exact.includes(category)) return true;
 
   for (const prefix of skip.prefixes) {
@@ -22,43 +23,45 @@ function shouldSkipCategory(category: string, skip: OpensonaConfig["categorySkip
   }
 
   return false;
-}
+};
 
-function findFirstEventInRange(
+/** Finds first event in range. */
+const findFirstEventInRange = (
   timeline: Timeline,
   startYear: number,
   endYear: number,
-): string | null {
+): string | null => {
   for (const event of timeline.events) {
     if (event.year >= startYear && event.year <= endYear) {
       return event.id;
     }
   }
   return null;
-}
+};
 
-function matchCategoryToEvent(
+/** Match category to event. */
+const matchCategoryToEvent = (
   category: string,
   timeline: Timeline,
   editionEras: OpensonaConfig["editionEras"],
-): string | null {
+): string | null => {
   for (const era of editionEras) {
     if (category.startsWith(era.prefix)) {
       return findFirstEventInRange(timeline, era.startYear, era.endYear);
     }
   }
   return null;
-}
+};
 
 /**
  * Generate a mapping from categories to timeline event IDs.
  * Edition-era prefixes and skip rules come from config.
  */
-export function generateCategoryEventMap(
+export const generateCategoryEventMap = (
   articles: ParsedArticle[],
   timeline: Timeline,
   config: OpensonaConfig,
-): CategoryEventMap {
+): CategoryEventMap => {
   const allCategories = new Set<string>();
   for (const article of articles) {
     for (const cat of article.categories) {
@@ -82,4 +85,4 @@ export function generateCategoryEventMap(
   }
 
   return { mapping, skipped };
-}
+};

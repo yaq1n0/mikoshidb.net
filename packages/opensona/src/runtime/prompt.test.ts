@@ -1,57 +1,50 @@
 import { describe, it, expect } from "vitest";
+import type { Chunk, RetrievedChunk } from "../types.ts";
 import { assembleLorePreamble } from "./prompt.ts";
-import type { RetrievedChunk, Chunk } from "../types.ts";
 
-function makeChunk(header: string, text: string): Chunk {
-  return {
-    id: "test#0",
-    articleId: "test",
-    title: "Test",
-    header,
-    text,
-    eventIds: [],
-    latestEventOrder: -1,
-    tags: [],
-    categories: [],
-  };
-}
+const mkChunk = (over: Partial<Chunk>): Chunk => ({
+  id: "x",
+  articleId: "x",
+  title: "X",
+  header: "[X]",
+  text: "x-text",
+  eventIds: [],
+  latestEventOrder: -1,
+  tags: [],
+  categories: [],
+  ...over,
+});
 
-function makeRetrieved(header: string, text: string): RetrievedChunk {
-  return { chunk: makeChunk(header, text), score: 0.5, source: "dense" };
-}
-
-const META = { source: "cyberpunk fandom wiki", license: "CC-BY-SA" };
+const mkRetrieved = (over: Partial<Chunk>): RetrievedChunk => ({
+  chunk: mkChunk(over),
+  source: "lead",
+  hops: 0,
+});
 
 describe("assembleLorePreamble()", () => {
-  it("returns empty string for no chunks", () => {
-    expect(assembleLorePreamble([], META)).toBe("");
+  it("returns empty string when no chunks are provided", () => {
+    const out = assembleLorePreamble([], { source: "https://s", license: "L" });
+    expect(out).toBe("");
   });
 
-  it("formats chunks with <lore> tags and instruction text", () => {
-    const result = assembleLorePreamble([makeRetrieved("[Arasaka]", "A megacorporation.")], META);
-    expect(result).toContain('<lore source="cyberpunk fandom wiki, CC-BY-SA">');
-    expect(result).toContain("</lore>");
-    expect(result).toContain("The above lore is what your memory contains");
-    expect(result).toContain("never quote it verbatim");
-  });
-
-  it("each chunk shows header + text", () => {
-    const result = assembleLorePreamble(
-      [
-        makeRetrieved("[Adam Smasher]", "Full-borg solo."),
-        makeRetrieved("[Johnny > Bio]", "Rockerboy."),
-      ],
-      META,
-    );
-    expect(result).toContain("[Adam Smasher] Full-borg solo.");
-    expect(result).toContain("[Johnny > Bio] Rockerboy.");
-  });
-
-  it("uses source and license from meta", () => {
-    const result = assembleLorePreamble([makeRetrieved("[X]", "y")], {
-      source: "example.wiki",
-      license: "MIT",
+  it("wraps a <lore> block with header + text joined by newlines and trailing instruction", () => {
+    const chunks = [
+      mkRetrieved({ header: "[Alpha]", text: "first" }),
+      mkRetrieved({ header: "[Bravo]", text: "second" }),
+    ];
+    const out = assembleLorePreamble(chunks, {
+      source: "https://example.fandom.com",
+      license: "CC-BY-SA",
     });
-    expect(result).toContain('<lore source="example.wiki, MIT">');
+    expect(out.startsWith('<lore source="https://example.fandom.com, CC-BY-SA">')).toBe(true);
+    expect(out).toContain("[Alpha] first\n[Bravo] second");
+    expect(out).toContain("</lore>");
+    expect(out).toContain("reference material");
+  });
+
+  it("interpolates meta.source and meta.license into the opening tag", () => {
+    const chunks = [mkRetrieved({})];
+    const out = assembleLorePreamble(chunks, { source: "SRC", license: "LIC" });
+    expect(out).toContain('<lore source="SRC, LIC">');
   });
 });

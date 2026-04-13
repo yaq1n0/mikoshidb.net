@@ -1,259 +1,161 @@
-import { describe, it, expect } from "vitest";
-import { mkdtemp, writeFile, rm } from "node:fs/promises";
+import { describe, it, expect, beforeAll, afterAll } from "vitest";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { slugify, parseDump } from "./parse.ts";
+import { slugify, parseDump, type ParseResult } from "./parse.ts";
 
 describe("slugify()", () => {
-  it("lowercases and replaces non-alphanumerics with hyphens", () => {
-    expect(slugify("Night City")).toBe("night-city");
-    expect(slugify("V's Apartment")).toBe("v-s-apartment");
+  it("lowercases, replaces non-alnum with hyphens, collapses runs", () => {
+    expect(slugify("Johnny Silverhand")).toBe("johnny-silverhand");
   });
 
-  it("collapses repeated separators and trims leading/trailing hyphens", () => {
-    expect(slugify("---Hello   World!!!---")).toBe("hello-world");
+  it("strips leading and trailing hyphens", () => {
+    expect(slugify("  --Hello World!--  ")).toBe("hello-world");
   });
 
-  it("returns empty string for input that has no alphanumerics", () => {
-    expect(slugify("!!! ---")).toBe("");
+  it("collapses runs of non-alphanumerics", () => {
+    expect(slugify("a   b___c")).toBe("a-b-c");
+  });
+
+  it("maps unicode / special chars to hyphens", () => {
+    expect(slugify("Café")).toBe("caf");
+  });
+
+  it("maps empty string to empty string", () => {
+    expect(slugify("")).toBe("");
   });
 });
 
+const LOREM = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ".repeat(6);
+
 const DUMP_XML = `<?xml version="1.0" encoding="UTF-8"?>
-<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.11/" xml:lang="en">
+<mediawiki>
   <page>
-    <title>Arasaka</title>
+    <title>Main Article</title>
     <ns>0</ns>
-    <revision>
-      <text>${"Arasaka is a megacorporation. ".repeat(20)}
+    <text>{{Infobox character
+|name = Main Character
+|aliases = MC, Mainer
+}}
+The [[Main Article]] is a protagonist in the [[Story]]. MC lives in [[Night City]]. ${LOREM}
 
-== History ==
+==Background==
+Background prose here about [[Johnny]]. ${LOREM}
 
-${"It was founded long ago. ".repeat(20)}
-
-[[Category:Corporations]]</text>
-    </revision>
+[[Category:Characters]]</text>
   </page>
   <page>
-    <title>Old Redirect</title>
+    <title>MC</title>
     <ns>0</ns>
-    <redirect />
-    <revision>
-      <text>#REDIRECT [[Arasaka]]</text>
-    </revision>
+    <redirect title="Main Article"/>
+    <text>#REDIRECT [[Main Article]]</text>
   </page>
   <page>
-    <title>User talk:Someone</title>
-    <ns>3</ns>
-    <revision>
-      <text>${"talk page body ".repeat(20)}</text>
-    </revision>
+    <title>User:admin</title>
+    <ns>2</ns>
+    <text>user page content ignored</text>
   </page>
   <page>
-    <title>Quest:Do The Thing</title>
+    <title>Quest:Sample</title>
     <ns>0</ns>
-    <revision>
-      <text>${"Quest body text. ".repeat(20)}</text>
-    </revision>
+    <text>${LOREM} ${LOREM}</text>
   </page>
   <page>
-    <title>Tiny</title>
+    <title>Short Page</title>
     <ns>0</ns>
-    <revision>
-      <text>Too short</text>
-    </revision>
-  </page>
-</mediawiki>
-`;
-
-// Three articles whose titles all slugify to "night-city"
-const DUPLICATE_SLUG_DUMP = `<?xml version="1.0" encoding="UTF-8"?>
-<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.11/" xml:lang="en">
-  <page>
-    <title>Night City</title>
-    <ns>0</ns>
-    <revision>
-      <text>${"Night City is a megacity in the Free State of California. ".repeat(4)}
-[[Category:Locations]]</text>
-    </revision>
+    <text>Too short.</text>
   </page>
   <page>
-    <title>Night-City</title>
+    <title>Disambig Page</title>
     <ns>0</ns>
-    <revision>
-      <text>${"Night-City alternate article about the same Californian city. ".repeat(4)}
-[[Category:Locations]]</text>
-    </revision>
+    <text>${LOREM} ${LOREM}[[Category:Disambiguations]]</text>
   </page>
   <page>
-    <title>night city</title>
+    <title>Stub Page</title>
     <ns>0</ns>
-    <revision>
-      <text>${"night city lowercase version describing the same urban sprawl. ".repeat(4)}
-[[Category:Locations]]</text>
-    </revision>
-  </page>
-</mediawiki>
-`;
-
-// One article for each SKIP_CATEGORY_PREFIXES entry + Quest: title
-const SKIP_CATEGORIES_DUMP = `<?xml version="1.0" encoding="UTF-8"?>
-<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.11/" xml:lang="en">
-  <page>
-    <title>Arasaka (disambiguation)</title>
-    <ns>0</ns>
-    <revision>
-      <text>${"Arasaka may refer to any of the following articles listed below. ".repeat(4)}
-[[Category:Disambiguation pages]]</text>
-    </revision>
+    <text>${LOREM} ${LOREM}[[Category:Stub articles]]</text>
   </page>
   <page>
-    <title>Short Stub</title>
+    <title>Twin</title>
     <ns>0</ns>
-    <revision>
-      <text>${"This is a stub article about a minor character in Night City. ".repeat(4)}
-[[Category:Stub articles]]</text>
-    </revision>
+    <text>${LOREM} ${LOREM}[[Category:Places]]</text>
   </page>
   <page>
-    <title>Real World Info</title>
+    <title>Twin</title>
     <ns>0</ns>
-    <revision>
-      <text>${"This article contains real world production information about the game. ".repeat(4)}
-[[Category:Real World content]]</text>
-    </revision>
-  </page>
-  <page>
-    <title>Behind the Scenes</title>
-    <ns>0</ns>
-    <revision>
-      <text>${"This article contains behind the scenes development content. ".repeat(4)}
-[[Category:Behind the Scenes content]]</text>
-    </revision>
-  </page>
-  <page>
-    <title>Gameplay Mechanics</title>
-    <ns>0</ns>
-    <revision>
-      <text>${"Gameplay mechanics describe how the player interacts with the world. ".repeat(4)}
-[[Category:Gameplay mechanics]]</text>
-    </revision>
-  </page>
-  <page>
-    <title>Quest:Do The Thing</title>
-    <ns>0</ns>
-    <revision>
-      <text>${"Quest body text describing objectives and rewards for this mission. ".repeat(4)}
-[[Category:Quests]]</text>
-    </revision>
+    <text>${LOREM} ${LOREM}[[Category:Places]] Alt content.</text>
   </page>
 </mediawiki>
 `;
 
 describe("parseDump()", () => {
-  it("yields only ns=0, non-redirect, non-skipped, non-trivial articles", async () => {
-    const dir = await mkdtemp(join(tmpdir(), "opensona-dump-"));
-    const path = join(dir, "dump.xml");
-    await writeFile(path, DUMP_XML);
-    try {
-      const articles = await parseDump(path);
-      expect(articles).toHaveLength(1);
-      const a = articles[0];
-      expect(a.title).toBe("Arasaka");
-      expect(a.slug).toBe("arasaka");
-      expect(a.categories).toContain("Corporations");
-      expect(a.sections.length).toBeGreaterThan(0);
-    } finally {
-      await rm(dir, { recursive: true, force: true });
-    }
+  let dir: string;
+  let dumpPath: string;
+  let resultAll: ParseResult;
+  let resultRaw: ParseResult;
+
+  beforeAll(async () => {
+    dir = await mkdtemp(join(tmpdir(), "opensona-parse-"));
+    dumpPath = join(dir, "dump.xml");
+    await writeFile(dumpPath, DUMP_XML);
+    resultAll = await parseDump(dumpPath);
+    resultRaw = await parseDump(dumpPath, new Set(["Main Article"]));
   });
 
-  it("populates rawText on sections for requested titles only", async () => {
-    const dir = await mkdtemp(join(tmpdir(), "opensona-dump-"));
-    const path = join(dir, "dump.xml");
-    await writeFile(path, DUMP_XML);
-    try {
-      const articles = await parseDump(path, new Set(["Arasaka"]));
-      const arasaka = articles.find((a) => a.title === "Arasaka")!;
-      const hasRaw = arasaka.sections.some(
-        (s) => typeof s.rawText === "string" && s.rawText.length > 0,
-      );
-      expect(hasRaw).toBe(true);
-    } finally {
-      await rm(dir, { recursive: true, force: true });
-    }
+  afterAll(async () => {
+    await rm(dir, { recursive: true, force: true });
   });
 
-  it("appends -1 and -2 suffixes for duplicate slugs", async () => {
-    const dir = await mkdtemp(join(tmpdir(), "opensona-dup-"));
-    const path = join(dir, "dump.xml");
-    await writeFile(path, DUPLICATE_SLUG_DUMP);
-    try {
-      const articles = await parseDump(path);
-      expect(articles).toHaveLength(3);
-      const slugs = articles.map((a) => a.slug).sort();
-      expect(slugs).toContain("night-city");
-      expect(slugs).toContain("night-city-1");
-      expect(slugs).toContain("night-city-2");
-    } finally {
-      await rm(dir, { recursive: true, force: true });
-    }
+  it("parses namespace-0 articles with categories, links, infobox, sections", () => {
+    const main = resultAll.articles.find((a) => a.title === "Main Article");
+    expect(main).toBeDefined();
+    expect(main!.slug).toBe("main-article");
+    expect(main!.categories).toContain("Characters");
+    expect(main!.links.length).toBeGreaterThan(0);
+    expect(main!.sections.length).toBeGreaterThan(0);
+    expect(main!.infobox.name).toBeTruthy();
   });
 
-  it("drops articles matching every SKIP_CATEGORY_PREFIXES entry and Quest: title prefix", async () => {
-    const dir = await mkdtemp(join(tmpdir(), "opensona-skip-"));
-    const path = join(dir, "dump.xml");
-    await writeFile(path, SKIP_CATEGORIES_DUMP);
-    try {
-      const articles = await parseDump(path);
-      // All 6 articles in SKIP_CATEGORIES_DUMP should be dropped
-      expect(articles).toHaveLength(0);
-    } finally {
-      await rm(dir, { recursive: true, force: true });
-    }
+  it("skips non-namespace-0 pages", () => {
+    expect(resultAll.articles.find((a) => a.title.startsWith("User:"))).toBeUndefined();
   });
 
-  it("parses pages whose <text> body is wrapped in a CDATA section", async () => {
-    const body =
-      "Arasaka is a megacorporation. ".repeat(20) +
-      "\n\n== History ==\n\n" +
-      "It was founded long ago. ".repeat(20) +
-      "\n\n[[Category:Corporations]]";
-    // CDATA content must not contain "]]>" — we only use plain prose and wiki links.
-    const cdataDump =
-      `<?xml version="1.0" encoding="UTF-8"?>\n` +
-      `<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.11/" xml:lang="en">\n` +
-      `  <page>\n` +
-      `    <title>Arasaka</title>\n` +
-      `    <ns>0</ns>\n` +
-      `    <revision>\n` +
-      `      <text><![CDATA[${body}]]></text>\n` +
-      `    </revision>\n` +
-      `  </page>\n` +
-      `</mediawiki>\n`;
-
-    const dir = await mkdtemp(join(tmpdir(), "opensona-cdata-"));
-    const path = join(dir, "dump.xml");
-    await writeFile(path, cdataDump);
-    try {
-      const articles = await parseDump(path);
-      expect(articles).toHaveLength(1);
-      expect(articles[0].title).toBe("Arasaka");
-      expect(articles[0].categories).toContain("Corporations");
-    } finally {
-      await rm(dir, { recursive: true, force: true });
-    }
+  it("records redirect pages into redirects[], not articles[]", () => {
+    expect(resultAll.redirects).toEqual(
+      expect.arrayContaining([{ from: "MC", to: "Main Article" }]),
+    );
+    expect(resultAll.articles.find((a) => a.title === "MC")).toBeUndefined();
   });
 
-  it("rejects when the dump XML is malformed (SAX error)", async () => {
-    const malformed = `<?xml version="1.0" encoding="UTF-8"?>\n<mediawiki><page><title>Broken</title>`;
-    const dir = await mkdtemp(join(tmpdir(), "opensona-bad-"));
-    const path = join(dir, "dump.xml");
-    await writeFile(path, malformed);
-    try {
-      await expect(parseDump(path)).rejects.toBeTruthy();
-    } finally {
-      await rm(dir, { recursive: true, force: true });
-    }
+  it("drops pages with Quest: title prefix", () => {
+    expect(resultAll.articles.find((a) => a.title.startsWith("Quest:"))).toBeUndefined();
+  });
+
+  it("drops pages in the Disambiguations exact category", () => {
+    expect(resultAll.articles.find((a) => a.title === "Disambig Page")).toBeUndefined();
+  });
+
+  it("drops pages whose category starts with a skip prefix (Stub)", () => {
+    expect(resultAll.articles.find((a) => a.title === "Stub Page")).toBeUndefined();
+  });
+
+  it("drops pages with bodies shorter than 200 chars", () => {
+    expect(resultAll.articles.find((a) => a.title === "Short Page")).toBeUndefined();
+  });
+
+  it("disambiguates duplicate slugs with -1, -2 suffixes", () => {
+    const twins = resultAll.articles.filter((a) => a.title === "Twin");
+    expect(twins).toHaveLength(2);
+    const slugs = twins.map((a) => a.slug).sort();
+    expect(slugs).toEqual(["twin", "twin-1"]);
+  });
+
+  it("populates rawText only for titles listed in keepRawSections", () => {
+    const main = resultRaw.articles.find((a) => a.title === "Main Article")!;
+    const twin = resultRaw.articles.find((a) => a.title === "Twin")!;
+    expect(main.sections.some((s) => typeof s.rawText === "string" && s.rawText.length > 0)).toBe(
+      true,
+    );
+    expect(twin.sections.every((s) => s.rawText === undefined)).toBe(true);
   });
 });

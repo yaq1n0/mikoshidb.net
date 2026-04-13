@@ -1,7 +1,7 @@
 {
   "name": "opensona",
   "version": "0.1.0",
-  "description": "Toolkit for building RAG pipelines using Fandom wiki data, used to enhance LLM personas. Ships a Node CLI (download, prebuild, build, verify) and a browser + Node runtime (hybrid dense + BM25 retrieval with timeline-aware filtering).",
+  "description": "Toolkit for building RAG pipelines using Fandom wiki data, used to enhance LLM personas. Ships a Node CLI (download, prebuild, build, verify) and a browser + Node runtime (graph traversal with timeline-aware filtering).",
   "license": "MIT",
   "author": "yaq1n0",
   "homepage": "https://github.com/yaq1n0/mikoshidb.net/tree/main/packages/opensona#readme",
@@ -20,8 +20,7 @@
     "ai",
     "fandom",
     "wiki",
-    "embeddings",
-    "bm25",
+    "graph",
     "persona"
   ],
   "type": "module",
@@ -58,9 +57,7 @@
   },
   "dependencies": {
     "7zip-min": "^3.0.1",
-    "@huggingface/transformers": "^4.0.1",
     "commander": "^14.0.3",
-    "minisearch": "^7.2.0",
     "sax": "^1.6.0",
     "wtf_wikipedia": "^10.4.1",
     "zod": "^4.3.6"

@@ -38,7 +38,8 @@ const createWriteStreamMock = createWriteStream as unknown as ReturnType<typeof 
 const pipelineMock = pipeline as unknown as ReturnType<typeof vi.fn>;
 const unpackMock = _7z.unpack as unknown as ReturnType<typeof vi.fn>;
 
-function okResponse(body = "") {
+/** Ok response. */
+const okResponse = (body = "") => {
   // A minimal ReadableStream-like body that pipeline is mocked anyway
   return {
     ok: true,
@@ -54,11 +55,12 @@ function okResponse(body = "") {
       "content-length": "1",
     }),
   } as unknown as Response;
-}
+};
 
-function errResponse(status: number) {
+/** Err response. */
+const errResponse = (status: number) => {
   return { ok: false, status, body: null, headers: new Headers() } as unknown as Response;
-}
+};
 
 describe("dumpUrl()", () => {
   it("builds S3 URL from subdomain", () => {

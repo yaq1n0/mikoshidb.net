@@ -3,21 +3,13 @@
   "generatedDir": ".opensona/generated",
   "source": "https://example.fandom.com",
   "license": "Example License",
-  "embedder": {
-    "model": "Xenova/bge-small-en-v1.5",
-    "dim": 384,
-    "batchSize": 128
+  "graph": {
+    "sectionMaxChars": 2000,
+    "leadMaxChars": 600,
+    "dropDeadLinks": true,
+    "includeMentionsEdges": true
   },
-  "chunking": {
-    "targetTokens": 350,
-    "maxTokens": 512,
-    "overlapTokens": 50
-  },
-  "maxBundleBytes": 157286400,
-  "bm25": {
-    "fields": ["title", "header", "text"],
-    "boosts": { "title": 3, "header": 2, "text": 1 }
-  },
+  "maxBundleBytes": 52428800,
   "timelineArticleTitle": "Timeline",
   "timelineValidation": {
     "minYearHeadings": 1,

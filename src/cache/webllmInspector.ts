@@ -19,20 +19,22 @@
 
 const WEBLLM_CACHE_PREFIX = "webllm/";
 
-export interface WebLLMStats {
+export type WebLLMStats = {
   /** CacheStorage names matching `webllm/*`. */
   caches: string[];
   /** Total entry count across all webllm caches. */
   entries: number;
   /** Best-effort size from `Content-Length` headers. May be 0 if headers absent. */
   estSizeBytes: number;
-}
+};
 
-function isCacheStorageAvailable(): boolean {
+/** True if cache storage available. */
+const isCacheStorageAvailable = (): boolean => {
   return typeof caches !== "undefined" && typeof caches.keys === "function";
-}
+};
 
-export async function getWebLLMStats(): Promise<WebLLMStats> {
+/** Returns web llm stats. */
+export const getWebLLMStats = async (): Promise<WebLLMStats> => {
   if (!isCacheStorageAvailable()) {
     return { caches: [], entries: 0, estSizeBytes: 0 };
   }
@@ -68,17 +70,17 @@ export async function getWebLLMStats(): Promise<WebLLMStats> {
   }
 
   return { caches: webllmKeys, entries, estSizeBytes };
-}
+};
 
 /**
  * Evict every artifact for a given WebLLM modelId. Uses the official
  * `deleteModelAllInfoInCache` from `@mlc-ai/web-llm`, which honors
  * `prebuiltAppConfig` to resolve the model URL → cache keys.
  */
-export async function evictWebLLMModel(modelId: string): Promise<void> {
+export const evictWebLLMModel = async (modelId: string): Promise<void> => {
   const { deleteModelAllInfoInCache } = await import("@mlc-ai/web-llm");
   await deleteModelAllInfoInCache(modelId);
-}
+};
 
 /**
  * Bulk-delete every `webllm/*` CacheStorage. Returns the number of caches
@@ -90,7 +92,7 @@ export async function evictWebLLMModel(modelId: string): Promise<void> {
  * delete only covers the CacheStorage path. For full coverage, pair with
  * `evictWebLLMModel(modelId)` which respects both.
  */
-export async function evictAllWebLLM(): Promise<number> {
+export const evictAllWebLLM = async (): Promise<number> => {
   if (!isCacheStorageAvailable()) return 0;
   const allKeys = await caches.keys();
   const webllmKeys = allKeys.filter((k) => k.startsWith(WEBLLM_CACHE_PREFIX));
@@ -104,4 +106,4 @@ export async function evictAllWebLLM(): Promise<number> {
     }
   }
   return deleted;
-}
+};

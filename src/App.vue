@@ -40,29 +40,32 @@ const lockReason = ref<LockoutReason | null>(null);
 const debugStore = useDebugStore();
 const dragging = ref(false);
 
-function onDragMove(e: MouseEvent): void {
+/** Handles drag move. */
+const onDragMove = (e: MouseEvent): void => {
   const w = window.innerWidth - e.clientX;
   // Clamping happens inside the store; passing the raw value keeps both ends
   // of the bound consistent if the constants ever shift.
   debugStore.setWidth(Math.max(MIN_W, Math.min(MAX_W, w)));
-}
+};
 
-function onDragEnd(): void {
+/** Handles drag end. */
+const onDragEnd = (): void => {
   dragging.value = false;
   document.body.style.userSelect = "";
   document.body.style.cursor = "";
   window.removeEventListener("mousemove", onDragMove);
   window.removeEventListener("mouseup", onDragEnd);
-}
+};
 
-function startDrag(e: MouseEvent): void {
+/** Starts drag. */
+const startDrag = (e: MouseEvent): void => {
   e.preventDefault();
   dragging.value = true;
   document.body.style.userSelect = "none";
   document.body.style.cursor = "col-resize";
   window.addEventListener("mousemove", onDragMove);
   window.addEventListener("mouseup", onDragEnd);
-}
+};
 
 /**
  * Build the resume-prompt handler. Consumed exactly once — the handler calls
@@ -74,7 +77,7 @@ function startDrag(e: MouseEvent): void {
  *   - "n", "N", "no"        → decline, clear persisted session, stay in shell
  *   - anything else         → treat as decline (unrecognized ⇒ safe default)
  */
-function makeResumeAnswerHandler() {
+const makeResumeAnswerHandler = () => {
   return async (raw: string): Promise<void> => {
     const answer = raw.trim().toLowerCase();
     const isYes = answer === "" || answer === "y" || answer === "yes";
@@ -146,9 +149,10 @@ function makeResumeAnswerHandler() {
 
     phase.value = "ready";
   };
-}
+};
 
-async function boot(): Promise<void> {
+/** Boot. */
+const boot = async (): Promise<void> => {
   // Gate 1: single-tab lock.
   const lockAcquired = await acquireSessionLock();
   if (!lockAcquired) {
@@ -190,13 +194,15 @@ async function boot(): Promise<void> {
   }
 
   phase.value = "booting";
-}
+};
 
-function onBootDone(): void {
+/** Handles boot done. */
+const onBootDone = (): void => {
   phase.value = "ready";
-}
+};
 
-function onReboot(): void {
+/** Handles reboot. */
+const onReboot = (): void => {
   // Fire-and-forget; the booting phase kicks off immediately while the IDB
   // wipes proceed in the background. Per PLAN §7: reboot clears chat in
   // addition to scrollback.
@@ -205,7 +211,7 @@ function onReboot(): void {
   // Also drop any in-flight resume hook — we're starting over.
   setResumeHandler(null);
   phase.value = "booting";
-}
+};
 
 onMounted(async () => {
   // Hydration gate sits OUTSIDE the WebGPU phase — we always need persisted

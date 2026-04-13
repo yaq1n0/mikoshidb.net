@@ -22,20 +22,21 @@ export type LineKind =
   | "chat-user"
   | "chat-reply";
 
-export interface ScrollbackLine {
+export type ScrollbackLine = {
   id: number;
   kind: LineKind;
   text: string;
   progress?: number;
   streaming?: boolean;
-}
+};
 
 // In-memory line id sequence — monotonically increasing, unrelated to the IDB
 // autoinc id. Used as the Vue :key for rendering.
 let lineSeq = 0;
-function nextLineId(): number {
+/** Next line id. */
+const nextLineId = (): number => {
   return ++lineSeq;
-}
+};
 
 /**
  * Terminal store — owns shell command history, arrow-nav state, and scrollback.
@@ -139,8 +140,6 @@ export const useTerminalStore = defineStore(
       historyIndex.value = commandHistory.value.length;
       draft.value = "";
     }
-
-    // --- Scrollback --------------------------------------------------------
 
     function snapshot(line: ScrollbackLine): PersistedScrollbackLine {
       // Snapshot-before-write per PLAN §2: fix streaming=false, progress=1 (or
@@ -442,6 +441,6 @@ export const useTerminalStore = defineStore(
 );
 
 /** Re-exported so test helpers can synthesize new in-memory lines. */
-export function _nextLineId(): number {
+export const _nextLineId = (): number => {
   return nextLineId();
-}
+};

@@ -6,7 +6,8 @@ import { useDebugStore, MIN_W, MAX_W } from "@/stores/debug";
 // Minimal localStorage shim — vitest config runs under "node" environment so
 // browser globals are absent. The pinia persistedstate plugin reads/writes to
 // `localStorage` synchronously on hydration and on each mutation.
-function installLocalStorageShim(): void {
+/** Install local storage shim. */
+const installLocalStorageShim = (): void => {
   const map = new Map<string, string>();
   const shim: Storage = {
     get length() {
@@ -23,14 +24,15 @@ function installLocalStorageShim(): void {
     },
   };
   (globalThis as unknown as { localStorage: Storage }).localStorage = shim;
-}
+};
 installLocalStorageShim();
 
-function freshPinia(): void {
+/** Fresh pinia. */
+const freshPinia = (): void => {
   const pinia = createPinia();
   pinia.use(piniaPluginPersistedstate);
   setActivePinia(pinia);
-}
+};
 
 describe("useDebugStore", () => {
   beforeEach(() => {

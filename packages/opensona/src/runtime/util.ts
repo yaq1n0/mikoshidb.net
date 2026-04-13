@@ -1,7 +1,8 @@
 // packages/opensona/src/runtime/util.ts
 // Browser-compatible gzip decompression via DecompressionStream
 
-export async function gunzip(data: ArrayBuffer): Promise<ArrayBuffer> {
+/** Gunzip. */
+export const gunzip = async (data: ArrayBuffer): Promise<ArrayBuffer> => {
   // If the browser (or server) already decompressed the response via
   // Content-Encoding negotiation, the payload won't have a gzip header.
   // Detect this by checking the gzip magic bytes (1f 8b) and skip
@@ -35,4 +36,4 @@ export async function gunzip(data: ArrayBuffer): Promise<ArrayBuffer> {
   }
 
   return result.buffer;
-}
+};

@@ -1,369 +1,443 @@
 import { describe, it, expect } from "vitest";
-import MiniSearch from "minisearch";
-import { packBundle } from "./pack.ts";
-import {
-  parseEmbeddings,
-  resolveCutoffOrder,
-  denseRetrieve,
-  bm25Retrieve,
-  rrfFuse,
-} from "./verify.ts";
-import type { Chunk, Manifest, OpensonaConfig, Timeline } from "../types.ts";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { gzipSync } from "node:zlib";
+import type { Manifest } from "../types.ts";
+import type { LoadedGraph, ArticleNode, SectionNode, CategoryNode } from "../runtime/graph.ts";
+import { verifyBundle, verifyIntegrity, type GraphVerifyCase } from "./verify.ts";
 
-const CONFIG: OpensonaConfig = {
-  dumpPath: "",
-  generatedDir: "",
-  source: "example.wiki",
+const mkManifest = (over?: Partial<Manifest>): Manifest => ({
+  version: 2,
+  retrieval: "graph",
+  buildDate: "2026-01-01T00:00:00.000Z",
+  source: "https://example.fandom.com",
   license: "CC-BY-SA",
-  embedder: { model: "test/m", dim: 4, batchSize: 8 },
-  chunking: { targetTokens: 100, maxTokens: 200, overlapTokens: 20 },
-  maxBundleBytes: 10 * 1024 * 1024,
-  bm25: { fields: ["title", "header", "text"], boosts: { title: 3, header: 2, text: 1 } },
-  timelineArticleTitle: "Timeline",
-  timelineValidation: { minYearHeadings: 1, minEvents: 1 },
-  editionEras: [],
-  categorySkip: { prefixes: [], suffixes: [], exact: [] },
+  graph: { sectionMaxChars: 2000, leadMaxChars: 600, deadLinkCount: 0 },
+  counts: { articles: 2, sections: 2, categories: 1, aliases: 3, edges: 1, events: 1 },
+  timeline: { events: [{ id: "e1", name: "E1", year: 2020, order: 100 }] },
+  timelineMeta: { articleTitle: "Timeline", eventCount: 1, minYear: 2020, maxYear: 2020 },
+  files: {
+    nodes: { path: "graph-nodes.json.gz", sizeBytes: 1, sha256: "a".repeat(64) },
+    edges: { path: "graph-edges.json.gz", sizeBytes: 1, sha256: "b".repeat(64) },
+    aliases: { path: "aliases.json.gz", sizeBytes: 1, sha256: "c".repeat(64) },
+  },
+  ...over,
+});
+
+const mkArticle = (id: string, over?: Partial<ArticleNode>): ArticleNode => ({
+  kind: "article",
+  id,
+  title: id.toUpperCase(),
+  categories: [],
+  eventIds: [],
+  latestEventOrder: -1,
+  tags: [],
+  lead: `${id} lead`,
+  sectionIds: [`${id}#0`],
+  ...over,
+});
+
+const mkSection = (id: string, articleId: string, over?: Partial<SectionNode>): SectionNode => ({
+  kind: "section",
+  id,
+  articleId,
+  heading: "Intro",
+  text: `${id} text`,
+  latestEventOrder: -1,
+  eventIds: [],
+  tags: [],
+  ...over,
+});
+
+const mkCategory = (id: string, articleIds: string[]): CategoryNode => ({
+  kind: "category",
+  id,
+  name: id,
+  articleIds,
+});
+
+const goodGraph = (): LoadedGraph => ({
+  manifest: mkManifest(),
+  articles: new Map([
+    ["a", mkArticle("a")],
+    ["b", mkArticle("b")],
+  ]),
+  sections: new Map([
+    ["a#0", mkSection("a#0", "a")],
+    ["b#0", mkSection("b#0", "b")],
+  ]),
+  categories: new Map([["c", mkCategory("c", ["a"])]]),
+  events: new Map(),
+  edges: {
+    links: new Map([["a", new Set(["b"])]]),
+    contains: new Map(),
+    inCategory: new Map(),
+    inEvent: new Map(),
+    mentions: new Map(),
+  },
+  aliases: new Map([
+    ["alpha", "a"],
+    ["bravo", "b"],
+  ]),
+  eventOrder: new Map([["e1", 100]]),
+});
+
+describe("verifyIntegrity()", () => {
+  it("passes clean graph with empty dangling arrays", () => {
+    const r = verifyIntegrity(goodGraph());
+    expect(r.passed).toBe(true);
+    expect(r.dangling.aliasTarget).toEqual([]);
+    expect(r.dangling.sectionArticle).toEqual([]);
+    expect(r.dangling.categoryArticle).toEqual([]);
+    expect(r.dangling.edgeSrc).toEqual([]);
+    expect(r.dangling.edgeDst).toEqual([]);
+    expect(r.dangling.nodeEventIds).toEqual([]);
+  });
+
+  it("flags aliases pointing to missing articles", () => {
+    const g = goodGraph();
+    g.aliases.set("ghost", "nonexistent");
+    const r = verifyIntegrity(g);
+    expect(r.passed).toBe(false);
+    expect(r.dangling.aliasTarget.some((s) => s.includes("nonexistent"))).toBe(true);
+  });
+
+  it("flags sections referencing missing articles", () => {
+    const g = goodGraph();
+    g.sections.set("x#0", mkSection("x#0", "missing"));
+    const r = verifyIntegrity(g);
+    expect(r.dangling.sectionArticle.some((s) => s.includes("missing"))).toBe(true);
+    expect(r.passed).toBe(false);
+  });
+
+  it("flags categories referencing missing articles", () => {
+    const g = goodGraph();
+    g.categories.set("bad", mkCategory("bad", ["nope"]));
+    const r = verifyIntegrity(g);
+    expect(r.dangling.categoryArticle.some((s) => s.includes("nope"))).toBe(true);
+    expect(r.passed).toBe(false);
+  });
+
+  it("flags dangling edge src/dst and still counts destinations", () => {
+    const g = goodGraph();
+    g.edges.links.set("ghost", new Set(["phantom"]));
+    const r = verifyIntegrity(g);
+    expect(r.dangling.edgeSrc.some((s) => s.includes("ghost"))).toBe(true);
+    expect(r.dangling.edgeDst.some((s) => s.includes("phantom"))).toBe(true);
+    // edgeCount counts all destinations including dangling ones
+    expect(r.edgeCount).toBe(2); // a→b and ghost→phantom
+  });
+
+  it("flags unresolved article / section eventIds", () => {
+    const g = goodGraph();
+    const a = g.articles.get("a")!;
+    a.eventIds = ["unknown-event"];
+    const sec = g.sections.get("a#0")!;
+    sec.eventIds = ["another-unknown"];
+    const r = verifyIntegrity(g);
+    expect(r.dangling.nodeEventIds.some((s) => s.includes("article:a"))).toBe(true);
+    expect(r.dangling.nodeEventIds.some((s) => s.includes("section:a#0"))).toBe(true);
+  });
+});
+
+const gzJson = (value: unknown): Uint8Array =>
+  gzipSync(Buffer.from(JSON.stringify(value), "utf-8"));
+
+const writeBundle = async (
+  dir: string,
+  manifest: Manifest,
+  nodes: unknown,
+  edges: unknown,
+  aliases: unknown,
+): Promise<void> => {
+  await writeFile(join(dir, "manifest.json"), JSON.stringify(manifest));
+  await writeFile(join(dir, "graph-nodes.json.gz"), gzJson(nodes));
+  await writeFile(join(dir, "graph-edges.json.gz"), gzJson(edges));
+  await writeFile(join(dir, "aliases.json.gz"), gzJson(aliases));
 };
 
-const TIMELINE: Timeline = {
-  events: [
-    { id: "evt-early", name: "Early", year: 2020, order: 202001 },
-    { id: "evt-mid", name: "Mid", year: 2050, order: 205001 },
-    { id: "evt-late", name: "Late", year: 2077, order: 207701 },
-  ],
-};
-
-function makeChunks(): Chunk[] {
-  return [
+const bundleNodes = {
+  articles: [
     {
-      id: "alpha#0",
-      articleId: "alpha",
+      kind: "article",
+      id: "a",
       title: "Alpha",
-      header: "[Alpha]",
-      text: "Alpha is a Night City gang leader.",
-      eventIds: ["evt-early"],
-      latestEventOrder: 202001,
-      tags: ["gang"],
-      categories: ["Gangs"],
-    },
-    {
-      id: "beta#0",
-      articleId: "beta",
-      title: "Beta",
-      header: "[Beta]",
-      text: "Beta is a corpo district in Night City.",
-      eventIds: ["evt-mid"],
-      latestEventOrder: 205001,
-      tags: ["location"],
-      categories: ["Locations"],
-    },
-    {
-      id: "gamma#0",
-      articleId: "gamma",
-      title: "Gamma",
-      header: "[Gamma]",
-      text: "Gamma is a weapon manufacturer.",
-      eventIds: ["evt-late"],
-      latestEventOrder: 207701,
-      tags: ["corporation"],
-      categories: ["Corporations"],
-    },
-    {
-      id: "delta#0",
-      articleId: "delta",
-      title: "Delta",
-      header: "[Delta]",
-      text: "Delta is a timeless concept in cyberpunk lore.",
+      categories: [],
       eventIds: [],
       latestEventOrder: -1,
-      tags: ["meta"],
-      categories: ["Meta"],
+      tags: ["tag-a"],
+      lead: "Alpha lead",
+      sectionIds: [],
     },
     {
-      id: "epsilon#0",
-      articleId: "epsilon",
-      title: "Epsilon",
-      header: "[Epsilon]",
-      text: "Epsilon is a gang hideout near the combat zone.",
-      eventIds: ["evt-early"],
-      latestEventOrder: 202001,
-      tags: ["gang", "location"],
-      categories: ["Gangs", "Locations"],
+      kind: "article",
+      id: "b",
+      title: "Bravo",
+      categories: [],
+      eventIds: [],
+      latestEventOrder: 500,
+      tags: [],
+      lead: "Bravo lead",
+      sectionIds: [],
     },
-  ];
-}
+  ],
+  sections: [],
+  categories: [],
+};
+const bundleEdges = {
+  links: { a: ["b"] },
+  contains: {},
+  inCategory: {},
+  inEvent: {},
+  mentions: {},
+};
+const bundleAliases = { alpha: "a", bravo: "b" };
 
-function makeVectors(count: number, dim: number): Float32Array {
-  // Craft distinctive vectors per chunk to exercise the quantization path.
-  const patterns: number[][] = [
-    [1.0, 0, 0, 0],
-    [0, 1.0, 0, 0],
-    [0.5, 0.5, 0, 0],
-    [0, 0, 1.0, 0],
-    [0.8, 0, 0.2, 0],
-  ];
-  const v = new Float32Array(count * dim);
-  for (let i = 0; i < count; i++) {
-    for (let j = 0; j < dim; j++) {
-      v[i * dim + j] = patterns[i % patterns.length][j] ?? 0;
-    }
-  }
-  return v;
-}
-
-function makeMiniSearch(chunks: Chunk[]): MiniSearch {
-  const ms = new MiniSearch({
-    fields: ["title", "header", "text"],
-    storeFields: ["title", "header", "text"],
-  });
-  ms.addAll(chunks.map((c) => ({ id: c.id, title: c.title, header: c.header, text: c.text })));
-  return ms;
-}
-
-function makeManifest(): Manifest {
-  return {
-    version: 1,
-    buildDate: "2025-01-01",
-    source: "test",
-    license: "CC-BY-SA",
-    embedder: {
-      library: "test",
-      model: "test/m",
-      dim: 4,
-      weightsHash: "abc123",
-    },
-    counts: { articles: 5, chunks: 5, events: 3 },
-    timeline: TIMELINE,
-    files: {},
-  };
-}
-
-describe("parseEmbeddings()", () => {
-  it("round-trips quantizeInt8 output from packBundle", async () => {
-    const chunks = makeChunks();
-    const dim = 4;
-    const vectors = makeVectors(chunks.length, dim);
-
-    const { files } = await packBundle(chunks, vectors, dim, TIMELINE, CONFIG);
-    const embeddings = files.find((f) => f.path === "embeddings.i8.bin")!;
-
-    const parsed = parseEmbeddings(embeddings.data);
-
-    expect(parsed.count).toBe(chunks.length);
-    expect(parsed.dim).toBe(dim);
-    expect(parsed.scales).toBeInstanceOf(Float32Array);
-    expect(parsed.scales.length).toBe(chunks.length);
-    expect(parsed.quants).toBeInstanceOf(Int8Array);
-    expect(parsed.quants.length).toBe(chunks.length * dim);
-
-    // Dequantize each vector and confirm it approximates the original input.
-    for (let i = 0; i < chunks.length; i++) {
-      const scale = parsed.scales[i];
-      expect(scale).toBeGreaterThan(0);
-      for (let j = 0; j < dim; j++) {
-        const original = vectors[i * dim + j];
-        const dequant = parsed.quants[i * dim + j] * scale;
-        // Max error ≈ scale (half a quant step, rounded).
-        expect(Math.abs(dequant - original)).toBeLessThanOrEqual(scale + 1e-6);
-      }
+describe("verifyBundle()", () => {
+  it("throws when manifest version is not 2", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "opensona-verify-"));
+    try {
+      await writeBundle(
+        dir,
+        mkManifest({ version: 1 as unknown as 2 }),
+        bundleNodes,
+        bundleEdges,
+        bundleAliases,
+      );
+      await expect(verifyBundle(dir, [])).rejects.toThrow(/unsupported bundle/);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
     }
   });
-});
 
-describe("resolveCutoffOrder()", () => {
-  const manifest = makeManifest();
-
-  it("returns Infinity for __LAST_EVENT__", () => {
-    expect(resolveCutoffOrder(manifest, "__LAST_EVENT__")).toBe(Infinity);
-  });
-
-  it("returns event.order for a known event id", () => {
-    expect(resolveCutoffOrder(manifest, "evt-early")).toBe(202001);
-    expect(resolveCutoffOrder(manifest, "evt-mid")).toBe(205001);
-    expect(resolveCutoffOrder(manifest, "evt-late")).toBe(207701);
-  });
-
-  it("throws when cutoffEventId is not present in the timeline", () => {
-    expect(() => resolveCutoffOrder(manifest, "does-not-exist")).toThrow(/cutoffEventId not found/);
-  });
-});
-
-describe("denseRetrieve()", () => {
-  const dim = 4;
-
-  function makeDenseFixture() {
-    const chunks = makeChunks();
-    const count = chunks.length;
-    const scales = new Float32Array(count);
-    scales.fill(1.0);
-    const quants = new Int8Array(count * dim);
-    const vectors: number[][] = [
-      [100, 0, 0, 0], // alpha
-      [0, 100, 0, 0], // beta
-      [50, 50, 0, 0], // gamma
-      [0, 0, 100, 0], // delta (timeless)
-      [80, 0, 20, 0], // epsilon
-    ];
-    for (let i = 0; i < count; i++) {
-      for (let j = 0; j < dim; j++) {
-        quants[i * dim + j] = vectors[i][j];
-      }
-    }
-    return { chunks, count, scales, quants };
-  }
-
-  it("respects top-k: requesting 2 yields exactly 2 results", () => {
-    const { chunks, count, scales, quants } = makeDenseFixture();
-    const queryVec = new Float32Array([1, 1, 1, 1]); // matches everything
-    const results = denseRetrieve(queryVec, scales, quants, dim, count, chunks, Infinity, 2);
-    expect(results).toHaveLength(2);
-  });
-
-  it("excludes chunks whose latestEventOrder exceeds the cutoff", () => {
-    const { chunks, count, scales, quants } = makeDenseFixture();
-    const queryVec = new Float32Array([1, 1, 1, 1]);
-    // Cutoff at evt-early (202001) should drop beta (205001) and gamma (207701).
-    const results = denseRetrieve(queryVec, scales, quants, dim, count, chunks, 202001, 10);
-    const ids = results.map((r) => chunks[r.index].id);
-    expect(ids).toContain("alpha#0");
-    expect(ids).toContain("epsilon#0");
-    expect(ids).toContain("delta#0");
-    expect(ids).not.toContain("beta#0");
-    expect(ids).not.toContain("gamma#0");
-  });
-
-  it("includes timeless chunks (latestEventOrder === -1) regardless of cutoff", () => {
-    const { chunks, count, scales, quants } = makeDenseFixture();
-    // Query aligned with delta (timeless)
-    const queryVec = new Float32Array([0, 0, 1, 0]);
-    // Very early cutoff: -10 — excludes every dated chunk.
-    const results = denseRetrieve(queryVec, scales, quants, dim, count, chunks, -10, 10);
-    const ids = results.map((r) => chunks[r.index].id);
-    expect(ids).toContain("delta#0");
-    expect(ids).not.toContain("alpha#0");
-    expect(ids).not.toContain("beta#0");
-    expect(ids).not.toContain("gamma#0");
-    expect(ids).not.toContain("epsilon#0");
-  });
-
-  it("returns results sorted in descending score order", () => {
-    const { chunks, count, scales, quants } = makeDenseFixture();
-    const queryVec = new Float32Array([1, 0, 0, 0]); // alpha(100) > epsilon(80) > gamma(50)
-    const results = denseRetrieve(queryVec, scales, quants, dim, count, chunks, Infinity, 5);
-    for (let i = 1; i < results.length; i++) {
-      expect(results[i - 1].score).toBeGreaterThanOrEqual(results[i].score);
-    }
-    expect(chunks[results[0].index].id).toBe("alpha#0");
-    expect(chunks[results[1].index].id).toBe("epsilon#0");
-    expect(chunks[results[2].index].id).toBe("gamma#0");
-  });
-});
-
-describe("bm25Retrieve()", () => {
-  it("applies the timeline cutoff, excluding chunks with order > cutoff", () => {
-    const chunks = makeChunks();
-    const ms = makeMiniSearch(chunks);
-    const chunkIdToIndex = new Map<string, number>(chunks.map((c, i) => [c.id, i]));
-
-    // "Night City" is in alpha (202001) and beta (205001).
-    // Cutoff at evt-early (202001) should drop beta.
-    const results = bm25Retrieve(ms, "Night City", chunks, chunkIdToIndex, 202001, 10);
-    const ids = results.map((r) => chunks[r.index].id);
-    expect(ids).toContain("alpha#0");
-    expect(ids).not.toContain("beta#0");
-  });
-
-  it("respects top-k", () => {
-    const chunks = makeChunks();
-    const ms = makeMiniSearch(chunks);
-    const chunkIdToIndex = new Map<string, number>(chunks.map((c, i) => [c.id, i]));
-
-    // "gang" hits alpha and epsilon; cap at 1.
-    const results = bm25Retrieve(ms, "gang", chunks, chunkIdToIndex, Infinity, 1);
-    expect(results).toHaveLength(1);
-  });
-
-  it("skips search hits whose ID is missing from chunkIdToIndex", () => {
-    const chunks = makeChunks();
-    // Build a MiniSearch with an *extra* doc whose id is not in the map.
-    const extraDoc = {
-      id: "phantom#0",
-      title: "Phantom",
-      header: "[Phantom]",
-      text: "Phantom gang ghost document.",
-    };
-    const ms = new MiniSearch({
-      fields: ["title", "header", "text"],
-      storeFields: ["title", "header", "text"],
-    });
-    ms.addAll([
-      ...chunks.map((c) => ({ id: c.id, title: c.title, header: c.header, text: c.text })),
-      extraDoc,
-    ]);
-
-    // Build map WITHOUT the phantom id.
-    const chunkIdToIndex = new Map<string, number>(chunks.map((c, i) => [c.id, i]));
-
-    const results = bm25Retrieve(ms, "gang phantom", chunks, chunkIdToIndex, Infinity, 10);
-    const returnedIds = results.map((r) => chunks[r.index].id);
-    expect(returnedIds).not.toContain("phantom#0");
-    // Every returned index should point to a real chunk.
-    for (const r of results) {
-      expect(r.index).toBeGreaterThanOrEqual(0);
-      expect(r.index).toBeLessThan(chunks.length);
+  it("runs alias cases with expectArticleIds, expectAny, mustNotArticleIds, expectEmpty, assertNoPostCutoff", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "opensona-verify-"));
+    try {
+      await writeBundle(dir, mkManifest(), bundleNodes, bundleEdges, bundleAliases);
+      const cases: GraphVerifyCase[] = [
+        {
+          id: "hit",
+          query: "q",
+          layer: "alias",
+          alias: "alpha",
+          neighbors: "none",
+          characterContext: { id: "a", bio: "" },
+          expectArticleIds: ["a"],
+        },
+        {
+          id: "miss-expect",
+          query: "q",
+          layer: "alias",
+          alias: "alpha",
+          neighbors: "none",
+          characterContext: { id: "a", bio: "" },
+          expectArticleIds: ["z"],
+        },
+        {
+          id: "any-hit",
+          query: "q",
+          layer: "alias",
+          alias: "alpha",
+          neighbors: "none",
+          characterContext: { id: "a", bio: "" },
+          expectAny: ["a", "z"],
+        },
+        {
+          id: "any-miss",
+          query: "q",
+          layer: "alias",
+          alias: "alpha",
+          neighbors: "none",
+          characterContext: { id: "a", bio: "" },
+          expectAny: ["z"],
+        },
+        {
+          id: "must-not-violated",
+          query: "q",
+          layer: "alias",
+          alias: "alpha",
+          neighbors: "none",
+          characterContext: { id: "a", bio: "" },
+          mustNotArticleIds: ["a"],
+        },
+        {
+          id: "empty-ok",
+          query: "q",
+          layer: "alias",
+          alias: "ghost",
+          neighbors: "none",
+          characterContext: { id: "a", bio: "" },
+          expectEmpty: true,
+        },
+        {
+          id: "post-cutoff-ok",
+          query: "q",
+          layer: "alias",
+          alias: "alpha",
+          neighbors: "direct",
+          characterContext: { id: "a", bio: "", cutoffEventId: "__LAST_EVENT__" },
+          assertNoPostCutoff: true,
+        },
+      ];
+      const report = await verifyBundle(dir, cases);
+      const byId = Object.fromEntries(report.cases.map((c) => [c.id, c]));
+      expect(byId["hit"].passed).toBe(true);
+      expect(byId["miss-expect"].passed).toBe(false);
+      expect(byId["any-hit"].passed).toBe(true);
+      expect(byId["any-miss"].passed).toBe(false);
+      expect(byId["must-not-violated"].passed).toBe(false);
+      expect(byId["empty-ok"].passed).toBe(true);
+      expect(byId["post-cutoff-ok"].passed).toBe(true);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
     }
   });
-});
 
-describe("rrfFuse()", () => {
-  it("scores a chunk at rank 0 in both dense and bm25 with 2/60", () => {
-    const dense = [{ index: 0, score: 10 }];
-    const bm25 = [{ index: 0, score: 5 }];
-    const fused = rrfFuse(dense, bm25, 5);
-    expect(fused).toHaveLength(1);
-    expect(fused[0].index).toBe(0);
-    expect(fused[0].source).toBe("both");
-    expect(fused[0].score).toBeCloseTo(2 / 60, 10);
+  it("allowFailure:true records failure but does not set blocked", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "opensona-verify-"));
+    try {
+      await writeBundle(dir, mkManifest(), bundleNodes, bundleEdges, bundleAliases);
+      const cases: GraphVerifyCase[] = [
+        {
+          id: "soft",
+          query: "q",
+          layer: "alias",
+          alias: "alpha",
+          neighbors: "none",
+          characterContext: { id: "a", bio: "" },
+          expectArticleIds: ["z"],
+          allowFailure: true,
+        },
+      ];
+      const report = await verifyBundle(dir, cases);
+      expect(report.cases[0].passed).toBe(false);
+      expect(report.cases[0].allowedFailure).toBe(true);
+      expect(report.blocked).toBe(false);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
   });
 
-  it("marks source 'both' when a chunk appears in both dense and bm25", () => {
-    const dense = [
-      { index: 0, score: 10 },
-      { index: 1, score: 8 },
-    ];
-    const bm25 = [{ index: 1, score: 5 }];
-    const fused = rrfFuse(dense, bm25, 5);
-    const entry = fused.find((f) => f.index === 1)!;
-    expect(entry.source).toBe("both");
+  it("records unresolved-alias failure only when expectArticleIds is non-empty and retrieval empty", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "opensona-verify-"));
+    try {
+      await writeBundle(dir, mkManifest(), bundleNodes, bundleEdges, bundleAliases);
+      const cases: GraphVerifyCase[] = [
+        {
+          id: "unresolved-expect",
+          query: "q",
+          layer: "alias",
+          alias: "ghost",
+          neighbors: "none",
+          characterContext: { id: "a", bio: "" },
+          expectArticleIds: ["a"],
+        },
+      ];
+      const report = await verifyBundle(dir, cases);
+      expect(report.cases[0].passed).toBe(false);
+      expect(report.cases[0].failures.some((f) => f.includes("unresolved"))).toBe(true);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
   });
 
-  it("marks source 'dense' / 'bm25' for single-source entries", () => {
-    const dense = [{ index: 0, score: 10 }];
-    const bm25 = [{ index: 1, score: 5 }];
-    const fused = rrfFuse(dense, bm25, 5);
-
-    const denseOnly = fused.find((f) => f.index === 0)!;
-    expect(denseOnly.source).toBe("dense");
-
-    const bm25Only = fused.find((f) => f.index === 1)!;
-    expect(bm25Only.source).toBe("bm25");
+  it("marks unsupported 'llm' layer as soft failure per case", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "opensona-verify-"));
+    try {
+      await writeBundle(dir, mkManifest(), bundleNodes, bundleEdges, bundleAliases);
+      const cases: GraphVerifyCase[] = [
+        {
+          id: "llm",
+          query: "q",
+          layer: "llm" as unknown as "alias",
+          characterContext: { id: "a", bio: "" },
+        },
+      ];
+      const report = await verifyBundle(dir, cases);
+      expect(report.cases[0].passed).toBe(false);
+      expect(report.cases[0].allowedFailure).toBe(true);
+      expect(report.cases[0].failures[0]).toMatch(/unsupported layer/);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
   });
 
-  it("respects topK", () => {
-    const dense = [
-      { index: 0, score: 10 },
-      { index: 1, score: 9 },
-      { index: 2, score: 8 },
-    ];
-    const bm25 = [
-      { index: 3, score: 6 },
-      { index: 4, score: 5 },
-    ];
-    const fused = rrfFuse(dense, bm25, 2);
-    expect(fused).toHaveLength(2);
-    // And the output is sorted descending.
-    for (let i = 1; i < fused.length; i++) {
-      expect(fused[i - 1].score).toBeGreaterThanOrEqual(fused[i].score);
+  it("flags a case that provides neither alias nor aliases", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "opensona-verify-"));
+    try {
+      await writeBundle(dir, mkManifest(), bundleNodes, bundleEdges, bundleAliases);
+      const cases: GraphVerifyCase[] = [
+        {
+          id: "no-alias",
+          query: "q",
+          layer: "alias",
+          characterContext: { id: "a", bio: "" },
+        },
+      ];
+      const report = await verifyBundle(dir, cases);
+      expect(report.cases[0].passed).toBe(false);
+      expect(report.cases[0].failures.some((f) => f.includes("no `alias` or `aliases`"))).toBe(
+        true,
+      );
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it("expectEmpty fails and reports count when retrieval returns chunks", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "opensona-verify-"));
+    try {
+      await writeBundle(dir, mkManifest(), bundleNodes, bundleEdges, bundleAliases);
+      const cases: GraphVerifyCase[] = [
+        {
+          id: "expect-empty-fail",
+          query: "q",
+          layer: "alias",
+          alias: "alpha",
+          neighbors: "none",
+          characterContext: { id: "a", bio: "" },
+          expectEmpty: true,
+        },
+      ];
+      const report = await verifyBundle(dir, cases);
+      expect(report.cases[0].passed).toBe(false);
+      expect(report.cases[0].failures.some((f) => f.includes("expected empty"))).toBe(true);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it("invokes onProgress once per case with (i+1, total)", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "opensona-verify-"));
+    try {
+      await writeBundle(dir, mkManifest(), bundleNodes, bundleEdges, bundleAliases);
+      const cases: GraphVerifyCase[] = [
+        {
+          id: "c1",
+          query: "q",
+          layer: "alias",
+          alias: "alpha",
+          neighbors: "none",
+          characterContext: { id: "a", bio: "" },
+        },
+        {
+          id: "c2",
+          query: "q",
+          layer: "alias",
+          alias: "bravo",
+          neighbors: "none",
+          characterContext: { id: "b", bio: "" },
+        },
+      ];
+      const events: Array<[number, number]> = [];
+      await verifyBundle(dir, cases, (done, total) => events.push([done, total]));
+      expect(events).toEqual([
+        [1, 2],
+        [2, 2],
+      ]);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
     }
   });
 });

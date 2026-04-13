@@ -12,24 +12,28 @@ const turnCount = computed<number>(() => chat.chatHistory.length);
 const scrollbackCount = computed<number>(() => terminal.scrollback.length);
 const commandCount = computed<number>(() => terminal.commandHistory.length);
 
-function fmt(ts: number | null | undefined): string {
+/** Fmt. */
+const fmt = (ts: number | null | undefined): string => {
   if (!ts || ts === 0) return "(never)";
   return new Date(ts).toISOString();
-}
+};
 
-function fmtMaybe(v: string | null | undefined): string {
+/** Fmt maybe. */
+const fmtMaybe = (v: string | null | undefined): string => {
   return v ?? "(none)";
-}
+};
 
-async function onClearChat(): Promise<void> {
+/** Handles clear chat. */
+const onClearChat = async (): Promise<void> => {
   if (!confirm("Clear chat session? This wipes the persisted neural link.")) return;
   await chat.clear();
-}
+};
 
-async function onClearScrollback(): Promise<void> {
+/** Handles clear scrollback. */
+const onClearScrollback = async (): Promise<void> => {
   if (!confirm("Clear scrollback? This wipes all persisted terminal lines.")) return;
   await terminal.clearScrollback();
-}
+};
 </script>
 
 <template>

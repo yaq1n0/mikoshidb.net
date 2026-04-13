@@ -2,13 +2,14 @@
  * Very small command tokenizer. Splits on whitespace, respects double quotes
  * for multi-word args, and lowercases the leading command.
  */
-export interface ParsedCommand {
+export type ParsedCommand = {
   command: string;
   args: string[];
   raw: string;
-}
+};
 
-export function parse(input: string): ParsedCommand | null {
+/** Parses. */
+export const parse = (input: string): ParsedCommand | null => {
   const trimmed = input.trim();
   if (!trimmed) return null;
 
@@ -37,4 +38,4 @@ export function parse(input: string): ParsedCommand | null {
     args: tokens.slice(1),
     raw: trimmed,
   };
-}
+};

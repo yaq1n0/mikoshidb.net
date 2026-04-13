@@ -1,8 +1,8 @@
-export interface ThemeMeta {
+export type ThemeMeta = {
   id: string;
   displayName: string;
   description: string;
-}
+};
 
 export const themes: ThemeMeta[] = [
   {
@@ -29,16 +29,17 @@ export const themes: ThemeMeta[] = [
 
 export const DEFAULT_THEME_ID = "arasaka";
 
-export function isValidThemeId(id: string): boolean {
+/** True if valid theme id. */
+export const isValidThemeId = (id: string): boolean => {
   return themes.some((t) => t.id === id);
-}
+};
 
 /** Apply a theme to the document root. Caller is responsible for persistence. */
-export function applyTheme(id: string): void {
+export const applyTheme = (id: string): void => {
   if (!isValidThemeId(id)) return;
   try {
     document.documentElement.dataset.theme = id;
   } catch {
     /* ignore failures */
   }
-}
+};

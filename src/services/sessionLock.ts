@@ -23,7 +23,7 @@ const LOCK_NAME = "mikoshi-session";
  *
  * The lock (when acquired) is held forever — the inner callback never resolves.
  */
-export async function acquireSessionLock(): Promise<boolean> {
+export const acquireSessionLock = async (): Promise<boolean> => {
   // Old browsers: fail open. The unified lockout still covers WebGPU-missing,
   // which is the load-bearing compat gate.
   if (typeof navigator === "undefined" || !navigator.locks) {
@@ -50,4 +50,4 @@ export async function acquireSessionLock(): Promise<boolean> {
       resolve(true);
     }
   });
-}
+};

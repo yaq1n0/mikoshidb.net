@@ -11,13 +11,15 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-function bytesOf(...xs: number[]): ArrayBuffer {
+/** Bytes of. */
+const bytesOf = (...xs: number[]): ArrayBuffer => {
   return new Uint8Array(xs).buffer;
-}
+};
 
-function makeFetchMock(bytes: ArrayBuffer, init?: ResponseInit) {
+/** Creates fetch mock. */
+const makeFetchMock = (bytes: ArrayBuffer, init?: ResponseInit) => {
   return vi.fn(async (_url: string) => new Response(bytes, init));
-}
+};
 
 describe("createCachedFetcher", () => {
   it("cache miss → fetches over network, persists to IDB, returns bytes", async () => {

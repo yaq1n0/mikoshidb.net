@@ -56,7 +56,6 @@ describe("session db", () => {
       timestamp: 1_700_000_000_000,
     });
 
-    // by-timestamp index
     const byTs = await db.getAllFromIndex("scrollback", "by-timestamp");
     expect(byTs.map((r) => r.timestamp)).toEqual([1_700_000_000_000, 1_700_000_000_500]);
 
@@ -100,15 +99,13 @@ describe("session db", () => {
     const db = await openSessionDb();
 
     const a: PersistedRagEntry = {
-      schemaVersion: 1,
+      schemaVersion: 2,
       query: "q1",
-      response: "r1",
       timestamp: 100,
     };
     const b: PersistedRagEntry = {
-      schemaVersion: 1,
+      schemaVersion: 2,
       query: "q2",
-      response: "r2",
       timestamp: 200,
     };
 
@@ -127,7 +124,7 @@ describe("session db", () => {
   it("session db has expected version + store names", async () => {
     const db = await openSessionDb();
     expect(db.name).toBe(SESSION_DB_NAME);
-    expect(db.version).toBe(1);
+    expect(db.version).toBe(DB_SCHEMA_VERSION);
     expect([...db.objectStoreNames].sort()).toEqual(["chat-session", "rag-log", "scrollback"]);
     db.close();
   });
@@ -137,7 +134,7 @@ describe("cache db", () => {
   it("bundle-assets: put/get/delete by sha256 key", async () => {
     const db = await openCacheDb();
     expect(db.name).toBe(CACHE_DB_NAME);
-    expect(db.version).toBe(1);
+    expect(db.version).toBe(DB_SCHEMA_VERSION);
     expect([...db.objectStoreNames]).toEqual(["bundle-assets"]);
 
     const sha = "a".repeat(64);

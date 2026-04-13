@@ -14,7 +14,7 @@ const SESSION_KEY = "current";
  * Kept deliberately tiny — we don't need Intl.RelativeTimeFormat's localization
  * surface for a single in-world English prompt.
  */
-function formatTimeAgo(thenMs: number, nowMs: number = Date.now()): string {
+export const formatTimeAgo = (thenMs: number, nowMs: number = Date.now()): string => {
   const diffSec = Math.max(0, Math.round((nowMs - thenMs) / 1000));
   if (diffSec < 30) return "just now";
   if (diffSec < 60) return `${diffSec} seconds ago`;
@@ -24,7 +24,7 @@ function formatTimeAgo(thenMs: number, nowMs: number = Date.now()): string {
   if (diffHr < 24) return `${diffHr} hour${diffHr === 1 ? "" : "s"} ago`;
   const diffDay = Math.round(diffHr / 24);
   return `${diffDay} day${diffDay === 1 ? "" : "s"} ago`;
-}
+};
 
 /**
  * Chat store — in-flight conversation state with IDB persistence (single record

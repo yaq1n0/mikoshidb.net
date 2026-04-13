@@ -1,9 +1,9 @@
 import type { ChatCompletionMessageParam, MLCEngineInterface } from "@mlc-ai/web-llm";
 
-export interface StreamChunk {
+export type StreamChunk = {
   delta: string;
   done: boolean;
-}
+};
 
 /**
  * Stream a completion from the loaded engine. Yields chunks as they arrive so

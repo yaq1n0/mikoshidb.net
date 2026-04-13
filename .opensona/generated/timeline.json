@@ -412,17 +412,10 @@
       "keywords": ["Chile", "Ecuador"]
     },
     {
-      "id": "primitive-smartguns-and-vehicle-links-are-in-use-during-the-1991",
-      "name": "Primitive smartguns and vehicle links are in use during the First Central Ame...",
-      "year": 1991,
-      "order": 199107,
-      "keywords": ["First Central American War"]
-    },
-    {
       "id": "gorborev-gorbachev-s-successor-purges-the-rest-of-the-old-1991",
       "name": "Gorborev, Gorbachev’s successor, purges the rest of the old USSR hardliners.",
       "year": 1991,
-      "order": 199108
+      "order": 199107
     },
     {
       "id": "the-european-economic-community-and-eurodollar-are-establish-1992",
@@ -459,31 +452,24 @@
       "keywords": ["Hua Yuchi", "Maoist Loyalist Cabal"]
     },
     {
-      "id": "the-aldecaldo-clan-forms-as-a-protective-society-in-los-ange-1992",
-      "name": "The Aldecaldo Clan forms as a protective society in Los Angeles.",
+      "id": "the-aldecaldo-clan-forms-in-east-los-angeles-ca-1992",
+      "name": "The Aldecaldo Clan forms in East Los Angeles, CA.",
       "year": 1992,
       "order": 199206,
-      "keywords": ["Aldecaldos", "Los Angeles"]
-    },
-    {
-      "id": "as-farmland-dies-rural-populations-migrate-into-the-cities-1992",
-      "name": "As farmland dies, rural populations migrate into the cities. They are labeled...",
-      "year": 1992,
-      "order": 199207,
-      "keywords": ["Jodes"]
+      "keywords": ["Aldecaldos"]
     },
     {
       "id": "the-morro-bay-massacre-biker-gangs-loot-several-towns-befo-1992",
       "name": "The Morro Bay Massacre - Biker gangs loot several towns before being driven o...",
       "year": 1992,
-      "order": 199208,
+      "order": 199207,
       "keywords": ["Morro Bay Massacre"]
     },
     {
       "id": "arasaka-ebm-and-petrochem-fund-the-creation-of-coronado-cit-1992",
       "name": "Arasaka, EBM and Petrochem fund the creation of Coronado City.",
       "year": 1992,
-      "order": 199209,
+      "order": 199208,
       "keywords": ["Arasaka", "Euro Business Machines", "Petrochem", "Night City"]
     },
     {
@@ -522,52 +508,38 @@
       "keywords": ["Coronado City"]
     },
     {
-      "id": "the-first-coherent-nomad-families-appear-on-the-west-coast-1993",
-      "name": "The first coherent Nomad families appear on the west coast.",
+      "id": "the-first-nomad-families-appear-on-the-west-coast-1993",
+      "name": "The First Nomad families appear on the west coast.",
       "year": 1993,
       "order": 199306,
       "keywords": ["Nomad"]
     },
     {
-      "id": "the-jodes-leave-oklahoma-to-escape-the-dust-bowl-1993",
-      "name": "The Jodes leave Oklahoma to escape the dust bowl.",
+      "id": "the-australian-government-announces-plans-to-recognize-abori-1993",
+      "name": "The Australian Government announces plans to recognize aboriginal land.",
       "year": 1993,
       "order": 199307,
-      "keywords": ["Jodes", "Oklahoma"]
+      "keywords": ["Australia"]
     },
     {
-      "id": "the-aldecaldo-clan-is-forced-out-of-los-angeles-1993",
-      "name": "The Aldecaldo Clan is forced out of Los Angeles.",
+      "id": "the-aldecaldo-clan-is-removed-from-los-angeles-1993",
+      "name": "The Aldecaldo Clan is removed from Los Angeles.",
       "year": 1993,
       "order": 199308,
       "keywords": ["Aldecaldos", "Los Angeles"]
     },
     {
-      "id": "gang-wars-occur-in-miami-1993",
-      "name": "Gang wars occur in Miami.",
-      "year": 1993,
-      "order": 199309,
-      "keywords": ["Miami"]
-    },
-    {
-      "id": "the-australian-government-announces-plans-to-recognize-abori-1993",
-      "name": "The Australian Government announces plans to recognize aboriginal land.",
-      "year": 1993,
-      "order": 199310,
-      "keywords": ["Australia"]
-    },
-    {
       "id": "the-ec-ministry-for-economics-is-formed-1993",
       "name": "The EC Ministry for Economics is formed.",
       "year": 1993,
-      "order": 199311,
+      "order": 199309,
       "keywords": ["Ministry for Economics"]
     },
     {
       "id": "interpol-is-sanctioned-to-operate-outside-of-eec-borders-and-1993",
       "name": "INTERPOL is sanctioned to operate outside of EEC borders and begins recruitin...",
       "year": 1993,
-      "order": 199312,
+      "order": 199310,
       "keywords": ["INTERPOL"]
     },
     {
@@ -665,32 +637,32 @@
       "keywords": ["Anastasia Luccessi"]
     },
     {
+      "id": "primitive-smartguns-and-vehicle-links-are-in-use-during-the-1995",
+      "name": "Primitive smartguns and vehicle links are in use during the First Central Ame...",
+      "year": 1995,
+      "order": 199504,
+      "keywords": ["First Central American War"]
+    },
+    {
       "id": "the-grand-unification-of-ministries-and-agencies-is-carried-1995",
       "name": "The Grand unification of Ministries and agencies is carried out in Japan.",
       "year": 1995,
-      "order": 199504,
+      "order": 199505,
       "keywords": ["Japan"]
     },
     {
       "id": "a-civil-war-breaks-out-in-china-with-the-maoist-loyalist-cab-1995",
       "name": "A Civil war breaks out in China with the Maoist Loyalist Cabal conquering lar...",
       "year": 1995,
-      "order": 199505,
+      "order": 199506,
       "keywords": ["Maoist Loyalist Cabal"]
     },
     {
-      "id": "the-bloods-gang-control-all-of-miami-1995",
-      "name": "The Bloods gang control all of Miami.",
-      "year": 1995,
-      "order": 199506,
-      "keywords": ["Blood Nation", "Miami"]
-    },
-    {
-      "id": "the-emergency-welfare-relocation-program-is-implemented-1995",
-      "name": "The Emergency Welfare Relocation Program is implemented.",
+      "id": "the-bloods-gang-controls-all-of-miami-florida-1995",
+      "name": "The Bloods gang controls all of Miami, Florida.",
       "year": 1995,
       "order": 199507,
-      "keywords": ["Emergency Welfare Relocation Program"]
+      "keywords": ["Blood Nation"]
     },
     {
       "id": "the-eec-implements-the-fortress-europe-system-which-invol-1995",
@@ -745,7 +717,7 @@
       "name": "The Nomad Riots - By now, 1 in 4 Americans are homeless. Hundreds of thousand...",
       "year": 1996,
       "order": 199607,
-      "keywords": ["Nomad Riots", "Nomad"]
+      "keywords": ["Nomad Riots"]
     },
     {
       "id": "article-9-of-the-japanese-constitution-is-scrapped-by-arasak-1996",
@@ -762,44 +734,38 @@
       "keywords": ["Japan", "Korea"]
     },
     {
-      "id": "millions-of-homeless-people-are-killed-or-imprisoned-1996",
-      "name": "Millions of homeless people are killed or imprisoned.",
-      "year": 1996,
-      "order": 199610
-    },
-    {
       "id": "armatech-luccessi-is-founded-1996",
       "name": "Armatech-Luccessi is founded.",
       "year": 1996,
-      "order": 199611,
+      "order": 199610,
       "keywords": ["Militech"]
     },
     {
       "id": "state-oil-industries-subcommittee-is-created-with-anatoly-n-1996",
       "name": "State Oil Industries Subcommittee is created, with Anatoly Novikovo on the head.",
       "year": 1996,
-      "order": 199612,
+      "order": 199611,
       "keywords": ["SovOil", "Anatoly Novikovo"]
     },
     {
       "id": "lawrence-hilliard-innovation-ltd-is-formed-1996",
       "name": "Lawrence Hilliard Innovation Ltd. is formed.",
       "year": 1996,
-      "order": 199613,
+      "order": 199612,
       "keywords": ["Lawrence Hilliard Innovation Ltd"]
     },
     {
       "id": "the-far-asian-co-prosperity-sphere-group-facs-is-founded-b-1996",
       "name": "The Far Asian Co-Prosperity Sphere Group, FACS, is founded by varvious large ...",
       "year": 1996,
-      "order": 199614,
+      "order": 199613,
       "keywords": ["FACS", "Arasaka", "Japan"]
     },
     {
       "id": "portugal-and-italy-finally-join-the-eec-1996",
       "name": "Portugal and Italy finally join the EEC.",
       "year": 1996,
-      "order": 199615,
+      "order": 199614,
       "keywords": ["Portugal", "Italy", "European Economic Community"]
     },
     {
@@ -997,31 +963,24 @@
       "order": 199812
     },
     {
-      "id": "construction-begins-on-the-intercontinental-maglev-at-the-l-1998",
-      "name": "Construction begins on the Intercontinental Maglev. At the last minute, the w...",
+      "id": "construction-begins-on-the-intercontinental-maglev-system-in-1998",
+      "name": "Construction begins on the Intercontinental Maglev system in Night City.",
       "year": 1998,
       "order": 199813,
-      "keywords": ["Intercontinental Maglev", "Los Angeles", "Night City"]
-    },
-    {
-      "id": "the-emergency-welfare-relocation-program-is-deemed-a-failure-1998",
-      "name": "The Emergency Welfare Relocation Program is deemed a failure.",
-      "year": 1998,
-      "order": 199814,
-      "keywords": ["Emergency Welfare Relocation Program"]
+      "keywords": ["Intercontinental Maglev", "Night City"]
     },
     {
       "id": "the-night-of-fire-the-kgb-backed-by-the-organitskaya-att-1998",
       "name": "The Night of Fire - The KGB, backed by the Organitskaya, attempt to overthrow...",
       "year": 1998,
-      "order": 199815,
+      "order": 199814,
       "keywords": ["Night of Fire", "Organitskaya"]
     },
     {
       "id": "directive-1998-ec-a-000534-is-launched-in-the-ec-1998",
       "name": "Directive 1998-EC-A-000534 is launched in the EC.",
       "year": 1998,
-      "order": 199816,
+      "order": 199815,
       "keywords": ["Directive 1998-EC-A-000534"]
     },
     {
@@ -1105,8 +1064,8 @@
       "keywords": ["Jodes", "Los Angeles"]
     },
     {
-      "id": "the-bloods-gang-is-converted-into-a-nomad-group-1999",
-      "name": "The Bloods Gang is converted into a Nomad group.",
+      "id": "the-bloods-gang-from-florida-become-a-nomad-group-1999",
+      "name": "The Bloods Gang from Florida become a Nomad group.",
       "year": 1999,
       "order": 199912,
       "keywords": ["Blood Nation", "Nomad"]
@@ -1133,11 +1092,10 @@
       "keywords": ["Wasting Plague"]
     },
     {
-      "id": "firestorms-rage-across-the-pacific-northwest-decimating-far-2000",
-      "name": "Firestorms rage across the Pacific Northwest, decimating farmland and old-gro...",
+      "id": "firestorms-decimate-farmland-in-the-northwest-2000",
+      "name": "Firestorms decimate farmland in the northwest.",
       "year": 2000,
-      "order": 200003,
-      "keywords": ["Pacific Northwest"]
+      "order": 200003
     },
     {
       "id": "the-first-posergangs-emerge-2000",
@@ -1173,44 +1131,37 @@
       "keywords": ["Orbital Air"]
     },
     {
-      "id": "the-blood-nation-leaves-florida-on-their-first-national-tou-2000",
-      "name": "The Blood Nation leaves Florida on their first \"national tour\".",
+      "id": "the-aldecaldo-clan-begins-construction-on-mexico-city-2000",
+      "name": "The Aldecaldo Clan begins construction on Mexico City.",
       "year": 2000,
       "order": 200009,
-      "keywords": ["Blood Nation", "Florida"]
-    },
-    {
-      "id": "the-aldecaldo-clan-begin-the-reconstruction-of-mexico-city-2000",
-      "name": "The Aldecaldo Clan begin the reconstruction of Mexico City.",
-      "year": 2000,
-      "order": 200010,
-      "keywords": ["Aldecaldos", "Mexico City"]
+      "keywords": ["Aldecaldos"]
     },
     {
       "id": "the-civilian-justice-code-is-formed-in-the-united-states-2000",
       "name": "The Civilian Justice code is formed in the United States.",
       "year": 2000,
-      "order": 200011,
+      "order": 200010,
       "keywords": ["Uniform Civilian Justice Code"]
     },
     {
       "id": "a-millennium-cult-kills-upwards-of-19000-in-a-chemical-attac-2000",
       "name": "A Millennium Cult kills upwards of 19000 in a chemical attack in Berlin.",
       "year": 2000,
-      "order": 200012
+      "order": 200011
     },
     {
       "id": "ebm-begins-to-purchase-hamburg-germany-2000",
       "name": "EBM Begins to purchase Hamburg, Germany.",
       "year": 2000,
-      "order": 200013,
+      "order": 200012,
       "keywords": ["Euro Business Machines", "Germany"]
     },
     {
       "id": "alaska-becomes-a-free-state-2000",
       "name": "Alaska becomes a free state.",
       "year": 2000,
-      "order": 200014,
+      "order": 200013,
       "keywords": ["Alaska"]
     },
     {
@@ -1218,7 +1169,7 @@
       "name": "The World Sat Network is constructed. The Framework for the Net is set up.",
       "year": 2001,
       "order": 200101,
-      "keywords": ["Net"]
+      "keywords": ["the Net"]
     },
     {
       "id": "armatech-luccessi-is-renamed-militech-arms-international-2001",
@@ -1242,14 +1193,14 @@
     },
     {
       "id": "australia-reforms-as-the-federal-republic-of-australia-west-2001",
-      "name": "Australia reforms as the Federal Republic of Australia. West Australia declar...",
+      "name": "Australia reforms as the Federal Republic of Australia. Western Australia dec...",
       "year": 2001,
       "order": 200105,
-      "keywords": ["Australia", "West Australia", "Arasaka"]
+      "keywords": ["Federal Republic of Australia", "Western Australia", "Arasaka"]
     },
     {
-      "id": "the-jodes-finish-the-salvage-operation-in-los-angeles-most-2001",
-      "name": "The Jodes finish the salvage operation in Los Angeles. Most clans do not win ...",
+      "id": "the-jodes-finish-the-salvage-operation-in-la-they-do-not-wi-2001",
+      "name": "The Jodes finish the salvage operation in LA. They do not win any constructio...",
       "year": 2001,
       "order": 200106,
       "keywords": ["Jodes", "Los Angeles"]
@@ -1543,8 +1494,8 @@
       "keywords": ["Maoist Loyalist Cabal", "China"]
     },
     {
-      "id": "the-los-angeles-reconstruction-project-is-finished-most-nom-2005",
-      "name": "The Los Angeles Reconstruction project is finished. Most Nomads leave Califor...",
+      "id": "los-angeles-reconstruction-project-is-finished-and-many-noma-2005",
+      "name": "Los Angeles Reconstruction project is finished and many Nomads leave California.",
       "year": 2005,
       "order": 200511,
       "keywords": ["Los Angeles", "Nomad"]
@@ -1731,31 +1682,24 @@
       "keywords": ["Jiang Xiax"]
     },
     {
-      "id": "the-intercontinental-maglev-project-is-completed-2008",
-      "name": "The Intercontinental MagLev project is completed.",
+      "id": "the-intercontinental-maglev-project-in-night-city-is-complet-2008",
+      "name": "The Intercontinental MagLev project in Night City is completed.",
       "year": 2008,
       "order": 200807,
-      "keywords": ["Intercontinental MagLev"]
-    },
-    {
-      "id": "the-second-homestead-act-is-launched-to-try-and-repopulate-t-2008",
-      "name": "The Second Homestead Act is launched to try and repopulate the southwest. Man...",
-      "year": 2008,
-      "order": 200808,
-      "keywords": ["Second Homestead Act", "Nomad"]
+      "keywords": ["Intercontinental MagLev", "Night City"]
     },
     {
       "id": "greece-attempts-to-annex-cyprus-and-macedonia-but-fails-2008",
       "name": "Greece attempts to annex Cyprus and Macedonia but fails.",
       "year": 2008,
-      "order": 200809,
+      "order": 200808,
       "keywords": ["Greece", "Cyprus", "Macedonia"]
     },
     {
       "id": "corporations-attempt-to-buy-up-farmland-in-the-iberian-penin-2008",
       "name": "Corporations attempt to buy up farmland in the Iberian Peninsula. Portugal se...",
       "year": 2008,
-      "order": 200810,
+      "order": 200809,
       "keywords": ["Portugal", "Spain"]
     },
     {
@@ -1896,11 +1840,10 @@
       "keywords": ["MaxTac", "Ares"]
     },
     {
-      "id": "the-second-homestead-act-fails-due-to-inadequate-infrastruct-2010",
-      "name": "The Second Homestead Act fails due to inadequate infrastructure support.",
+      "id": "the-italian-government-passes-a-law-to-allow-the-confiscatio-2010",
+      "name": "The Italian Government passes a law to allow the confiscation and resale of v...",
       "year": 2010,
-      "order": 201009,
-      "keywords": ["Second Homestead Act"]
+      "order": 201009
     },
     {
       "id": "the-south-of-romania-is-hit-by-an-earthquake-bucharest-is-h-2010",
@@ -2051,52 +1994,45 @@
       "order": 201206
     },
     {
-      "id": "after-the-destruction-of-chicago-the-government-orders-the-2012",
-      "name": "After the destruction of Chicago, the government orders the construction of C...",
-      "year": 2012,
-      "order": 201207,
-      "keywords": ["Chicago Port", "Nomad"]
-    },
-    {
       "id": "the-nomad-long-walk-ends-with-only-10-returning-home-2012",
       "name": "The Nomad Long Walk ends with only 10% returning home.",
       "year": 2012,
-      "order": 201208,
+      "order": 201207,
       "keywords": ["The Long Walk"]
     },
     {
       "id": "metacorp-is-founded-2012",
       "name": "MetaCorp is founded.",
       "year": 2012,
-      "order": 201209,
+      "order": 201208,
       "keywords": ["MetaCorp"]
     },
     {
       "id": "operation-green-man-is-publicly-shut-down-after-informatio-2012",
       "name": "Operation \"Green Man\" is publicly shut down after information leaks to the pr...",
       "year": 2012,
-      "order": 201210,
+      "order": 201209,
       "keywords": ["Operation \"Green Man\"", "INTERPOL", "European Space Agency"]
     },
     {
       "id": "drought-decimates-spain-and-a-small-corporate-war-breaks-out-2012",
       "name": "Drought decimates Spain and a small Corporate war breaks out over water right...",
       "year": 2012,
-      "order": 201211,
+      "order": 201210,
       "keywords": ["Spain"]
     },
     {
       "id": "italy-officially-organises-itself-into-four-states-north-s-2012",
       "name": "Italy officially organises itself into four states: north, south, central, an...",
       "year": 2012,
-      "order": 201212,
+      "order": 201211,
       "keywords": ["Italy"]
     },
     {
       "id": "the-northern-seperation-war-ends-with-the-ratification-of-2012",
       "name": "The Northern Seperation War ends - With the ratification of the Northern Sepa...",
       "year": 2012,
-      "order": 201213,
+      "order": 201212,
       "keywords": ["Northern Seperation War", "North California", "South California"]
     },
     {
@@ -2154,11 +2090,10 @@
       "keywords": ["Johnny Silverhand", "Aldecaldos"]
     },
     {
-      "id": "the-reconstruction-of-mexico-city-is-completed-2013",
-      "name": "The reconstruction of Mexico City is completed.",
+      "id": "the-mexico-city-rebuilding-project-is-completed-2013",
+      "name": "The Mexico City rebuilding project is completed.",
       "year": 2013,
-      "order": 201311,
-      "keywords": ["Mexico City"]
+      "order": 201311
     },
     {
       "id": "algeria-s-anti-terrorism-operations-extend-to-libya-where-t-2013",
@@ -2450,30 +2385,23 @@
       "keywords": ["Arasaka", "Militech"]
     },
     {
-      "id": "the-seven-nomad-nations-are-officially-established-2017",
-      "name": "The Seven Nomad Nations are officially established.",
+      "id": "the-seven-nomad-nations-are-formed-2017",
+      "name": "The Seven Nomad Nations are formed.",
       "year": 2017,
       "order": 201709,
       "keywords": ["Seven Nations"]
     },
     {
-      "id": "metacorp-sells-the-jacksuit-the-first-assisted-combat-perso-2017",
-      "name": "MetaCorp sells the JackSuit, the first Assisted Combat Personal Armor, to Mil...",
-      "year": 2017,
-      "order": 201710,
-      "keywords": ["MetaCorp", "Assisted Combat Personal Armor", "Militech"]
-    },
-    {
       "id": "a-neurotoxin-spill-occurs-in-the-latvian-town-of-jelgava-li-2017",
       "name": "A neurotoxin spill occurs in the Latvian town of Jelgava. Lithuania is to blame.",
       "year": 2017,
-      "order": 201711
+      "order": 201710
     },
     {
       "id": "germany-signs-a-deal-allowing-their-troops-to-train-in-hunga-2017",
       "name": "Germany signs a deal allowing their troops to train in Hungary in exchange fo...",
       "year": 2017,
-      "order": 201712,
+      "order": 201711,
       "keywords": ["Germany", "Hungary"]
     },
     {
@@ -2693,11 +2621,11 @@
       "keywords": ["StormTech", "Jodes", "Aldecaldos", "Chicago"]
     },
     {
-      "id": "the-snake-nation-and-folk-nation-are-contracted-to-build-an-2020",
-      "name": "The Snake Nation and Folk Nation are contracted to build an extension of the ...",
+      "id": "several-nomad-nations-are-contracted-to-build-an-extension-o-2020",
+      "name": "Several Nomad nations are contracted to build an extension of the Intercontin...",
       "year": 2020,
       "order": 202004,
-      "keywords": ["Snake Nation", "Folk Nation", "Intercontinental MagLev", "Boston"]
+      "keywords": ["Intercontinental MagLev"]
     },
     {
       "id": "the-corporate-alliance-controlling-portugal-breaks-down-two-2020",
@@ -2738,7 +2666,7 @@
       "name": "StreeTemps open regional offices in San Francisco and Seattle.",
       "year": 2021,
       "order": 202102,
-      "keywords": ["StreeTemps", "San Francisco", "Seattle"]
+      "keywords": ["StreeTemps"]
     },
     {
       "id": "aquacorp-ihag-is-manipulated-towards-bankruptcy-by-eurobank-2021",
@@ -3138,11 +3066,11 @@
       "keywords": ["Charter Hill (RED)", "New Westbrook"]
     },
     {
-      "id": "night-city-hall-and-the-hall-of-justice-are-opened-2037",
-      "name": "Night City Hall and the Hall of Justice are opened.",
+      "id": "night-city-city-hall-and-the-hall-of-justice-are-opened-2037",
+      "name": "Night City City Hall and the Hall of Justice are opened.",
       "year": 2037,
       "order": 203702,
-      "keywords": ["Night City Hall", "Hall of Justice"]
+      "keywords": ["Night City City Hall", "Hall of Justice"]
     },
     {
       "id": "heywood-is-split-into-santo-domingo-and-north-heywood-2038",
@@ -3541,8 +3469,7 @@
       "id": "arasaka-security-forces-prevent-mass-riots-in-san-francisco-2071",
       "name": "Arasaka security forces prevent mass riots in San Francisco.",
       "year": 2071,
-      "order": 207101,
-      "keywords": ["Arasaka"]
+      "order": 207101
     },
     {
       "id": "night-city-criminalizes-the-sale-of-domesticated-fowl-such-a-2071",
@@ -3587,8 +3514,7 @@
       "id": "an-arasaka-investigation-destroys-a-terrorist-cell-in-rio-de-2074",
       "name": "An Arasaka investigation destroys a terrorist cell in Rio de Janeiro, killing...",
       "year": 2074,
-      "order": 207402,
-      "keywords": ["Rio de Janeiro"]
+      "order": 207402
     },
     {
       "id": "nadia-begins-working-for-trauma-team-international-as-a-medt-2074",
@@ -3639,50 +3565,43 @@
       "order": 207504
     },
     {
-      "id": "arasaka-s-counterintelligence-unit-successfully-maintains-th-2076",
-      "name": "Arasaka's counterintelligence unit successfully maintains the security of a c...",
-      "year": 2076,
-      "order": 207601,
-      "keywords": ["Jakarta"]
-    },
-    {
       "id": "nasa-s-crewed-pathfinder-mission-to-jupiter-remains-missing-2076",
       "name": "NASA's crewed Pathfinder mission to Jupiter remains missing after fifty years...",
       "year": 2076,
-      "order": 207602,
+      "order": 207601,
       "keywords": ["NASA", "Jupiter"]
     },
     {
       "id": "events-of-the-second-half-of-take-place-with-episodes-6-7-b-2076",
       "name": "Events of the second half of take place, with Episodes 6-7 being separated by...",
       "year": 2076,
-      "order": 207603
+      "order": 207602
     },
     {
       "id": "david-martinez-an-edgerunner-who-had-quickly-risen-to-prom-2076",
       "name": "*David Martinez, an edgerunner who had quickly risen to prominence in the pre...",
       "year": 2076,
-      "order": 207604,
+      "order": 207603,
       "keywords": ["David Martinez", "Corporate Center (2077)"]
     },
     {
       "id": "events-of-take-place-some-time-after-the-end-of-cyberpunk-e-2076",
       "name": "Events of take place some time after the end of Cyberpunk: Edgerunners, but b...",
       "year": 2076,
-      "order": 207605,
+      "order": 207604,
       "keywords": ["Cyberpunk 2077"]
     },
     {
       "id": "events-of-take-place-before-the-beginning-of-cyberpunk-2077-2076",
       "name": "Events of take place before the beginning of Cyberpunk 2077.",
       "year": 2076,
-      "order": 207606
+      "order": 207605
     },
     {
       "id": "october-november-prologue-takes-place-v-and-jackie-welles-2076",
       "name": "October/November: Prologue takes place. V and Jackie Welles team up as mercen...",
       "year": 2076,
-      "order": 207607,
+      "order": 207606,
       "keywords": ["V (character)", "Jackie Welles", "Night City"]
     },
     {

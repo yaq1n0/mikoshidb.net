@@ -1,32 +1,51 @@
 // packages/opensona/src/build/parse.ts
-// SAX-stream parser for MediaWiki XML dumps
+// SAX-stream parser for MediaWiki XML dumps.
+//
+// Returns both `articles` (namespace-0, non-redirect, non-skipped pages)
+// and `redirects` (title → target) so the graph builder can wire aliases
+// from redirect pages that would otherwise be discarded.
 
 import { createReadStream } from "node:fs";
 import sax from "sax";
 import wtf from "wtf_wikipedia";
 
-export interface ParsedSection {
+export type ParsedSection = {
   heading: string;
   text: string;
   rawText?: string;
-}
+  /** Plain wiki link targets (de-anchored, de-piped) found in this section. */
+  links: string[];
+};
 
-export interface ParsedArticle {
+export type ParsedArticle = {
   title: string;
   slug: string;
   sections: ParsedSection[];
   categories: string[];
-}
+  /** All wiki link targets in the article body. */
+  links: string[];
+  /** Infobox fields (name, aliases, etc.), flattened to plain strings. */
+  infobox: Record<string, string>;
+};
+
+export type Redirect = {
+  from: string;
+  to: string;
+};
+
+export type ParseResult = {
+  articles: ParsedArticle[];
+  redirects: Redirect[];
+};
 
 /** Slugify a title: lowercase, replace non-alphanumerics with hyphens, collapse, trim */
-export function slugify(text: string): string {
+export const slugify = (text: string): string => {
   return text
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
-}
+};
 
-/** Category prefixes/suffixes/exact names to skip during filtering */
 const SKIP_CATEGORY_PREFIXES = [
   "Disambiguation",
   "Stub",
@@ -39,16 +58,12 @@ const TITLE_SKIP_PREFIXES = ["Quest:"];
 
 const SKIP_CATEGORY_EXACT = new Set(["Disambiguations", "Article stubs"]);
 
-/**
- * Returns true if the article should be dropped based on categories, title, or body length.
- */
-function shouldDrop(title: string, wikitext: string, categories: string[]): boolean {
-  // Skip Quest: prefix
+/** True if drop. */
+const shouldDrop = (title: string, wikitext: string, categories: string[]): boolean => {
   for (const prefix of TITLE_SKIP_PREFIXES) {
     if (title.startsWith(prefix)) return true;
   }
 
-  // Skip by category
   for (const cat of categories) {
     if (SKIP_CATEGORY_EXACT.has(cat)) return true;
     for (const prefix of SKIP_CATEGORY_PREFIXES) {
@@ -56,37 +71,43 @@ function shouldDrop(title: string, wikitext: string, categories: string[]): bool
     }
   }
 
-  // Skip short articles (<200 chars body)
   const plainLength = wikitext.replace(/\[\[Category:[^\]]*\]\]/g, "").trim().length;
   if (plainLength < 200) return true;
 
   return false;
-}
+};
 
-interface RawPage {
+type RawPage = {
   title: string;
   ns: string;
   redirect: boolean;
+  redirectTarget: string | null;
   text: string;
-}
+};
 
 /**
- * Parse a MediaWiki XML dump file and return an array of ParsedArticle.
- * Only namespace 0, non-redirect articles are included.
- * Articles matching skip criteria are filtered out.
+ * Parse a MediaWiki XML dump file.
  *
- * @param keepRawSections - If provided, articles whose titles are in this set
- *   will have rawText populated on each section.
+ * Articles returned: namespace 0, non-redirect, not filtered by `shouldDrop`.
+ * Redirects returned: every namespace-0 redirect page with a resolved target.
  */
-export async function parseDump(
+export const parseDump = async (
   dumpPath: string,
   keepRawSections?: Set<string>,
-): Promise<ParsedArticle[]> {
+): Promise<ParseResult> => {
   const pages = await extractPages(dumpPath);
   const articles: ParsedArticle[] = [];
+  const redirects: Redirect[] = [];
   const slugCounts = new Map<string, number>();
 
   for (const page of pages) {
+    if (page.redirect) {
+      if (page.redirectTarget) {
+        redirects.push({ from: page.title, to: page.redirectTarget });
+      }
+      continue;
+    }
+
     const doc = wtf(page.text);
     const categories = doc.categories() as string[];
 
@@ -94,8 +115,9 @@ export async function parseDump(
 
     const wantRaw = keepRawSections?.has(page.title) ?? false;
     const sections = extractSections(doc, wantRaw);
+    const links = extractDocLinks(doc);
+    const infobox = extractInfobox(doc);
 
-    // Ensure unique slugs by appending a suffix on collision
     let slug = slugify(page.title);
     const count = slugCounts.get(slug) ?? 0;
     slugCounts.set(slug, count + 1);
@@ -108,17 +130,21 @@ export async function parseDump(
       slug,
       sections,
       categories,
+      links,
+      infobox,
     });
   }
 
-  return articles;
-}
+  return { articles, redirects };
+};
 
-/**
- * Extract sections from a wtf_wikipedia Document.
- */
-function extractSections(doc: ReturnType<typeof wtf>, wantRaw: boolean): ParsedSection[] {
-  const wtfSections = doc.sections() as ReturnType<typeof wtf.prototype.sections>;
+/** wtf_wikipedia's shape is loose; narrow at the call site. */
+type WtfDoc = ReturnType<typeof wtf>;
+type WtfSection = ReturnType<WtfDoc["sections"]>[number];
+
+/** Extracts sections. */
+function extractSections(doc: WtfDoc, wantRaw: boolean): ParsedSection[] {
+  const wtfSections = doc.sections() as WtfSection[];
   const result: ParsedSection[] = [];
 
   if (!Array.isArray(wtfSections)) return result;
@@ -126,7 +152,8 @@ function extractSections(doc: ReturnType<typeof wtf>, wantRaw: boolean): ParsedS
   for (const sec of wtfSections) {
     const heading = sec.title() || "";
     const text = sec.text({}) || "";
-    const section: ParsedSection = { heading, text };
+    const links = extractSectionLinks(sec);
+    const section: ParsedSection = { heading, text, links };
 
     if (wantRaw) {
       section.rawText = sec.wikitext() || "";
@@ -138,9 +165,59 @@ function extractSections(doc: ReturnType<typeof wtf>, wantRaw: boolean): ParsedS
   return result;
 }
 
+type WtfLinkLike = {
+  page?: () => string | undefined;
+  text?: () => string | undefined;
+};
+
+/** Extracts doc links. */
+function extractDocLinks(doc: WtfDoc): string[] {
+  const raw = (doc as unknown as { links: () => WtfLinkLike[] }).links?.() ?? [];
+  return normalizeLinkList(raw);
+}
+
+/** Extracts section links. */
+function extractSectionLinks(sec: WtfSection): string[] {
+  const raw = (sec as unknown as { links?: () => WtfLinkLike[] }).links?.() ?? [];
+  return normalizeLinkList(raw);
+}
+
+/** Normalizes link list. */
+function normalizeLinkList(raw: WtfLinkLike[]): string[] {
+  const out = new Set<string>();
+  for (const l of raw) {
+    const page = typeof l.page === "function" ? l.page() : undefined;
+    if (page && typeof page === "string") {
+      const trimmed = page.trim();
+      if (trimmed) out.add(trimmed);
+    }
+  }
+  return [...out];
+}
+
+/** Extracts infobox. */
+function extractInfobox(doc: WtfDoc): Record<string, string> {
+  const ib = (doc as unknown as { infobox?: () => unknown }).infobox?.();
+  if (!ib || typeof ib !== "object") return {};
+  const json = (ib as { json?: () => Record<string, unknown> }).json?.();
+  if (!json || typeof json !== "object") return {};
+
+  const out: Record<string, string> = {};
+  for (const [k, v] of Object.entries(json)) {
+    if (v == null) continue;
+    if (typeof v === "string") {
+      out[k] = v;
+    } else if (typeof v === "object" && "text" in (v as object)) {
+      const text = (v as { text?: unknown }).text;
+      if (typeof text === "string") out[k] = text;
+    }
+  }
+  return out;
+}
+
 /**
  * Low-level SAX extraction of pages from a MediaWiki XML dump.
- * Returns namespace-0, non-redirect pages only.
+ * Returns all namespace-0 pages (both articles and redirects).
  */
 function extractPages(dumpPath: string): Promise<RawPage[]> {
   return new Promise((resolve, reject) => {
@@ -155,6 +232,7 @@ function extractPages(dumpPath: string): Promise<RawPage[]> {
     let pageTitle = "";
     let pageNs = "";
     let pageRedirect = false;
+    let pageRedirectTarget: string | null = null;
     let pageText = "";
 
     parser.on("opentag", (tag) => {
@@ -165,9 +243,15 @@ function extractPages(dumpPath: string): Promise<RawPage[]> {
         pageTitle = "";
         pageNs = "";
         pageRedirect = false;
+        pageRedirectTarget = null;
         pageText = "";
       } else if (inPage && name === "redirect") {
         pageRedirect = true;
+        const attrs = tag.attributes as Record<string, string> | undefined;
+        const t = attrs?.title ?? attrs?.TITLE;
+        if (typeof t === "string" && t.trim()) {
+          pageRedirectTarget = t.trim();
+        }
       }
 
       if (inPage && (name === "title" || name === "ns" || name === "text")) {
@@ -179,15 +263,11 @@ function extractPages(dumpPath: string): Promise<RawPage[]> {
     });
 
     parser.on("text", (text) => {
-      if (currentTag) {
-        textBuffer += text;
-      }
+      if (currentTag) textBuffer += text;
     });
 
     parser.on("cdata", (cdata) => {
-      if (currentTag) {
-        textBuffer += cdata;
-      }
+      if (currentTag) textBuffer += cdata;
     });
 
     parser.on("closetag", (name) => {
@@ -206,12 +286,12 @@ function extractPages(dumpPath: string): Promise<RawPage[]> {
       }
 
       if (tagName === "page") {
-        // Only namespace 0, skip redirects
-        if (pageNs === "0" && !pageRedirect) {
+        if (pageNs === "0") {
           pages.push({
             title: pageTitle,
             ns: pageNs,
             redirect: pageRedirect,
+            redirectTarget: pageRedirectTarget,
             text: pageText,
           });
         }
@@ -219,13 +299,8 @@ function extractPages(dumpPath: string): Promise<RawPage[]> {
       }
     });
 
-    parser.on("error", (err) => {
-      reject(err);
-    });
-
-    parser.on("end", () => {
-      resolve(pages);
-    });
+    parser.on("error", (err) => reject(err));
+    parser.on("end", () => resolve(pages));
 
     stream.pipe(parser);
   });
