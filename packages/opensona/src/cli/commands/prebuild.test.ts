@@ -12,9 +12,6 @@ vi.mock("../../build/parse.ts", () => ({
 vi.mock("../../build/timeline.ts", () => ({
   generateTimeline: vi.fn(),
 }));
-vi.mock("../../build/prebuild-categories.ts", () => ({
-  generateCategoryEventMap: vi.fn(),
-}));
 vi.mock("../../config.ts", () => ({
   loadConfig: vi.fn(),
 }));
@@ -22,15 +19,11 @@ vi.mock("../../config.ts", () => ({
 import { mkdir, writeFile } from "node:fs/promises";
 import { parseDump } from "../../build/parse.ts";
 import { generateTimeline } from "../../build/timeline.ts";
-import { generateCategoryEventMap } from "../../build/prebuild-categories.ts";
 import { loadConfig } from "../../config.ts";
 import { run } from "./prebuild.ts";
 
 const parseDumpMock = parseDump as unknown as ReturnType<typeof vi.fn>;
 const generateTimelineMock = generateTimeline as unknown as ReturnType<typeof vi.fn>;
-const generateCategoryEventMapMock = generateCategoryEventMap as unknown as ReturnType<
-  typeof vi.fn
->;
 const loadConfigMock = loadConfig as unknown as ReturnType<typeof vi.fn>;
 const mkdirMock = mkdir as unknown as ReturnType<typeof vi.fn>;
 const writeFileMock = writeFile as unknown as ReturnType<typeof vi.fn>;
@@ -51,7 +44,6 @@ describe("prebuild run()", () => {
   beforeEach(() => {
     parseDumpMock.mockReset();
     generateTimelineMock.mockReset();
-    generateCategoryEventMapMock.mockReset();
     loadConfigMock.mockReset();
     mkdirMock.mockReset().mockResolvedValue(undefined);
     writeFileMock.mockReset().mockResolvedValue(undefined);
@@ -88,7 +80,6 @@ describe("prebuild run()", () => {
         { id: "e3", name: "Z", year: 2030, order: 3 }, // outside any era
       ],
     });
-    generateCategoryEventMapMock.mockReturnValue({ mapping: { Cat: "e1" }, skipped: [] });
 
     await run({ config: "cfg.json", output: "/tmp/out" });
 
@@ -99,25 +90,23 @@ describe("prebuild run()", () => {
     expect(allLogs).toContain("Other years");
   });
 
-  it("writes timeline.json and category-map.json to opts.output", async () => {
+  it("writes timeline.json to opts.output and does not write category-map.json", async () => {
     loadConfigMock.mockResolvedValue(makeConfig());
     parseDumpMock.mockResolvedValue({ articles: [{ title: "Timeline", sections: [] }], redirects: [] });
     generateTimelineMock.mockReturnValue({ events: [] });
-    generateCategoryEventMapMock.mockReturnValue({ mapping: {}, skipped: [] });
 
     await run({ config: "cfg.json", output: "/tmp/out" });
 
     expect(mkdirMock).toHaveBeenCalledWith("/tmp/out", { recursive: true });
     const writtenPaths = writeFileMock.mock.calls.map((c) => c[0]);
     expect(writtenPaths).toContain("/tmp/out/timeline.json");
-    expect(writtenPaths).toContain("/tmp/out/category-map.json");
+    expect(writtenPaths).not.toContain("/tmp/out/category-map.json");
   });
 
   it("matches timeline article case-insensitively", async () => {
     loadConfigMock.mockResolvedValue(makeConfig({ timelineArticleTitle: "Timeline" }));
     parseDumpMock.mockResolvedValue({ articles: [{ title: "timeline", sections: [] }], redirects: [] });
     generateTimelineMock.mockReturnValue({ events: [] });
-    generateCategoryEventMapMock.mockReturnValue({ mapping: {}, skipped: [] });
 
     await expect(run({ config: "cfg.json", output: "/tmp/out" })).resolves.toBeUndefined();
     expect(generateTimelineMock).toHaveBeenCalled();

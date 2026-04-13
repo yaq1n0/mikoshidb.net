@@ -6,9 +6,9 @@ import type { Command } from "commander";
 import { parseDump } from "../../build/parse.ts";
 import { buildGraph } from "../../build/graph.ts";
 import { packGraph } from "../../build/pack-graph.ts";
+import { generateCategoryEventMap } from "../../build/prebuild-categories.ts";
 import { loadConfig } from "../../config.ts";
 import type { Timeline, TimelineMeta } from "../../types.ts";
-import type { CategoryEventMap } from "../../build/prebuild-categories.ts";
 import { CliError } from "../errors.ts";
 
 function parseJsonFile<T>(raw: string, path: string): T {
@@ -40,10 +40,6 @@ export async function run(opts: { config: string; output: string; limit?: number
   const timelineRaw = await readFile(timelinePath, "utf-8");
   const timeline = parseJsonFile<Timeline>(timelineRaw, timelinePath);
 
-  const categoryMapPath = join(config.generatedDir, "category-map.json");
-  const categoryMapRaw = await readFile(categoryMapPath, "utf-8");
-  const categoryMap = parseJsonFile<CategoryEventMap>(categoryMapRaw, categoryMapPath);
-
   console.log(`Parsing dump: ${config.dumpPath}`);
   // eslint-disable-next-line prefer-const
   let { articles, redirects } = await parseDump(config.dumpPath);
@@ -53,6 +49,12 @@ export async function run(opts: { config: string; output: string; limit?: number
   } else {
     console.log(`Parsed ${articles.length} articles, ${redirects.length} redirects`);
   }
+
+  console.log("Generating category map...");
+  const categoryMap = generateCategoryEventMap(articles, timeline, config);
+  console.log(
+    `  mapped=${Object.keys(categoryMap.mapping).length} skipped=${categoryMap.skipped.length}`,
+  );
 
   console.log("Building graph...");
   const graph = buildGraph(articles, redirects, timeline, categoryMap, config);
