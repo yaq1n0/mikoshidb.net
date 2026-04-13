@@ -1,0 +1,70 @@
+// packages/opensona/src/runtime/index.ts
+// Public runtime entry point — wire loader, embedder, retriever, and prompt
+
+export type {
+  Chunk,
+  Manifest,
+  OpersonaRuntime,
+  QueryOptions,
+  RetrievedChunk,
+  Timeline,
+  TimelineEvent,
+} from "../types.ts";
+
+export type { LoadedBundle } from "./loader.ts";
+export type { LoreMeta } from "./prompt.ts";
+
+import type { Manifest, OpersonaRuntime, QueryOptions, RetrievedChunk } from "../types.ts";
+
+import type { LoadedBundle } from "./loader.ts";
+import { ensureLoaded } from "./loader.ts";
+import { embedQuery } from "./embedder.ts";
+import { retrieve } from "./retrieve.ts";
+export { assembleLorePreamble } from "./prompt.ts";
+
+export function createRuntime(): OpersonaRuntime {
+  let bundlePath: string | null = null;
+  let loadedBundle: LoadedBundle | null = null;
+
+  return {
+    async load(
+      path: string,
+      onProgress?: (p: { phase: string; ratio: number }) => void,
+    ): Promise<void> {
+      bundlePath = path;
+      loadedBundle = await ensureLoaded(path, onProgress);
+    },
+
+    async query(text: string, options?: QueryOptions): Promise<RetrievedChunk[]> {
+      if (!bundlePath) {
+        throw new Error("Runtime not loaded. Call load() first.");
+      }
+      const bundle = loadedBundle ?? (await ensureLoaded(bundlePath));
+      const modelId = bundle.manifest.embedder.model;
+      const queryVec = await embedQuery(text, modelId);
+      const { fused } = retrieve(bundle, queryVec, text, options);
+      return fused;
+    },
+
+    async inspect(
+      text: string,
+      options?: QueryOptions,
+    ): Promise<{
+      dense: RetrievedChunk[];
+      bm25: RetrievedChunk[];
+      fused: RetrievedChunk[];
+    }> {
+      if (!bundlePath) {
+        throw new Error("Runtime not loaded. Call load() first.");
+      }
+      const bundle = loadedBundle ?? (await ensureLoaded(bundlePath));
+      const modelId = bundle.manifest.embedder.model;
+      const queryVec = await embedQuery(text, modelId);
+      return retrieve(bundle, queryVec, text, options);
+    },
+
+    manifest(): Manifest | null {
+      return loadedBundle?.manifest ?? null;
+    },
+  };
+}
