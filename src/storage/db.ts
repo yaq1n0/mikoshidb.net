@@ -51,7 +51,6 @@ export type PersistedBundleAsset = {
   sizeBytes: number;
 };
 
-
 export interface SessionDbSchema extends DBSchema {
   scrollback: {
     key: number;

@@ -92,7 +92,10 @@ const isYearHeading = (heading: string): boolean => {
  * Parse the timeline article and generate a Timeline.
  * Requires that the ParsedArticle has rawText on its sections.
  */
-export const generateTimeline = (timelineArticle: ParsedArticle, config: OpensonaConfig): Timeline => {
+export const generateTimeline = (
+  timelineArticle: ParsedArticle,
+  config: OpensonaConfig,
+): Timeline => {
   const events: TimelineEvent[] = [];
 
   // We need raw section text for link and date extraction.

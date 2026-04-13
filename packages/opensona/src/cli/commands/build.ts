@@ -36,7 +36,11 @@ const buildTimelineMeta = (timeline: Timeline, articleTitle: string): TimelineMe
 };
 
 /** Runs. */
-export const run = async (opts: { config: string; output: string; limit?: number }): Promise<void> => {
+export const run = async (opts: {
+  config: string;
+  output: string;
+  limit?: number;
+}): Promise<void> => {
   const config = await loadConfig(opts.config);
 
   const timelinePath = join(config.generatedDir, "timeline.json");

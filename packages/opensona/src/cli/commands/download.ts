@@ -22,7 +22,11 @@ export const dumpUrl = (wiki: string): string => {
 };
 
 /** Runs. */
-export const run = async (opts: { wiki: string; output: string; force?: boolean }): Promise<void> => {
+export const run = async (opts: {
+  wiki: string;
+  output: string;
+  force?: boolean;
+}): Promise<void> => {
   if (!opts.force) {
     try {
       const s = await stat(opts.output);

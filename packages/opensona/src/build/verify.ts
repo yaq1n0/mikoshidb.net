@@ -79,7 +79,9 @@ export type VerifyReport = {
 };
 
 /** Loads bundle. */
-const loadBundle = async (bundleDir: string): Promise<{ manifest: Manifest; graph: LoadedGraph }> => {
+const loadBundle = async (
+  bundleDir: string,
+): Promise<{ manifest: Manifest; graph: LoadedGraph }> => {
   const manifestRaw = await readFile(join(bundleDir, "manifest.json"), "utf-8");
   const manifest = JSON.parse(manifestRaw) as Manifest;
   if (manifest.version !== 2 || manifest.retrieval !== "graph") {
