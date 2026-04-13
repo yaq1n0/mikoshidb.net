@@ -4,7 +4,6 @@ import { loadFirmware } from "@/firmware/loader";
 import { themes, applyTheme } from "@/themes";
 import { streamReply } from "@/llm/chat";
 import {
-  session,
   engineRef,
   ragRef,
   print,
@@ -12,9 +11,14 @@ import {
   pushProgress,
   clearScrollback,
   beginChatReply,
+  finishChatReply,
+  finishProgress,
 } from "./session";
+import { useSessionStore } from "@/stores/session";
+import { useChatStore } from "@/stores/chat";
 import type { RetrievedChunk } from "opensona/runtime";
 import { appendRagLog } from "./ragLog";
+import { createCachedFetcher, sweepStale } from "@/storage/bundleCache";
 
 export interface Command {
   name: string;
@@ -78,12 +82,15 @@ export const commands: Command[] = [
     usage: "status",
     summary: "Show current engram, firmware, theme, and mode",
     run() {
+      const store = useSessionStore();
+      const fw = store.currentFirmwareId ? findFirmware(store.currentFirmwareId) : null;
+      const eg = store.currentEngramId ? findEngram(store.currentEngramId) : null;
       print("SESSION STATUS", "info");
       print("", "out");
-      print(`  mode:     ${session.mode}`, "out");
-      print(`  theme:    ${session.theme}`, "out");
-      print(`  firmware: ${session.currentFirmware?.displayName ?? "<none>"}`, "out");
-      print(`  engram:   ${session.currentEngram?.displayName ?? "<none>"}`, "out");
+      print(`  mode:     ${store.mode}`, "out");
+      print(`  theme:    ${store.theme}`, "out");
+      print(`  firmware: ${fw?.displayName ?? "<none>"}`, "out");
+      print(`  engram:   ${eg?.displayName ?? "<none>"}`, "out");
       print(`  engine:   ${engineRef.value ? "online" : "offline"}`, "out");
     },
   },
@@ -180,11 +187,12 @@ export const commands: Command[] = [
         print(`load: no such firmware: ${id}`, "error");
         return;
       }
-      if (session.mode === "loading") {
+      const store = useSessionStore();
+      if (store.mode === "loading") {
         print("load: another firmware is already flashing.", "error");
         return;
       }
-      session.mode = "loading";
+      store.mode = "loading";
       print(`>> flashing biochip: ${f.displayName}`, "info");
       print(`>> source: ${f.mlcModelId} (~${f.approxSizeMB}MB)`, "info");
       const fwProgress = pushProgress("[          ]   0%  initializing firmware");
@@ -210,15 +218,27 @@ export const commands: Command[] = [
           try {
             const { createRuntime } = await import("opensona/runtime");
             const runtime = createRuntime();
-            await runtime.load("/rag/", (p) => {
-              ragProgress.progress = p.ratio;
-              ragProgress.text = formatBar(p.ratio, p.phase);
+            await runtime.load("/rag/", {
+              onProgress: (p) => {
+                ragProgress.progress = p.ratio;
+                ragProgress.text = formatBar(p.ratio, p.phase);
+              },
+              fetchOverride: createCachedFetcher(),
             });
+            // Fire-and-forget stale-sha sweep once the manifest is known.
+            const manifest = runtime.manifest();
+            if (manifest) {
+              const keep = new Set<string>(Object.values(manifest.files).map((f) => f.sha256));
+              void sweepStale(keep).catch(() => {
+                // Sweep is best-effort housekeeping; ignore failures.
+              });
+            }
             return runtime;
           } catch (err) {
             // RAG is best-effort — don't block firmware loading
             const msg = err instanceof Error ? err.message : String(err);
             ragProgress.text = formatBar(0, `lore db unavailable: ${msg}`);
+            finishProgress(ragProgress);
             return null;
           }
         })();
@@ -226,14 +246,16 @@ export const commands: Command[] = [
         const [engine, ragRuntime] = await Promise.all([firmwarePromise, ragPromise]);
 
         engineRef.value = engine;
-        session.currentFirmware = f;
+        store.currentFirmwareId = f.id;
         fwProgress.progress = 1;
         fwProgress.text = formatBar(1, "FLASH COMPLETE");
+        finishProgress(fwProgress);
 
         if (ragRuntime) {
           ragRef.value = ragRuntime;
           ragProgress.progress = 1;
           ragProgress.text = formatBar(1, "LORE DB ONLINE");
+          finishProgress(ragProgress);
         }
 
         // Yield so Vue paints the final progress bars before printing below.
@@ -242,8 +264,12 @@ export const commands: Command[] = [
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
         print(`>> flash failed: ${msg}`, "error");
+        // Persist whatever progress state the bars ended at so the failure is
+        // visible in scrollback on refresh.
+        finishProgress(fwProgress);
+        finishProgress(ragProgress);
       } finally {
-        session.mode = "shell";
+        store.mode = "shell";
       }
     },
   },
@@ -256,7 +282,9 @@ export const commands: Command[] = [
         print("usage: jack-in <engram-id>", "error");
         return;
       }
-      if (!engineRef.value || !session.currentFirmware) {
+      const store = useSessionStore();
+      const fw = store.currentFirmwareId ? findFirmware(store.currentFirmwareId) : null;
+      if (!engineRef.value || !fw) {
         print("jack-in: no firmware loaded.", "error");
         print("run 'ls firmware' then 'load firmware <id>' first.", "info");
         return;
@@ -266,15 +294,21 @@ export const commands: Command[] = [
         print(`jack-in: no such engram: ${args[0]}`, "error");
         return;
       }
-      session.currentEngram = e;
-      session.chatHistory = [];
-      session.mode = "chat";
+      store.currentEngramId = e.id;
+      const chat = useChatStore();
+      // Fresh link: wipe any prior conversation, (re)bind firmware+engram.
+      chat.chatHistory = [];
+      chat.startedAt = 0;
+      chat.lastTurnAt = 0;
+      chat.firmwareId = store.currentFirmwareId;
+      chat.engramId = e.id;
+      store.mode = "chat";
       printLines(
         [
           "",
           "================================================================",
           `  NEURAL LINK ESTABLISHED :: ${e.displayName}`,
-          `  firmware: ${session.currentFirmware.displayName}`,
+          `  firmware: ${fw.displayName}`,
           `  handle:   ${e.handle}`,
           "  type '/disconnect' to close the link. '/help' for more.",
           "================================================================",
@@ -289,14 +323,19 @@ export const commands: Command[] = [
     usage: "disconnect",
     summary: "Close the active neural link",
     run() {
-      if (session.mode !== "chat") {
+      const store = useSessionStore();
+      if (store.mode !== "chat") {
         print("disconnect: no active link.", "error");
         return;
       }
-      const name = session.currentEngram?.displayName ?? "engram";
-      session.mode = "shell";
-      session.currentEngram = null;
-      session.chatHistory = [];
+      const eg = store.currentEngramId ? findEngram(store.currentEngramId) : null;
+      const name = eg?.displayName ?? "engram";
+      store.mode = "shell";
+      store.currentEngramId = null;
+      // Per PLAN §7: disconnect clears the persisted session so the next
+      // boot doesn't prompt to resume a severed link. Fire-and-forget; the
+      // UI continues without awaiting the IDB wipe.
+      void useChatStore().clear();
       printLines(
         ["", `>> link to ${name} severed.`, ">> flushing cradle buffers...", ""],
         "banner",
@@ -325,7 +364,7 @@ export const commands: Command[] = [
           return;
         }
         applyTheme(id);
-        session.theme = id;
+        useSessionStore().theme = id;
         print(`>> theme set: ${id}`, "info");
         return;
       }
@@ -387,14 +426,16 @@ const slashCommands: SlashCommand[] = [
     name: "status",
     summary: "Show link status and engram integrity",
     run() {
-      const engram = session.currentEngram;
-      const fw = session.currentFirmware;
+      const store = useSessionStore();
+      const engram = store.currentEngramId ? findEngram(store.currentEngramId) : null;
+      const fw = store.currentFirmwareId ? findFirmware(store.currentFirmwareId) : null;
       if (!engram || !fw) {
         print("status: no active link.", "error");
         return;
       }
+      const chat = useChatStore();
       const promptChars = engram.systemPrompt.length;
-      const historyChars = session.chatHistory.reduce((n, m) => n + m.content.length, 0);
+      const historyChars = chat.chatHistory.reduce((n, m) => n + m.content.length, 0);
       const approxTokens = Math.ceil((promptChars + historyChars) / CHARS_PER_TOKEN);
       // Integrity inverts context usage — a full context means the engram's
       // memory buffers are saturated and the persona starts to degrade.
@@ -402,7 +443,7 @@ const slashCommands: SlashCommand[] = [
       const integrity = 1 - usage;
       const bars = Math.round(integrity * 20);
       const bar = "#".repeat(bars) + "-".repeat(20 - bars);
-      const turns = Math.floor(session.chatHistory.length / 2);
+      const turns = Math.floor(chat.chatHistory.length / 2);
 
       print("NEURAL LINK STATUS", "info");
       print("", "out");
@@ -461,42 +502,56 @@ export async function runSlashCommand(input: string): Promise<void> {
 /**
  * Attempt RAG retrieval for the current query. Best-effort: returns empty
  * preamble on any error so the chat still works without lore grounding.
+ *
+ * Returns coarse per-phase `timing` (ms) for diagnostic logging — `retrieve`
+ * covers the vector query; `assemble` covers preamble formatting. Missing
+ * phases indicate the pipeline short-circuited.
  */
-async function retrieveLore(
-  userInput: string,
-): Promise<{ preamble: string; chunks: RetrievedChunk[] }> {
+async function retrieveLore(userInput: string): Promise<{
+  preamble: string;
+  chunks: RetrievedChunk[];
+  timing: Record<string, number>;
+}> {
   const rag = ragRef.value;
-  const engram = session.currentEngram;
-  if (!rag || !engram) return { preamble: "", chunks: [] };
+  const store = useSessionStore();
+  const engram = store.currentEngramId ? findEngram(store.currentEngramId) : null;
+  if (!rag || !engram) return { preamble: "", chunks: [], timing: {} };
 
+  const timing: Record<string, number> = {};
   try {
+    const t0 = performance.now();
     const chunks = await rag.query(userInput, {
       topK: 3,
       cutoffEventId: engram.cutoffEventId,
       excludeTags: engram.excludeTags,
     });
+    timing.retrieve = Math.round(performance.now() - t0);
 
-    if (chunks.length === 0) return { preamble: "", chunks: [] };
+    if (chunks.length === 0) return { preamble: "", chunks: [], timing };
 
     // Dynamically import prompt assembly
+    const t1 = performance.now();
     const { assembleLorePreamble } = await import("opensona/runtime");
     const manifest = rag.manifest();
     const meta = {
       source: manifest?.source ?? "",
       license: manifest?.license ?? "",
     };
-    return { preamble: assembleLorePreamble(chunks, meta), chunks };
+    const preamble = assembleLorePreamble(chunks, meta);
+    timing.assemble = Math.round(performance.now() - t1);
+    return { preamble, chunks, timing };
   } catch (err) {
     // RAG is best-effort — fall through with empty preamble
     console.warn("[rag] retrieval failed:", err);
-    return { preamble: "", chunks: [] };
+    return { preamble: "", chunks: [], timing };
   }
 }
 
 /** Handle free-form chat input while in chat mode. */
 export async function sendChat(userInput: string): Promise<void> {
   const engine = engineRef.value;
-  const engram = session.currentEngram;
+  const store = useSessionStore();
+  const engram = store.currentEngramId ? findEngram(store.currentEngramId) : null;
   if (!engine || !engram) {
     print("chat: link is down. use '/disconnect'.", "error");
     return;
@@ -504,31 +559,50 @@ export async function sendChat(userInput: string): Promise<void> {
   print(userInput, "chat-user");
 
   // RAG retrieval (best-effort)
-  const { preamble: lorePreamble, chunks: retrievedChunks } = await retrieveLore(userInput);
+  const tTurnStart = performance.now();
+  const {
+    preamble: lorePreamble,
+    chunks: retrievedChunks,
+    timing: ragTiming,
+  } = await retrieveLore(userInput);
+  // Compose the system content the way streamReply does, so the logged
+  // systemPrompt mirrors what actually reaches the model.
+  const composedSystemPrompt = lorePreamble
+    ? `${lorePreamble}\n\n${engram.systemPrompt}`
+    : engram.systemPrompt;
   appendRagLog({
     query: userInput,
     engramId: engram.id,
     cutoffEventId: engram.cutoffEventId ?? null,
     chunks: retrievedChunks,
+    preamble: lorePreamble || undefined,
+    systemPrompt: composedSystemPrompt,
+    timing: {
+      ...ragTiming,
+      total: Math.round(performance.now() - tTurnStart),
+    },
   });
 
+  const chat = useChatStore();
   const replyLine = beginChatReply();
   try {
     for await (const chunk of streamReply(
       engine,
       engram.systemPrompt,
-      session.chatHistory,
+      chat.chatHistory,
       userInput,
       lorePreamble || undefined,
     )) {
       if (chunk.delta) replyLine.text += chunk.delta;
       if (chunk.done) replyLine.streaming = false;
     }
-    session.chatHistory.push({ role: "user", content: userInput });
-    session.chatHistory.push({ role: "assistant", content: replyLine.text });
+    chat.appendTurn("user", userInput);
+    chat.appendTurn("assistant", replyLine.text);
+    finishChatReply(replyLine);
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     replyLine.streaming = false;
     replyLine.text += `\n[link error: ${msg}]`;
+    finishChatReply(replyLine);
   }
 }
