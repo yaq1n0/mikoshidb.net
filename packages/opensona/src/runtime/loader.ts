@@ -19,10 +19,7 @@ function normalizeOptions(arg?: EnsureLoadedArg): EnsureLoadedOptions {
 
 const loading = new Map<string, Promise<LoadedGraph>>();
 
-export function ensureLoaded(
-  bundlePath: string,
-  arg?: EnsureLoadedArg,
-): Promise<LoadedGraph> {
+export function ensureLoaded(bundlePath: string, arg?: EnsureLoadedArg): Promise<LoadedGraph> {
   const existing = loading.get(bundlePath);
   if (existing) return existing;
 
@@ -53,10 +50,7 @@ async function fetchAsset(
   return fetch(url);
 }
 
-async function doLoad(
-  bundlePath: string,
-  opts: EnsureLoadedOptions,
-): Promise<LoadedGraph> {
+async function doLoad(bundlePath: string, opts: EnsureLoadedOptions): Promise<LoadedGraph> {
   const { onProgress, fetchOverride } = opts;
   const base = bundlePath.endsWith("/") ? bundlePath : bundlePath + "/";
 
@@ -83,12 +77,7 @@ async function doLoad(
 
   const [nodes, edges, aliases] = await Promise.all([
     (async () => {
-      const res = await fetchAsset(
-        base + "graph-nodes.json.gz",
-        "nodes",
-        manifest,
-        fetchOverride,
-      );
+      const res = await fetchAsset(base + "graph-nodes.json.gz", "nodes", manifest, fetchOverride);
       if (!res.ok) throw new Error(`Failed to fetch graph-nodes: ${res.status}`);
       const compressed = await res.arrayBuffer();
       progress(onProgress, "assets", 0.3);
@@ -97,12 +86,7 @@ async function doLoad(
       return JSON.parse(text) as RawNodesPayload;
     })(),
     (async () => {
-      const res = await fetchAsset(
-        base + "graph-edges.json.gz",
-        "edges",
-        manifest,
-        fetchOverride,
-      );
+      const res = await fetchAsset(base + "graph-edges.json.gz", "edges", manifest, fetchOverride);
       if (!res.ok) throw new Error(`Failed to fetch graph-edges: ${res.status}`);
       const compressed = await res.arrayBuffer();
       progress(onProgress, "assets", 0.6);
@@ -111,12 +95,7 @@ async function doLoad(
       return JSON.parse(text) as RawEdgesPayload;
     })(),
     (async () => {
-      const res = await fetchAsset(
-        base + "aliases.json.gz",
-        "aliases",
-        manifest,
-        fetchOverride,
-      );
+      const res = await fetchAsset(base + "aliases.json.gz", "aliases", manifest, fetchOverride);
       if (!res.ok) throw new Error(`Failed to fetch aliases: ${res.status}`);
       const compressed = await res.arrayBuffer();
       progress(onProgress, "assets", 0.85);

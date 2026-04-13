@@ -33,11 +33,7 @@ function buildTimelineMeta(timeline: Timeline, articleTitle: string): TimelineMe
   };
 }
 
-export async function run(opts: {
-  config: string;
-  output: string;
-  limit?: number;
-}): Promise<void> {
+export async function run(opts: { config: string; output: string; limit?: number }): Promise<void> {
   const config = await loadConfig(opts.config);
 
   const timelinePath = join(config.generatedDir, "timeline.json");
@@ -49,6 +45,7 @@ export async function run(opts: {
   const categoryMap = parseJsonFile<CategoryEventMap>(categoryMapRaw, categoryMapPath);
 
   console.log(`Parsing dump: ${config.dumpPath}`);
+  // eslint-disable-next-line prefer-const
   let { articles, redirects } = await parseDump(config.dumpPath);
   if (opts.limit) {
     articles = articles.slice(0, opts.limit);

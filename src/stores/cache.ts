@@ -33,11 +33,7 @@ export const useCacheStore = defineStore("cache", () => {
   async function refresh(): Promise<void> {
     loading.value = true;
     try {
-      const tasks: [
-        Promise<WebLLMStats>,
-        Promise<BundleStats>,
-        Promise<StorageEstimate | null>,
-      ] = [
+      const tasks: [Promise<WebLLMStats>, Promise<BundleStats>, Promise<StorageEstimate | null>] = [
         getWebLLMStats().catch(() => ({ caches: [], entries: 0, estSizeBytes: 0 })),
         getBundleStats().catch(() => ({ count: 0, sizeBytes: 0 })),
         navigator?.storage?.estimate

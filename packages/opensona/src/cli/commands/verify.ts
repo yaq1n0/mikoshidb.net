@@ -33,16 +33,26 @@ export async function run(opts: { cases: string; bundle: string }): Promise<void
     console.log("  [+] PASS — no dangling references");
   } else {
     console.log("  [-] FAIL");
-    if (d.edgeSrc.length) console.log(`    edgeSrc (${d.edgeSrc.length}): ${d.edgeSrc.slice(0, 5).join(", ")}`);
-    if (d.edgeDst.length) console.log(`    edgeDst (${d.edgeDst.length}): ${d.edgeDst.slice(0, 5).join(", ")}`);
+    if (d.edgeSrc.length)
+      console.log(`    edgeSrc (${d.edgeSrc.length}): ${d.edgeSrc.slice(0, 5).join(", ")}`);
+    if (d.edgeDst.length)
+      console.log(`    edgeDst (${d.edgeDst.length}): ${d.edgeDst.slice(0, 5).join(", ")}`);
     if (d.aliasTarget.length)
-      console.log(`    aliasTarget (${d.aliasTarget.length}): ${d.aliasTarget.slice(0, 5).join(", ")}`);
+      console.log(
+        `    aliasTarget (${d.aliasTarget.length}): ${d.aliasTarget.slice(0, 5).join(", ")}`,
+      );
     if (d.sectionArticle.length)
-      console.log(`    sectionArticle (${d.sectionArticle.length}): ${d.sectionArticle.slice(0, 5).join(", ")}`);
+      console.log(
+        `    sectionArticle (${d.sectionArticle.length}): ${d.sectionArticle.slice(0, 5).join(", ")}`,
+      );
     if (d.categoryArticle.length)
-      console.log(`    categoryArticle (${d.categoryArticle.length}): ${d.categoryArticle.slice(0, 5).join(", ")}`);
+      console.log(
+        `    categoryArticle (${d.categoryArticle.length}): ${d.categoryArticle.slice(0, 5).join(", ")}`,
+      );
     if (d.nodeEventIds.length)
-      console.log(`    nodeEventIds (${d.nodeEventIds.length}): ${d.nodeEventIds.slice(0, 5).join(", ")}`);
+      console.log(
+        `    nodeEventIds (${d.nodeEventIds.length}): ${d.nodeEventIds.slice(0, 5).join(", ")}`,
+      );
   }
   console.log("");
 
@@ -69,7 +79,9 @@ export async function run(opts: { cases: string; bundle: string }): Promise<void
   console.log("");
   console.log("--- Verify Summary ---");
   console.log(`  Integrity: ${integrity.passed ? "PASS" : "FAIL"}`);
-  console.log(`  Cases:     ${pass}/${report.cases.length} passed, ${fail} failed, ${softFail} soft-failed`);
+  console.log(
+    `  Cases:     ${pass}/${report.cases.length} passed, ${fail} failed, ${softFail} soft-failed`,
+  );
 
   if (report.blocked) {
     throw new CliError("verify: bundle is not shippable");

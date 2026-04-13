@@ -21,10 +21,7 @@ export interface TraverseOptions {
 
 const DEFAULT_MAX_CHUNKS = 40;
 
-function resolveCutoffOrder(
-  characterContext: CharacterContext,
-  graph: LoadedGraph,
-): number {
+function resolveCutoffOrder(characterContext: CharacterContext, graph: LoadedGraph): number {
   const cutoff = characterContext.cutoffEventId;
   if (!cutoff || cutoff === "__LAST_EVENT__") return Infinity;
   const order = graph.eventOrder.get(cutoff);
@@ -84,8 +81,7 @@ export function traverse(
   }
 
   // 3. BFS from seeds, bounded by directive.neighbors.
-  const maxHops =
-    directive.neighbors === "two_hop" ? 2 : directive.neighbors === "direct" ? 1 : 0;
+  const maxHops = directive.neighbors === "two_hop" ? 2 : directive.neighbors === "direct" ? 1 : 0;
 
   const chunks: RetrievedChunk[] = [];
   const emit = (
@@ -137,8 +133,7 @@ export function traverse(
     }
 
     const text =
-      overrideText ??
-      (isSection && sourceNode ? sourceNode.text : article.lead || article.title);
+      overrideText ?? (isSection && sourceNode ? sourceNode.text : article.lead || article.title);
     const header =
       isSection && sourceNode
         ? `[${article.title} > ${sourceNode.heading || "intro"}]`

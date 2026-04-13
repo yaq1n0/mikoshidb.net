@@ -1,11 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import type { IDBPDatabase } from "idb";
-import type {
-  ResolverInput,
-  RetrievedChunk,
-  TraversalDirective,
-} from "opensona/runtime";
+import type { ResolverInput, RetrievedChunk, TraversalDirective } from "opensona/runtime";
 import type { ResolverMessage, TraverseTrace } from "opensona/runtime";
 import { openSessionDb, type PersistedRagEntry, type SessionDbSchema } from "@/storage/db";
 

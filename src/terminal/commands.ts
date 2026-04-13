@@ -646,8 +646,7 @@ async function retrieveLore(userInput: string): Promise<RetrievalBundle> {
     timing.traverse = Math.round(performance.now() - tTotal) - resolveMs;
 
     const resolverOutput: RetrievalBundle["resolverOutput"] =
-      parsedDirective ??
-      (capturedRaw ? { error: "parse-error", raw: capturedRaw } : null);
+      parsedDirective ?? (capturedRaw ? { error: "parse-error", raw: capturedRaw } : null);
 
     if (chunks.length === 0) {
       return {

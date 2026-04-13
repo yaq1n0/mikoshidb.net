@@ -10,11 +10,7 @@
 import { readFile } from "node:fs/promises";
 import { gunzipSync } from "node:zlib";
 import { join } from "node:path";
-import type {
-  CharacterContext,
-  Manifest,
-  TraversalDirective,
-} from "../types.ts";
+import type { CharacterContext, Manifest, TraversalDirective } from "../types.ts";
 import {
   hydrateGraph,
   type LoadedGraph,
@@ -82,9 +78,7 @@ export interface VerifyReport {
   blocked: boolean;
 }
 
-async function loadBundle(
-  bundleDir: string,
-): Promise<{ manifest: Manifest; graph: LoadedGraph }> {
+async function loadBundle(bundleDir: string): Promise<{ manifest: Manifest; graph: LoadedGraph }> {
   const manifestRaw = await readFile(join(bundleDir, "manifest.json"), "utf-8");
   const manifest = JSON.parse(manifestRaw) as Manifest;
   if (manifest.version !== 2 || manifest.retrieval !== "graph") {
@@ -184,10 +178,7 @@ export function verifyIntegrity(graph: LoadedGraph): IntegrityReport {
   };
 }
 
-function runAliasCase(
-  testCase: GraphVerifyCase,
-  graph: LoadedGraph,
-): CaseResult {
+function runAliasCase(testCase: GraphVerifyCase, graph: LoadedGraph): CaseResult {
   const failures: string[] = [];
 
   const entities: string[] = testCase.aliases
@@ -264,9 +255,7 @@ function runAliasCase(
     trace.unresolvedEntities.length > 0 &&
     chunks.length === 0
   ) {
-    failures.push(
-      `no entities resolved (unresolved: ${trace.unresolvedEntities.join(", ")})`,
-    );
+    failures.push(`no entities resolved (unresolved: ${trace.unresolvedEntities.join(", ")})`);
   }
 
   const passed = failures.length === 0;
@@ -312,9 +301,7 @@ export async function verifyBundle(
     onProgress?.(i + 1, cases.length);
   }
 
-  const blocked =
-    !integrity.passed ||
-    results.some((r) => !r.passed && !r.allowedFailure);
+  const blocked = !integrity.passed || results.some((r) => !r.passed && !r.allowedFailure);
 
   return { integrity, cases: results, blocked };
 }

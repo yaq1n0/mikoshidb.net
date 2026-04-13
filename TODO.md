@@ -95,8 +95,8 @@ bearing each item is.
   - Alt Cunningham: "who is soulkiller" (alias → direct hit).
   - Saburo Arasaka: post-2076 event queries should be cutoff-filtered.
   - V: verify the Phantom Liberty cutoff tag path.
-  Confirm Resolver panel (messages, raw, parsed, fallback) and Traversal
-  panel (node list with hops / kind / droppedReason) populate.
+    Confirm Resolver panel (messages, raw, parsed, fallback) and Traversal
+    panel (node list with hops / kind / droppedReason) populate.
 - [ ] Verify IDB migration: install a previous main-branch build, boot it,
       then check out graph-rag and reload. `DB_SCHEMA_VERSION` bump should
       delete + recreate the `rag-log` store without prompting.
