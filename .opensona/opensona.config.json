@@ -1,6 +1,12 @@
 {
   "source": "https://cyberpunk.fandom.com",
   "license": "CC-BY-SA",
+  "graph": {
+    "sectionMaxChars": 2000,
+    "leadMaxChars": 600,
+    "dropDeadLinks": true,
+    "includeMentionsEdges": true
+  },
   "timelineArticleTitle": "Timeline",
   "editionEras": [
     {

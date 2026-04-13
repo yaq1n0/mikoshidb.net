@@ -16,7 +16,7 @@
     "rag:prebuild": "tsx packages/opensona/src/cli/index.ts prebuild --config .opensona/opensona.config.json --output .opensona/generated",
     "rag:build": "tsx packages/opensona/src/cli/index.ts build --config .opensona/opensona.config.json --output .opensona/output && bash scripts/publish-rag.sh",
     "rag:build:partial": "tsx packages/opensona/src/cli/index.ts build --config .opensona/opensona.config.json --output .opensona/output --limit 1000 && bash scripts/publish-rag.sh",
-    "rag:verify": "tsx packages/opensona/src/cli/index.ts verify --cases .opensona/verify-cases.json --bundle .opensona/output",
+    "rag:verify": "tsx packages/opensona/src/cli/index.ts verify --cases packages/opensona/cases/graph-verify.json --bundle .opensona/output",
     "rag:publish": "bash scripts/publish-rag.sh",
     "test": "vitest run",
     "predev": "pnpm rag:publish",

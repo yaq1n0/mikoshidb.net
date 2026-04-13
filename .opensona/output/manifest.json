@@ -1,17 +1,20 @@
 {
-  "version": 1,
-  "buildDate": "2026-04-12T21:03:02.068Z",
+  "version": 2,
+  "retrieval": "graph",
+  "buildDate": "2026-04-13T08:24:40.290Z",
   "source": "https://cyberpunk.fandom.com",
   "license": "CC-BY-SA",
-  "embedder": {
-    "library": "@huggingface/transformers",
-    "model": "Xenova/bge-small-en-v1.5",
-    "dim": 384,
-    "weightsHash": "798e43f17582f0269b8ebafefa6b59e58c9a127ca53a64a9f1c6dd2c619cb834"
+  "graph": {
+    "sectionMaxChars": 2000,
+    "leadMaxChars": 600,
+    "deadLinkCount": 8970
   },
   "counts": {
-    "articles": 12280,
-    "chunks": 37574,
+    "articles": 12591,
+    "sections": 50141,
+    "categories": 572,
+    "aliases": 34784,
+    "edges": 304004,
     "events": 569
   },
   "timeline": {
@@ -21,42 +24,58 @@
         "name": "Sasai Arasaka gets married to Yui.",
         "year": 1905,
         "order": 190501,
-        "keywords": ["Sasai Arasaka", "Yui Arasaka"]
+        "keywords": [
+          "Sasai Arasaka",
+          "Yui Arasaka"
+        ]
       },
       {
         "id": "the-arasaka-corporation-is-founded-by-sasai-arasaka-1916",
         "name": "The Arasaka Corporation is founded by Sasai Arasaka.",
         "year": 1916,
         "order": 191601,
-        "keywords": ["Arasaka", "Sasai Arasaka"]
+        "keywords": [
+          "Arasaka",
+          "Sasai Arasaka"
+        ]
       },
       {
         "id": "saburo-arasaka-is-born-1919",
         "name": "Saburo Arasaka is born.",
         "year": 1919,
         "order": 191901,
-        "keywords": ["Saburo Arasaka"]
+        "keywords": [
+          "Saburo Arasaka"
+        ]
       },
       {
         "id": "antonio-luccessi-is-born-1935",
         "name": "Antonio Luccessi is born.",
         "year": 1935,
         "order": 193501,
-        "keywords": ["Antonio Luccessi"]
+        "keywords": [
+          "Antonio Luccessi"
+        ]
       },
       {
         "id": "world-war-2-begins-1939",
         "name": "World War 2 begins.",
         "year": 1939,
         "order": 193901,
-        "keywords": ["wikipedia:World War II"]
+        "keywords": [
+          "wikipedia:World War II"
+        ]
       },
       {
         "id": "saburo-arasaka-is-heavily-wounded-in-combat-he-is-medically-1942",
         "name": "Saburo Arasaka is heavily wounded in combat. He is medically discharged from ...",
         "year": 1942,
         "order": 194201,
-        "keywords": ["Saburo Arasaka", "wikipedia:Imperial Japanese Navy", "Tokyo"]
+        "keywords": [
+          "Saburo Arasaka",
+          "wikipedia:Imperial Japanese Navy",
+          "Tokyo"
+        ]
       },
       {
         "id": "world-war-2-ends-1945",
@@ -69,273 +88,357 @@
         "name": "Saburo Arasaka attempts suicide on the day of the Japanese surrender.",
         "year": 1945,
         "order": 194502,
-        "keywords": ["Saburo Arasaka", "wikipedia:Surrender of Japan"]
+        "keywords": [
+          "Saburo Arasaka",
+          "wikipedia:Surrender of Japan"
+        ]
       },
       {
         "id": "ellen-trieste-is-born-1945",
         "name": "Ellen Trieste is born.",
         "year": 1945,
         "order": 194503,
-        "keywords": ["Ellen Trieste"]
+        "keywords": [
+          "Ellen Trieste"
+        ]
       },
       {
         "id": "donald-lundee-is-born-1948",
         "name": "Donald Lundee is born.",
         "year": 1948,
         "order": 194801,
-        "keywords": ["Donald Lundee"]
+        "keywords": [
+          "Donald Lundee"
+        ]
       },
       {
         "id": "valentin-domanevka-is-born-1949",
         "name": "Valentin Domanevka is born.",
         "year": 1949,
         "order": 194901,
-        "keywords": ["Valentin Domanevka"]
+        "keywords": [
+          "Valentin Domanevka"
+        ]
       },
       {
         "id": "dr-paul-robichaud-is-born-1954",
         "name": "Dr. Paul Robichaud is born.",
         "year": 1954,
         "order": 195401,
-        "keywords": ["Paul Robichaud"]
+        "keywords": [
+          "Paul Robichaud"
+        ]
       },
       {
         "id": "margaret-ellen-goldstein-is-born-1957",
         "name": "Margaret Ellen Goldstein is born.",
         "year": 1957,
         "order": 195701,
-        "keywords": ["Margaret Ellen Goldstein"]
+        "keywords": [
+          "Margaret Ellen Goldstein"
+        ]
       },
       {
         "id": "sasai-arasaka-dies-1960",
         "name": "Sasai Arasaka dies.",
         "year": 1960,
         "order": 196001,
-        "keywords": ["Sasai Arasaka"]
+        "keywords": [
+          "Sasai Arasaka"
+        ]
       },
       {
         "id": "saburo-arasaka-assumes-control-of-the-arasaka-corporation-an-1960",
         "name": "Saburo Arasaka assumes control of the Arasaka Corporation and immediately cre...",
         "year": 1960,
         "order": 196002,
-        "keywords": ["Saburo Arasaka", "Arasaka"]
+        "keywords": [
+          "Saburo Arasaka",
+          "Arasaka"
+        ]
       },
       {
         "id": "general-lupold-korepino-is-born-1960",
         "name": "General Lupold Korepino is born.",
         "year": 1960,
         "order": 196003,
-        "keywords": ["Lupold Korepino"]
+        "keywords": [
+          "Lupold Korepino"
+        ]
       },
       {
         "id": "roland-yee-is-born-1961",
         "name": "Roland Yee is born.",
         "year": 1961,
         "order": 196101,
-        "keywords": ["Roland Yee"]
+        "keywords": [
+          "Roland Yee"
+        ]
       },
       {
         "id": "douglas-llewellyn-is-born-1967",
         "name": "Douglas Llewellyn is born.",
         "year": 1967,
         "order": 196701,
-        "keywords": ["Douglas Llewellyn"]
+        "keywords": [
+          "Douglas Llewellyn"
+        ]
       },
       {
         "id": "shintaro-takayama-is-born-1968",
         "name": "Shintaro Takayama is born.",
         "year": 1968,
         "order": 196801,
-        "keywords": ["Shintaro Takayama"]
+        "keywords": [
+          "Shintaro Takayama"
+        ]
       },
       {
         "id": "colonel-maxwell-von-bruckner-is-born-1969",
         "name": "Colonel Maxwell Von Bruckner is born.",
         "year": 1969,
         "order": 196901,
-        "keywords": ["Maxwell Von Bruckner"]
+        "keywords": [
+          "Maxwell Von Bruckner"
+        ]
       },
       {
         "id": "colonel-emile-lazarus-is-born-1969",
         "name": "Colonel Emile Lazarus is born.",
         "year": 1969,
         "order": 196902,
-        "keywords": ["Emile Lazarus"]
+        "keywords": [
+          "Emile Lazarus"
+        ]
       },
       {
         "id": "anderson-bennett-is-born-1972",
         "name": "Anderson Bennett is born.",
         "year": 1972,
         "order": 197201,
-        "keywords": ["Anderson Bennett"]
+        "keywords": [
+          "Anderson Bennett"
+        ]
       },
       {
         "id": "neonila-novikovo-is-born-1973",
         "name": "Neonila Novikovo is born.",
         "year": 1973,
         "order": 197301,
-        "keywords": ["Neonila Novikovo"]
+        "keywords": [
+          "Neonila Novikovo"
+        ]
       },
       {
         "id": "trenton-parker-is-born-1974",
         "name": "Trenton Parker is born.",
         "year": 1974,
         "order": 197401,
-        "keywords": ["Trenton Parker"]
+        "keywords": [
+          "Trenton Parker"
+        ]
       },
       {
         "id": "marshall-r-shepard-is-born-1974",
         "name": "Marshall R. Shepard is born.",
         "year": 1974,
         "order": 197402,
-        "keywords": ["Marshall Rock Shepard"]
+        "keywords": [
+          "Marshall Rock Shepard"
+        ]
       },
       {
         "id": "nelson-katzadoulos-is-born-1977",
         "name": "Nelson Katzadoulos is born.",
         "year": 1977,
         "order": 197701,
-        "keywords": ["Nelson Katzadoulos"]
+        "keywords": [
+          "Nelson Katzadoulos"
+        ]
       },
       {
         "id": "elizabeth-kress-is-born-1978",
         "name": "Elizabeth Kress is born.",
         "year": 1978,
         "order": 197801,
-        "keywords": ["Elizabeth Kress"]
+        "keywords": [
+          "Elizabeth Kress"
+        ]
       },
       {
         "id": "ranolph-christmas-is-born-1978",
         "name": "Ranolph Christmas is born.",
         "year": 1978,
         "order": 197802,
-        "keywords": ["Ranolph Christmas"]
+        "keywords": [
+          "Ranolph Christmas"
+        ]
       },
       {
         "id": "angus-youngblood-is-born-1979",
         "name": "Angus Youngblood is born.",
         "year": 1979,
         "order": 197901,
-        "keywords": ["Angus Youngblood"]
+        "keywords": [
+          "Angus Youngblood"
+        ]
       },
       {
         "id": "bruce-skiv-is-born-1979",
         "name": "Bruce Skiv is born.",
         "year": 1979,
         "order": 197902,
-        "keywords": ["Bruce Skiv"]
+        "keywords": [
+          "Bruce Skiv"
+        ]
       },
       {
         "id": "kei-arasaka-is-born-1980",
         "name": "Kei Arasaka is born.",
         "year": 1980,
         "order": 198001,
-        "keywords": ["Kei Arasaka"]
+        "keywords": [
+          "Kei Arasaka"
+        ]
       },
       {
         "id": "peter-van-rijen-is-born-1980",
         "name": "Peter Van Rijen is born.",
         "year": 1980,
         "order": 198002,
-        "keywords": ["Peter Van Rijen"]
+        "keywords": [
+          "Peter Van Rijen"
+        ]
       },
       {
         "id": "lupold-korpino-joins-the-soviet-army-1985",
         "name": "Lupold Korpino joins the Soviet Army.",
         "year": 1985,
         "order": 198501,
-        "keywords": ["General Lupold Korepino", "wikipedia:Soviet Army"]
+        "keywords": [
+          "General Lupold Korepino",
+          "wikipedia:Soviet Army"
+        ]
       },
       {
         "id": "carson-dominguez-is-born-1986",
         "name": "Carson Dominguez is born.",
         "year": 1986,
         "order": 198601,
-        "keywords": ["Carson Dominguez"]
+        "keywords": [
+          "Carson Dominguez"
+        ]
       },
       {
         "id": "malcolm-youngblood-is-born-1987",
         "name": "Malcolm Youngblood is born.",
         "year": 1987,
         "order": 198701,
-        "keywords": ["Malcolm Youngblood"]
+        "keywords": [
+          "Malcolm Youngblood"
+        ]
       },
       {
         "id": "ramon-sagsaysay-is-born-1987",
         "name": "Ramon Sagsaysay is born.",
         "year": 1987,
         "order": 198702,
-        "keywords": ["Ramon Sagsaysay"]
+        "keywords": [
+          "Ramon Sagsaysay"
+        ]
       },
       {
         "id": "the-state-law-and-order-restoration-council-launches-a-coup-1988",
         "name": "The State Law and Order Restoration Council launches a coup in Burma and rena...",
         "year": 1988,
         "order": 198801,
-        "keywords": ["wikipedia:State Peace and Development Council", "Myanmar"]
+        "keywords": [
+          "wikipedia:State Peace and Development Council",
+          "Myanmar"
+        ]
       },
       {
         "id": "april-7-kerry-eurodyne-is-born-1988",
         "name": "April 7: Kerry Eurodyne is born.",
         "year": 1988,
         "order": 198802,
-        "keywords": ["Kerry Eurodyne"]
+        "keywords": [
+          "Kerry Eurodyne"
+        ]
       },
       {
         "id": "november-16-johnny-silverhand-is-born-in-college-station-t-1988",
         "name": "November 16: Johnny Silverhand is born in College Station, Texas.",
         "year": 1988,
         "order": 198803,
-        "keywords": ["Johnny Silverhand", "Texas"]
+        "keywords": [
+          "Johnny Silverhand",
+          "Texas"
+        ]
       },
       {
         "id": "george-h-w-bush-is-inaugurated-as-the-41st-president-of-the-1989",
         "name": "George H.W. Bush is inaugurated as the 41st president of the United States of...",
         "year": 1989,
         "order": 198901,
-        "keywords": ["wikipedia:George H.W. Bush", "United States of America"]
+        "keywords": [
+          "wikipedia:George H.W. Bush",
+          "United States of America"
+        ]
       },
       {
         "id": "the-gang-of-four-a-group-made-up-of-the-cia-nsa-fbi-and-1989",
         "name": "The Gang of Four - a group made up of the CIA, NSA, FBI and DEA - forms to se...",
         "year": 1989,
         "order": 198902,
-        "keywords": ["Gang of Four"]
+        "keywords": [
+          "Gang of Four"
+        ]
       },
       {
         "id": "bradley-david-parker-jr-is-born-1989",
         "name": "Bradley David Parker Jr is born.",
         "year": 1989,
         "order": 198903,
-        "keywords": ["Bradley David Parker Jr"]
+        "keywords": [
+          "Bradley David Parker Jr"
+        ]
       },
       {
         "id": "the-cold-war-ends-1989",
         "name": "The Cold War ends.",
         "year": 1989,
         "order": 198904,
-        "keywords": ["wikipedia:Cold War (1985–1991)"]
+        "keywords": [
+          "wikipedia:Cold War (1985–1991)"
+        ]
       },
       {
         "id": "the-berlin-wall-falls-1989",
         "name": "The Berlin Wall falls.",
         "year": 1989,
         "order": 198905,
-        "keywords": ["wikipedia:Berlin Wall"]
+        "keywords": [
+          "wikipedia:Berlin Wall"
+        ]
       },
       {
         "id": "the-first-central-american-war-begins-the-usa-declares-ope-1990",
         "name": "The First Central American War begins - The USA declares open war against the...",
         "year": 1990,
         "order": 199001,
-        "keywords": ["First Central American War"]
+        "keywords": [
+          "First Central American War"
+        ]
       },
       {
         "id": "the-fall-of-south-africa-occurs-very-little-information-com-1990",
         "name": "The Fall of South Africa occurs. Very little information comes out of the cou...",
         "year": 1990,
         "order": 199002,
-        "keywords": ["South Africa"]
+        "keywords": [
+          "South Africa"
+        ]
       },
       {
         "id": "london-riots-between-labor-and-racial-extremists-occur-1990",
@@ -348,91 +451,123 @@
         "name": "West and East Germany are reunified.",
         "year": 1990,
         "order": 199004,
-        "keywords": ["wikipedia:Unification of Germany"]
+        "keywords": [
+          "wikipedia:Unification of Germany"
+        ]
       },
       {
         "id": "warsaw-pact-breaks-up-1990",
         "name": "Warsaw Pact breaks up.",
         "year": 1990,
         "order": 199005,
-        "keywords": ["wikipedia:Warsaw Pact"]
+        "keywords": [
+          "wikipedia:Warsaw Pact"
+        ]
       },
       {
         "id": "soviet-union-president-gorbachev-appoints-successor-andrei-1990",
         "name": "Soviet Union president Gorbachev appoints successor, Andrei Gorborev. The USS...",
         "year": 1990,
         "order": 199006,
-        "keywords": ["wikipedia:Mikhail Gorbachev", "Andrei Gorborev"]
+        "keywords": [
+          "wikipedia:Mikhail Gorbachev",
+          "Andrei Gorborev"
+        ]
       },
       {
         "id": "night-international-is-formed-1990",
         "name": "Night International is formed.",
         "year": 1990,
         "order": 199007,
-        "keywords": ["Night International"]
+        "keywords": [
+          "Night International"
+        ]
       },
       {
         "id": "colonel-emile-lazarus-graduates-from-west-point-1990",
         "name": "Colonel Emile Lazarus graduates from West Point.",
         "year": 1990,
         "order": 199008,
-        "keywords": ["Emile Lazarus", "wikipedia:United States Military Academy"]
+        "keywords": [
+          "Emile Lazarus",
+          "wikipedia:United States Military Academy"
+        ]
       },
       {
         "id": "the-quiet-war-begins-the-gang-of-four-begins-attempts-to-c-1990",
         "name": "The Quiet War begins - The Gang of Four begins attempts to covertly sabotage ...",
         "year": 1990,
         "order": 199009,
-        "keywords": ["The Quiet War", "Gang of Four"]
+        "keywords": [
+          "The Quiet War",
+          "Gang of Four"
+        ]
       },
       {
         "id": "eurospace-agency-launches-the-hermes-spaceplane-1991",
         "name": "Eurospace Agency launches the Hermes Spaceplane.",
         "year": 1991,
         "order": 199101,
-        "keywords": ["ESA", "Hermes Spaceplane"]
+        "keywords": [
+          "ESA",
+          "Hermes Spaceplane"
+        ]
       },
       {
         "id": "biotechnica-develops-chooh2-1991",
         "name": "Biotechnica Develops CHOOH2.",
         "year": 1991,
         "order": 199102,
-        "keywords": ["Biotechnica", "CHOOH2"]
+        "keywords": [
+          "Biotechnica",
+          "CHOOH2"
+        ]
       },
       {
         "id": "the-first-arcology-is-built-in-new-jersey-1991",
         "name": "The first arcology is built in New Jersey.",
         "year": 1991,
         "order": 199103,
-        "keywords": ["New Jersey"]
+        "keywords": [
+          "New Jersey"
+        ]
       },
       {
         "id": "stanford-research-center-develops-the-first-artificial-muscl-1991",
         "name": "Stanford Research Center develops the first artificial muscle fibres, paving ...",
         "year": 1991,
         "order": 199104,
-        "keywords": ["Cyberlimb"]
+        "keywords": [
+          "Cyberlimb"
+        ]
       },
       {
         "id": "plans-for-coronado-city-are-drawn-up-1991",
         "name": "Plans for Coronado City are drawn up.",
         "year": 1991,
         "order": 199105,
-        "keywords": ["Coronado City"]
+        "keywords": [
+          "Coronado City"
+        ]
       },
       {
         "id": "chile-and-ecuador-collapse-due-to-anti-drug-crop-bioweapons-1991",
         "name": "Chile and Ecuador collapse due to anti-drug crop bioweapons.",
         "year": 1991,
         "order": 199106,
-        "keywords": ["Chile", "Ecuador"]
+        "keywords": [
+          "Chile",
+          "Ecuador"
+        ]
       },
       {
         "id": "primitive-smartguns-and-vehicle-links-are-in-use-during-the-1991",
         "name": "Primitive smartguns and vehicle links are in use during the First Central Ame...",
         "year": 1991,
         "order": 199107,
-        "keywords": ["First Central American War"]
+        "keywords": [
+          "First Central American War"
+        ]
       },
       {
         "id": "gorborev-gorbachev-s-successor-purges-the-rest-of-the-old-1991",
@@ -445,7 +580,10 @@
         "name": "The European Economic Community and Eurodollar are established.",
         "year": 1992,
         "order": 199201,
-        "keywords": ["European Economic Community", "Eurodollar"]
+        "keywords": [
+          "European Economic Community",
+          "Eurodollar"
+        ]
       },
       {
         "id": "the-dea-develops-artificial-plagues-to-curb-the-production-o-1992",
@@ -458,175 +596,236 @@
         "name": "First use of high energy laser lift arrays in USSR. The first prototype Mass ...",
         "year": 1992,
         "order": 199203,
-        "keywords": ["Mass driver", "Spain", "ESA"]
+        "keywords": [
+          "Mass driver",
+          "Spain",
+          "ESA"
+        ]
       },
       {
         "id": "brooke-bailey-atchison-is-born-1992",
         "name": "Brooke Bailey Atchison is born.",
         "year": 1992,
         "order": 199204,
-        "keywords": ["Brooke Bailey Atchison"]
+        "keywords": [
+          "Brooke Bailey Atchison"
+        ]
       },
       {
         "id": "hua-yuchi-forms-the-maoist-loyalist-cabal-in-the-hunan-provi-1992",
         "name": "Hua Yuchi forms the Maoist Loyalist Cabal in the Hunan province of China.",
         "year": 1992,
         "order": 199205,
-        "keywords": ["Hua Yuchi", "Maoist Loyalist Cabal"]
+        "keywords": [
+          "Hua Yuchi",
+          "Maoist Loyalist Cabal"
+        ]
       },
       {
         "id": "the-aldecaldo-clan-forms-as-a-protective-society-in-los-ange-1992",
         "name": "The Aldecaldo Clan forms as a protective society in Los Angeles.",
         "year": 1992,
         "order": 199206,
-        "keywords": ["Aldecaldos", "Los Angeles"]
+        "keywords": [
+          "Aldecaldos",
+          "Los Angeles"
+        ]
       },
       {
         "id": "as-farmland-dies-rural-populations-migrate-into-the-cities-1992",
         "name": "As farmland dies, rural populations migrate into the cities. They are labeled...",
         "year": 1992,
         "order": 199207,
-        "keywords": ["Jodes"]
+        "keywords": [
+          "Jodes"
+        ]
       },
       {
         "id": "the-morro-bay-massacre-biker-gangs-loot-several-towns-befo-1992",
         "name": "The Morro Bay Massacre - Biker gangs loot several towns before being driven o...",
         "year": 1992,
         "order": 199208,
-        "keywords": ["Morro Bay Massacre"]
+        "keywords": [
+          "Morro Bay Massacre"
+        ]
       },
       {
         "id": "arasaka-ebm-and-petrochem-fund-the-creation-of-coronado-cit-1992",
         "name": "Arasaka, EBM and Petrochem fund the creation of Coronado City.",
         "year": 1992,
         "order": 199209,
-        "keywords": ["Arasaka", "Euro Business Machines", "Petrochem", "Night City"]
+        "keywords": [
+          "Arasaka",
+          "Euro Business Machines",
+          "Petrochem",
+          "Night City"
+        ]
       },
       {
         "id": "james-richard-allen-is-inaugurated-as-the-42nd-president-of-1993",
         "name": "James Richard Allen is inaugurated as the 42nd President of the United States...",
         "year": 1993,
         "order": 199301,
-        "keywords": ["James Richard Allen", "United States of America"]
+        "keywords": [
+          "James Richard Allen",
+          "United States of America"
+        ]
       },
       {
         "id": "trc-biologic-interface-chips-are-developed-in-munich-west-g-1993",
         "name": "TRC Biologic Interface chips are developed in Munich, West Germany.",
         "year": 1993,
         "order": 199302,
-        "keywords": ["TRC Biologic Interface"]
+        "keywords": [
+          "TRC Biologic Interface"
+        ]
       },
       {
         "id": "the-av-4-is-invented-to-deal-with-rioting-in-dense-urban-are-1993",
         "name": "The AV-4 is invented to deal with rioting in dense urban areas.",
         "year": 1993,
         "order": 199303,
-        "keywords": ["AV-4 (2020)"]
+        "keywords": [
+          "AV-4 (2020)"
+        ]
       },
       {
         "id": "a-small-yield-nuclear-device-is-detonated-in-new-york-city-1993",
         "name": "A small yield nuclear device is detonated in New York City. 15000 are killed....",
         "year": 1993,
         "order": 199304,
-        "keywords": ["New York City"]
+        "keywords": [
+          "New York City"
+        ]
       },
       {
         "id": "construction-on-coronado-city-starts-1993",
         "name": "Construction on Coronado City starts.",
         "year": 1993,
         "order": 199305,
-        "keywords": ["Coronado City"]
+        "keywords": [
+          "Coronado City"
+        ]
       },
       {
         "id": "the-first-coherent-nomad-families-appear-on-the-west-coast-1993",
         "name": "The first coherent Nomad families appear on the west coast.",
         "year": 1993,
         "order": 199306,
-        "keywords": ["Nomad"]
+        "keywords": [
+          "Nomad"
+        ]
       },
       {
         "id": "the-jodes-leave-oklahoma-to-escape-the-dust-bowl-1993",
         "name": "The Jodes leave Oklahoma to escape the dust bowl.",
         "year": 1993,
         "order": 199307,
-        "keywords": ["Jodes", "Oklahoma"]
+        "keywords": [
+          "Jodes",
+          "Oklahoma"
+        ]
       },
       {
         "id": "the-aldecaldo-clan-is-forced-out-of-los-angeles-1993",
         "name": "The Aldecaldo Clan is forced out of Los Angeles.",
         "year": 1993,
         "order": 199308,
-        "keywords": ["Aldecaldos", "Los Angeles"]
+        "keywords": [
+          "Aldecaldos",
+          "Los Angeles"
+        ]
       },
       {
         "id": "gang-wars-occur-in-miami-1993",
         "name": "Gang wars occur in Miami.",
         "year": 1993,
         "order": 199309,
-        "keywords": ["Miami"]
+        "keywords": [
+          "Miami"
+        ]
       },
       {
         "id": "the-australian-government-announces-plans-to-recognize-abori-1993",
         "name": "The Australian Government announces plans to recognize aboriginal land.",
         "year": 1993,
         "order": 199310,
-        "keywords": ["Australia"]
+        "keywords": [
+          "Australia"
+        ]
       },
       {
         "id": "the-ec-ministry-for-economics-is-formed-1993",
         "name": "The EC Ministry for Economics is formed.",
         "year": 1993,
         "order": 199311,
-        "keywords": ["Ministry for Economics"]
+        "keywords": [
+          "Ministry for Economics"
+        ]
       },
       {
         "id": "interpol-is-sanctioned-to-operate-outside-of-eec-borders-and-1993",
         "name": "INTERPOL is sanctioned to operate outside of EEC borders and begins recruitin...",
         "year": 1993,
         "order": 199312,
-        "keywords": ["INTERPOL"]
+        "keywords": [
+          "INTERPOL"
+        ]
       },
       {
         "id": "world-stock-market-collapse-the-eec-discovers-that-the-usa-1994",
         "name": "World Stock Market Collapse - The EEC discovers that the USA has been defraud...",
         "year": 1994,
         "order": 199401,
-        "keywords": ["Crash of '94"]
+        "keywords": [
+          "Crash of '94"
+        ]
       },
       {
         "id": "the-first-central-american-war-ends-us-forces-are-repelled-1994",
         "name": "The First Central American War ends - US forces are repelled by the Central &...",
         "year": 1994,
         "order": 199402,
-        "keywords": ["First Central American War"]
+        "keywords": [
+          "First Central American War"
+        ]
       },
       {
         "id": "nuclear-meltdown-occurs-in-pittsburgh-pa-257-are-killed-an-1994",
         "name": "Nuclear meltdown occurs in Pittsburgh, PA. 257 are killed and cancer rates sk...",
         "year": 1994,
         "order": 199403,
-        "keywords": ["Pittsburgh", "Aldecaldos"]
+        "keywords": [
+          "Pittsburgh",
+          "Aldecaldos"
+        ]
       },
       {
         "id": "coronado-city-is-founded-1994",
         "name": "Coronado City is founded.",
         "year": 1994,
         "order": 199404,
-        "keywords": ["Coronado City"]
+        "keywords": [
+          "Coronado City"
+        ]
       },
       {
         "id": "edward-llewellyn-is-born-1994",
         "name": "Edward Llewellyn is born.",
         "year": 1994,
         "order": 199405,
-        "keywords": ["Edward Llewellyn"]
+        "keywords": [
+          "Edward Llewellyn"
+        ]
       },
       {
         "id": "the-soviet-union-ends-and-the-union-of-sovereign-soviet-repu-1994",
         "name": "The Soviet Union ends and the Union of Sovereign Soviet Republics is formed.",
         "year": 1994,
         "order": 199406,
-        "keywords": ["Soviet Union"]
+        "keywords": [
+          "Soviet Union"
+        ]
       },
       {
         "id": "pressure-from-the-corporations-leads-the-australian-governme-1994",
@@ -639,7 +838,9 @@
         "name": "Martial Law is declared in Poland.",
         "year": 1994,
         "order": 199408,
-        "keywords": ["Poland"]
+        "keywords": [
+          "Poland"
+        ]
       },
       {
         "id": "prince-andrew-duke-of-york-and-his-first-wife-sarah-fergu-1994",
@@ -652,7 +853,9 @@
         "name": "Richard Night University is founded.",
         "year": 1994,
         "order": 199410,
-        "keywords": ["Night City University"]
+        "keywords": [
+          "Night City University"
+        ]
       },
       {
         "id": "construction-on-the-kilimanjaro-mass-driver-is-started-by-th-1995",
@@ -671,42 +874,55 @@
         "name": "Yorinobu Arasaka is born.",
         "year": 1995,
         "order": 199502,
-        "keywords": ["Yorinobu Arasaka"]
+        "keywords": [
+          "Yorinobu Arasaka"
+        ]
       },
       {
         "id": "anastasia-luccessi-is-born-1995",
         "name": "Anastasia Luccessi is born.",
         "year": 1995,
         "order": 199503,
-        "keywords": ["Anastasia Luccessi"]
+        "keywords": [
+          "Anastasia Luccessi"
+        ]
       },
       {
         "id": "the-grand-unification-of-ministries-and-agencies-is-carried-1995",
         "name": "The Grand unification of Ministries and agencies is carried out in Japan.",
         "year": 1995,
         "order": 199504,
-        "keywords": ["Japan"]
+        "keywords": [
+          "Japan"
+        ]
       },
       {
         "id": "a-civil-war-breaks-out-in-china-with-the-maoist-loyalist-cab-1995",
         "name": "A Civil war breaks out in China with the Maoist Loyalist Cabal conquering lar...",
         "year": 1995,
         "order": 199505,
-        "keywords": ["Maoist Loyalist Cabal"]
+        "keywords": [
+          "Maoist Loyalist Cabal"
+        ]
       },
       {
         "id": "the-bloods-gang-control-all-of-miami-1995",
         "name": "The Bloods gang control all of Miami.",
         "year": 1995,
         "order": 199506,
-        "keywords": ["Blood Nation", "Miami"]
+        "keywords": [
+          "Blood Nation",
+          "Miami"
+        ]
       },
       {
         "id": "the-emergency-welfare-relocation-program-is-implemented-1995",
         "name": "The Emergency Welfare Relocation Program is implemented.",
         "year": 1995,
         "order": 199507,
-        "keywords": ["Emergency Welfare Relocation Program"]
+        "keywords": [
+          "Emergency Welfare Relocation Program"
+        ]
       },
       {
         "id": "the-eec-implements-the-fortress-europe-system-which-invol-1995",
@@ -719,63 +935,84 @@
         "name": "Evienne De Tours is born.",
         "year": 1995,
         "order": 199509,
-        "keywords": ["Evienne De Tours"]
+        "keywords": [
+          "Evienne De Tours"
+        ]
       },
       {
         "id": "the-collapse-of-the-united-states-begins-1996",
         "name": "The Collapse of the United States begins.",
         "year": 1996,
         "order": 199601,
-        "keywords": ["The Collapse of the United States"]
+        "keywords": [
+          "The Collapse of the United States"
+        ]
       },
       {
         "id": "martial-law-is-established-in-the-united-states-1996",
         "name": "Martial Law is established in the United States.",
         "year": 1996,
         "order": 199602,
-        "keywords": ["United States of America"]
+        "keywords": [
+          "United States of America"
+        ]
       },
       {
         "id": "the-lawyer-purge-occurs-1996",
         "name": "The Lawyer Purge occurs.",
         "year": 1996,
         "order": 199604,
-        "keywords": ["The Lawyer Purge"]
+        "keywords": [
+          "The Lawyer Purge"
+        ]
       },
       {
         "id": "the-first-boostergangs-appear-1996",
         "name": "The first Boostergangs appear.",
         "year": 1996,
         "order": 199605,
-        "keywords": ["Boostergang"]
+        "keywords": [
+          "Boostergang"
+        ]
       },
       {
         "id": "nomad-packs-become-widespread-due-to-the-high-rate-of-homele-1996",
         "name": "Nomad packs become widespread due to the high rate of homelessness.",
         "year": 1996,
         "order": 199606,
-        "keywords": ["Nomad"]
+        "keywords": [
+          "Nomad"
+        ]
       },
       {
         "id": "the-nomad-riots-by-now-1-in-4-americans-are-homeless-hun-1996",
         "name": "The Nomad Riots - By now, 1 in 4 Americans are homeless. Hundreds of thousand...",
         "year": 1996,
         "order": 199607,
-        "keywords": ["Nomad Riots", "Nomad"]
+        "keywords": [
+          "Nomad Riots",
+          "Nomad"
+        ]
       },
       {
         "id": "article-9-of-the-japanese-constitution-is-scrapped-by-arasak-1996",
         "name": "Article 9 of the Japanese Constitution is scrapped by Arasaka-backed politici...",
         "year": 1996,
         "order": 199608,
-        "keywords": ["wikipedia:Article 9 of the Japanese Constitution", "Arasaka"]
+        "keywords": [
+          "wikipedia:Article 9 of the Japanese Constitution",
+          "Arasaka"
+        ]
       },
       {
         "id": "the-united-states-military-withdraws-from-japan-and-korea-1996",
         "name": "The United States Military withdraws from Japan and Korea.",
         "year": 1996,
         "order": 199609,
-        "keywords": ["Japan", "Korea"]
+        "keywords": [
+          "Japan",
+          "Korea"
+        ]
       },
       {
         "id": "millions-of-homeless-people-are-killed-or-imprisoned-1996",
@@ -788,56 +1025,79 @@
         "name": "Armatech-Luccessi is founded.",
         "year": 1996,
         "order": 199611,
-        "keywords": ["Militech"]
+        "keywords": [
+          "Militech"
+        ]
       },
       {
         "id": "state-oil-industries-subcommittee-is-created-with-anatoly-n-1996",
         "name": "State Oil Industries Subcommittee is created, with Anatoly Novikovo on the head.",
         "year": 1996,
         "order": 199612,
-        "keywords": ["SovOil", "Anatoly Novikovo"]
+        "keywords": [
+          "SovOil",
+          "Anatoly Novikovo"
+        ]
       },
       {
         "id": "lawrence-hilliard-innovation-ltd-is-formed-1996",
         "name": "Lawrence Hilliard Innovation Ltd. is formed.",
         "year": 1996,
         "order": 199613,
-        "keywords": ["Lawrence Hilliard Innovation Ltd"]
+        "keywords": [
+          "Lawrence Hilliard Innovation Ltd"
+        ]
       },
       {
         "id": "the-far-asian-co-prosperity-sphere-group-facs-is-founded-b-1996",
         "name": "The Far Asian Co-Prosperity Sphere Group, FACS, is founded by varvious large ...",
         "year": 1996,
         "order": 199614,
-        "keywords": ["FACS", "Arasaka", "Japan"]
+        "keywords": [
+          "FACS",
+          "Arasaka",
+          "Japan"
+        ]
       },
       {
         "id": "portugal-and-italy-finally-join-the-eec-1996",
         "name": "Portugal and Italy finally join the EEC.",
         "year": 1996,
         "order": 199615,
-        "keywords": ["Portugal", "Italy", "European Economic Community"]
+        "keywords": [
+          "Portugal",
+          "Italy",
+          "European Economic Community"
+        ]
       },
       {
         "id": "august-17-u-s-president-james-richard-allen-is-assassinate-1996",
         "name": "August 17: U.S. President James Richard Allen is assassinated.",
         "year": 1996,
         "order": 199663,
-        "keywords": ["James Richard Allen"]
+        "keywords": [
+          "James Richard Allen"
+        ]
       },
       {
         "id": "the-mideast-meltdown-a-nuclear-exchange-makes-most-of-the-1997",
         "name": "The Mideast Meltdown - A nuclear exchange makes most of the Middle East inhos...",
         "year": 1997,
         "order": 199701,
-        "keywords": ["Mideast Meltdown"]
+        "keywords": [
+          "Mideast Meltdown"
+        ]
       },
       {
         "id": "conflict-in-the-japanese-government-begins-between-right-win-1997",
         "name": "Conflict in the Japanese government begins between right winged Arasaka and t...",
         "year": 1997,
         "order": 199702,
-        "keywords": ["Government of Japan", "Arasaka", "FACS"]
+        "keywords": [
+          "Government of Japan",
+          "Arasaka",
+          "FACS"
+        ]
       },
       {
         "id": "california-s-economy-follows-suit-with-the-rest-of-the-natio-1997",
@@ -856,7 +1116,9 @@
         "name": "Tycho, the first Moon colony, is founded.",
         "year": 1997,
         "order": 199706,
-        "keywords": ["Moon"]
+        "keywords": [
+          "Moon"
+        ]
       },
       {
         "id": "a-toxic-spill-occurs-in-the-pacific-northwest-wiping-out-th-1997",
@@ -869,35 +1131,47 @@
         "name": "The Gang of Four are formally investigated.",
         "year": 1997,
         "order": 199708,
-        "keywords": ["Gang of Four"]
+        "keywords": [
+          "Gang of Four"
+        ]
       },
       {
         "id": "the-united-states-military-reforms-into-combined-operations-1997",
         "name": "The United States Military reforms into Combined Operations Groups.",
         "year": 1997,
         "order": 199709,
-        "keywords": ["COG"]
+        "keywords": [
+          "COG"
+        ]
       },
       {
         "id": "the-bald-hill-political-scandal-occurs-in-japan-60-of-poli-1997",
         "name": "The Bald Hill political scandal occurs in Japan, 60% of politicians were arre...",
         "year": 1997,
         "order": 199710,
-        "keywords": ["Bald Hill"]
+        "keywords": [
+          "Bald Hill"
+        ]
       },
       {
         "id": "hong-kong-is-returned-to-china-from-britain-1997",
         "name": "Hong Kong is returned to China from Britain.",
         "year": 1997,
         "order": 199711,
-        "keywords": ["Hong Kong", "China", "Britain"]
+        "keywords": [
+          "Hong Kong",
+          "China",
+          "Britain"
+        ]
       },
       {
         "id": "drug-and-smuggling-laws-are-repealed-in-thailand-1997",
         "name": "Drug and smuggling laws are repealed in Thailand.",
         "year": 1997,
         "order": 199712,
-        "keywords": ["Thailand"]
+        "keywords": [
+          "Thailand"
+        ]
       },
       {
         "id": "hurricanes-hit-the-coast-of-europe-leaving-thousands-withou-1997",
@@ -910,7 +1184,9 @@
         "name": "An earthquake occurs in the Bay of Biscay, causing tsunamis that hit the coas...",
         "year": 1997,
         "order": 199714,
-        "keywords": ["Spain"]
+        "keywords": [
+          "Spain"
+        ]
       },
       {
         "id": "incidents-occur-between-the-greek-military-and-turkish-immig-1997",
@@ -929,14 +1205,19 @@
         "name": "August 3: Popular musician \"Rockerboy\" Manson is killed in the United Kingdom.",
         "year": 1997,
         "order": 199759,
-        "keywords": ["James Manson", "United Kingdom"]
+        "keywords": [
+          "James Manson",
+          "United Kingdom"
+        ]
       },
       {
         "id": "a-10-5-earthquake-decimates-los-angeles-35-of-the-city-is-1998",
         "name": "A 10.5 Earthquake decimates Los Angeles. 35% of the city is underwater and up...",
         "year": 1998,
         "order": 199801,
-        "keywords": ["Los Angeles"]
+        "keywords": [
+          "Los Angeles"
+        ]
       },
       {
         "id": "a-drought-in-the-midwest-destroys-a-large-amount-of-crops-m-1998",
@@ -949,14 +1230,20 @@
         "name": "The Luds, a Neo-Luddite group emerges in Kentucky. They begin a spree of bomb...",
         "year": 1998,
         "order": 199803,
-        "keywords": ["The Luds", "Kentucky"]
+        "keywords": [
+          "The Luds",
+          "Kentucky"
+        ]
       },
       {
         "id": "rory-and-lea-murchison-are-born-1998",
         "name": "Rory and Lea Murchison are born.",
         "year": 1998,
         "order": 199804,
-        "keywords": ["Rory Murchison", "Lea Murchison"]
+        "keywords": [
+          "Rory Murchison",
+          "Lea Murchison"
+        ]
       },
       {
         "id": "tsunami-defense-systems-is-founded-by-toshio-yamabatsu-timo-1998",
@@ -977,14 +1264,20 @@
         "name": "Howard Murchison is assassinated by Colin Powers.",
         "year": 1998,
         "order": 199807,
-        "keywords": ["Howard Murchison", "Colin Powers"]
+        "keywords": [
+          "Howard Murchison",
+          "Colin Powers"
+        ]
       },
       {
         "id": "gerhard-kessler-takes-control-of-the-international-electric-1998",
         "name": "Gerhard Kessler takes control of the International Electric Corporation.",
         "year": 1998,
         "order": 199808,
-        "keywords": ["Gerhard Kessler", "International Electric Corporation"]
+        "keywords": [
+          "Gerhard Kessler",
+          "International Electric Corporation"
+        ]
       },
       {
         "id": "the-united-states-military-undergoes-trials-for-a-new-rifle-1998",
@@ -997,14 +1290,19 @@
         "name": "The formation of the Soviet state oil industries is completed and is known as...",
         "year": 1998,
         "order": 199810,
-        "keywords": ["SovOil"]
+        "keywords": [
+          "SovOil"
+        ]
       },
       {
         "id": "the-martial-law-authority-is-formed-in-the-united-kingdom-i-1998",
         "name": "The Martial Law Authority is formed in the United Kingdom. It declares a stat...",
         "year": 1998,
         "order": 199811,
-        "keywords": ["Martial Law Authority", "United Kingdom"]
+        "keywords": [
+          "Martial Law Authority",
+          "United Kingdom"
+        ]
       },
       {
         "id": "indonesian-president-suharto-dies-1998",
@@ -1017,35 +1315,50 @@
         "name": "Construction begins on the Intercontinental Maglev. At the last minute, the w...",
         "year": 1998,
         "order": 199813,
-        "keywords": ["Intercontinental Maglev", "Los Angeles", "Night City"]
+        "keywords": [
+          "Intercontinental Maglev",
+          "Los Angeles",
+          "Night City"
+        ]
       },
       {
         "id": "the-emergency-welfare-relocation-program-is-deemed-a-failure-1998",
         "name": "The Emergency Welfare Relocation Program is deemed a failure.",
         "year": 1998,
         "order": 199814,
-        "keywords": ["Emergency Welfare Relocation Program"]
+        "keywords": [
+          "Emergency Welfare Relocation Program"
+        ]
       },
       {
         "id": "the-night-of-fire-the-kgb-backed-by-the-organitskaya-att-1998",
         "name": "The Night of Fire - The KGB, backed by the Organitskaya, attempt to overthrow...",
         "year": 1998,
         "order": 199815,
-        "keywords": ["Night of Fire", "Organitskaya"]
+        "keywords": [
+          "Night of Fire",
+          "Organitskaya"
+        ]
       },
       {
         "id": "directive-1998-ec-a-000534-is-launched-in-the-ec-1998",
         "name": "Directive 1998-EC-A-000534 is launched in the EC.",
         "year": 1998,
         "order": 199816,
-        "keywords": ["Directive 1998-EC-A-000534"]
+        "keywords": [
+          "Directive 1998-EC-A-000534"
+        ]
       },
       {
         "id": "september-20-richard-night-is-assassinated-by-the-mafia-co-1998",
         "name": "September 20: Richard Night is assassinated by the Mafia. Coronado City is re...",
         "year": 1998,
         "order": 199872,
-        "keywords": ["Richard Night", "Mafia", "Night City"]
+        "keywords": [
+          "Richard Night",
+          "Mafia",
+          "Night City"
+        ]
       },
       {
         "id": "martial-law-in-the-united-states-ends-1999",
@@ -1058,7 +1371,9 @@
         "name": "The United States implements the Federal Weapons Statute.",
         "year": 1999,
         "order": 199902,
-        "keywords": ["Federal Weapons Statute"]
+        "keywords": [
+          "Federal Weapons Statute"
+        ]
       },
       {
         "id": "millennium-cults-appear-in-response-to-the-threat-of-y2k-1999",
@@ -1077,21 +1392,30 @@
         "name": "Hanako Arasaka is born.",
         "year": 1999,
         "order": 199905,
-        "keywords": ["Hanako Arasaka"]
+        "keywords": [
+          "Hanako Arasaka"
+        ]
       },
       {
         "id": "ellen-trieste-invests-in-parker-petrochemicals-1999",
         "name": "Ellen Trieste invests in Parker Petrochemicals.",
         "year": 1999,
         "order": 199906,
-        "keywords": ["Ellen Trieste", "Petrochem"]
+        "keywords": [
+          "Ellen Trieste",
+          "Petrochem"
+        ]
       },
       {
         "id": "parker-petrochemicals-is-granted-a-license-by-biotechnica-to-1999",
         "name": "Parker Petrochemicals is granted a license by Biotechnica to grow T. Megasuav...",
         "year": 1999,
         "order": 199907,
-        "keywords": ["Petrochem", "Biotechnica", "CHOOH2"]
+        "keywords": [
+          "Petrochem",
+          "Biotechnica",
+          "CHOOH2"
+        ]
       },
       {
         "id": "the-public-information-office-is-formed-in-the-uk-1999",
@@ -1104,63 +1428,85 @@
         "name": "The Second Korean War begins - hostilities break out along the border between...",
         "year": 1999,
         "order": 199909,
-        "keywords": ["The Second Korean War"]
+        "keywords": [
+          "The Second Korean War"
+        ]
       },
       {
         "id": "martial-law-is-declared-in-hong-kong-after-riots-break-out-1999",
         "name": "Martial Law is declared in Hong Kong after riots break out.",
         "year": 1999,
         "order": 199910,
-        "keywords": ["Hong Kong"]
+        "keywords": [
+          "Hong Kong"
+        ]
       },
       {
         "id": "the-jodes-former-farmers-from-the-dust-bowl-begin-salvage-1999",
         "name": "The Jodes, former farmers from the dust-bowl, begin salvage operations in the...",
         "year": 1999,
         "order": 199911,
-        "keywords": ["Jodes", "Los Angeles"]
+        "keywords": [
+          "Jodes",
+          "Los Angeles"
+        ]
       },
       {
         "id": "the-bloods-gang-is-converted-into-a-nomad-group-1999",
         "name": "The Bloods Gang is converted into a Nomad group.",
         "year": 1999,
         "order": 199912,
-        "keywords": ["Blood Nation", "Nomad"]
+        "keywords": [
+          "Blood Nation",
+          "Nomad"
+        ]
       },
       {
         "id": "night-corp-is-founded-by-miriam-night-the-wife-of-richard-n-1999",
         "name": "Night Corp is founded by Miriam Night, the wife of Richard Night.",
         "year": 1999,
         "order": 199913,
-        "keywords": ["Night Corp", "Miriam Night", "Richard Night"]
+        "keywords": [
+          "Night Corp",
+          "Miriam Night",
+          "Richard Night"
+        ]
       },
       {
         "id": "crystal-palace-space-station-begins-construction-2000",
         "name": "Crystal Palace Space Station begins construction.",
         "year": 2000,
         "order": 200001,
-        "keywords": ["Crystal Palace"]
+        "keywords": [
+          "Crystal Palace"
+        ]
       },
       {
         "id": "the-wasting-plague-spreads-across-the-united-states-and-euro-2000",
         "name": "The Wasting Plague spreads across the United States and Europe.",
         "year": 2000,
         "order": 200002,
-        "keywords": ["Wasting Plague"]
+        "keywords": [
+          "Wasting Plague"
+        ]
       },
       {
         "id": "firestorms-rage-across-the-pacific-northwest-decimating-far-2000",
         "name": "Firestorms rage across the Pacific Northwest, decimating farmland and old-gro...",
         "year": 2000,
         "order": 200003,
-        "keywords": ["Pacific Northwest"]
+        "keywords": [
+          "Pacific Northwest"
+        ]
       },
       {
         "id": "the-first-posergangs-emerge-2000",
         "name": "The first Posergangs emerge.",
         "year": 2000,
         "order": 200004,
-        "keywords": ["Posergang"]
+        "keywords": [
+          "Posergang"
+        ]
       },
       {
         "id": "millennium-cult-run-amok-on-jan-1st-in-an-orgy-of-suicide-an-2000",
@@ -1173,7 +1519,10 @@
         "name": "Donald Lundee joins Armatech-Luccessi as CEO.",
         "year": 2000,
         "order": 200006,
-        "keywords": ["Donald Lundee", "Militech"]
+        "keywords": [
+          "Donald Lundee",
+          "Militech"
+        ]
       },
       {
         "id": "the-olympic-games-in-sydney-australia-fail-due-to-bankruptcy-2000",
@@ -1186,28 +1535,38 @@
         "name": "Orbital Air begin construction on a spaceport in Cape York Australia.",
         "year": 2000,
         "order": 200008,
-        "keywords": ["Orbital Air"]
+        "keywords": [
+          "Orbital Air"
+        ]
       },
       {
         "id": "the-blood-nation-leaves-florida-on-their-first-national-tou-2000",
         "name": "The Blood Nation leaves Florida on their first \"national tour\".",
         "year": 2000,
         "order": 200009,
-        "keywords": ["Blood Nation", "Florida"]
+        "keywords": [
+          "Blood Nation",
+          "Florida"
+        ]
       },
       {
         "id": "the-aldecaldo-clan-begin-the-reconstruction-of-mexico-city-2000",
         "name": "The Aldecaldo Clan begin the reconstruction of Mexico City.",
         "year": 2000,
         "order": 200010,
-        "keywords": ["Aldecaldos", "Mexico City"]
+        "keywords": [
+          "Aldecaldos",
+          "Mexico City"
+        ]
       },
       {
         "id": "the-civilian-justice-code-is-formed-in-the-united-states-2000",
         "name": "The Civilian Justice code is formed in the United States.",
         "year": 2000,
         "order": 200011,
-        "keywords": ["Uniform Civilian Justice Code"]
+        "keywords": [
+          "Uniform Civilian Justice Code"
+        ]
       },
       {
         "id": "a-millennium-cult-kills-upwards-of-19000-in-a-chemical-attac-2000",
@@ -1220,35 +1579,46 @@
         "name": "EBM Begins to purchase Hamburg, Germany.",
         "year": 2000,
         "order": 200013,
-        "keywords": ["Euro Business Machines", "Germany"]
+        "keywords": [
+          "Euro Business Machines",
+          "Germany"
+        ]
       },
       {
         "id": "alaska-becomes-a-free-state-2000",
         "name": "Alaska becomes a free state.",
         "year": 2000,
         "order": 200014,
-        "keywords": ["Alaska"]
+        "keywords": [
+          "Alaska"
+        ]
       },
       {
         "id": "the-world-sat-network-is-constructed-the-framework-for-the-2001",
         "name": "The World Sat Network is constructed. The Framework for the Net is set up.",
         "year": 2001,
         "order": 200101,
-        "keywords": ["Net"]
+        "keywords": [
+          "Net"
+        ]
       },
       {
         "id": "armatech-luccessi-is-renamed-militech-arms-international-2001",
         "name": "Armatech-Luccessi is renamed Militech Arms International.",
         "year": 2001,
         "order": 200102,
-        "keywords": ["Militech"]
+        "keywords": [
+          "Militech"
+        ]
       },
       {
         "id": "the-japan-aerospace-bureau-is-established-2001",
         "name": "The Japan Aerospace Bureau is established.",
         "year": 2001,
         "order": 200103,
-        "keywords": ["Japan Aerospace Bureau"]
+        "keywords": [
+          "Japan Aerospace Bureau"
+        ]
       },
       {
         "id": "a-military-coup-occurs-in-britain-and-the-british-monarchy-c-2001",
@@ -1261,70 +1631,97 @@
         "name": "Australia reforms as the Federal Republic of Australia. West Australia declar...",
         "year": 2001,
         "order": 200105,
-        "keywords": ["Australia", "West Australia", "Arasaka"]
+        "keywords": [
+          "Australia",
+          "West Australia",
+          "Arasaka"
+        ]
       },
       {
         "id": "the-jodes-finish-the-salvage-operation-in-los-angeles-most-2001",
         "name": "The Jodes finish the salvage operation in Los Angeles. Most clans do not win ...",
         "year": 2001,
         "order": 200106,
-        "keywords": ["Jodes", "Los Angeles"]
+        "keywords": [
+          "Jodes",
+          "Los Angeles"
+        ]
       },
       {
         "id": "as-a-result-of-the-wasting-plague-decimating-the-population-2001",
         "name": "As a result of the Wasting Plague decimating the population, Greece loosens i...",
         "year": 2001,
         "order": 200107,
-        "keywords": ["Wasting Plague", "Greece"]
+        "keywords": [
+          "Wasting Plague",
+          "Greece"
+        ]
       },
       {
         "id": "king-hassan-ii-of-morocco-dies-of-the-wasting-plague-his-so-2001",
         "name": "King Hassan II of Morocco dies of the Wasting Plague. His son Mohammad become...",
         "year": 2001,
         "order": 200108,
-        "keywords": ["Morocco"]
+        "keywords": [
+          "Morocco"
+        ]
       },
       {
         "id": "the-food-crash-crops-around-the-world-are-hit-by-a-new-vir-2002",
         "name": "The Food Crash - crops around the world are hit by a new virus. The United St...",
         "year": 2002,
         "order": 200201,
-        "keywords": ["Food Crash"]
+        "keywords": [
+          "Food Crash"
+        ]
       },
       {
         "id": "sovoil-declares-itself-independent-of-the-ussr-government-a-2002",
         "name": "SovOil declares itself independent of the USSR government. As a result. Gorbo...",
         "year": 2002,
         "order": 200202,
-        "keywords": ["SovOil", "Gorborev"]
+        "keywords": [
+          "SovOil",
+          "Gorborev"
+        ]
       },
       {
         "id": "igor-starobin-is-named-president-of-the-ussr-2002",
         "name": "Igor Starobin is named president of the USSR.",
         "year": 2002,
         "order": 200203,
-        "keywords": ["Igor Starobin"]
+        "keywords": [
+          "Igor Starobin"
+        ]
       },
       {
         "id": "lupold-korepino-is-promoted-to-general-of-the-soviet-army-2002",
         "name": "Lupold Korepino is promoted to General of the Soviet Army.",
         "year": 2002,
         "order": 200204,
-        "keywords": ["General Lupold Korepino"]
+        "keywords": [
+          "General Lupold Korepino"
+        ]
       },
       {
         "id": "valentin-domanevka-joins-sovoil-2002",
         "name": "Valentin Domanevka joins SovOil.",
         "year": 2002,
         "order": 200205,
-        "keywords": ["Valentin Domanevka", "SovOil"]
+        "keywords": [
+          "Valentin Domanevka",
+          "SovOil"
+        ]
       },
       {
         "id": "copernicus-the-second-moon-colony-is-founded-2002",
         "name": "Copernicus, the second Moon Colony is founded.",
         "year": 2002,
         "order": 200206,
-        "keywords": ["Copernicus", "Moon"]
+        "keywords": [
+          "Copernicus",
+          "Moon"
+        ]
       },
       {
         "id": "the-santorini-volcano-erupts-in-the-aegean-sea-many-greek-i-2002",
@@ -1337,56 +1734,80 @@
         "name": "Portugal, in an effort to decrease Spains influence over them, contracts law ...",
         "year": 2002,
         "order": 200208,
-        "keywords": ["Portugal", "Spain", "Amazonian Security", "Arasaka"]
+        "keywords": [
+          "Portugal",
+          "Spain",
+          "Amazonian Security",
+          "Arasaka"
+        ]
       },
       {
         "id": "spain-s-parliament-breaks-down-due-to-widespread-corruption-2002",
         "name": "Spain's parliament breaks down due to widespread corruption. Smaller politica...",
         "year": 2002,
         "order": 200209,
-        "keywords": ["Spain"]
+        "keywords": [
+          "Spain"
+        ]
       },
       {
         "id": "california-declares-itself-a-free-state-2002",
         "name": "California declares itself a Free State.",
         "year": 2002,
         "order": 200210,
-        "keywords": ["Free State"]
+        "keywords": [
+          "Free State"
+        ]
       },
       {
         "id": "the-second-central-american-war-begins-as-a-desperate-powe-2003",
         "name": "The Second Central American War begins - As a desperate power-move, the USA o...",
         "year": 2003,
         "order": 200301,
-        "keywords": ["Second Central American War"]
+        "keywords": [
+          "Second Central American War"
+        ]
       },
       {
         "id": "the-gang-of-four-begins-to-crumble-under-new-reforms-2003",
         "name": "The Gang of Four begins to crumble under new reforms.",
         "year": 2003,
         "order": 200302,
-        "keywords": ["Gang of Four"]
+        "keywords": [
+          "Gang of Four"
+        ]
       },
       {
         "id": "u-s-president-harold-harrison-hunt-is-murdered-secretary-o-2003",
         "name": "U.S. President Harold Harrison Hunt is murdered. Secretary of Defense, John S...",
         "year": 2003,
         "order": 200303,
-        "keywords": ["Harold Harrison Hunt", "John Seward"]
+        "keywords": [
+          "Harold Harrison Hunt",
+          "John Seward"
+        ]
       },
       {
         "id": "world-news-service-star-tesla-johanneson-exposes-the-nsa-for-2003",
         "name": "World News Service star Tesla Johanneson exposes the NSA for orchestrating th...",
         "year": 2003,
         "order": 200304,
-        "keywords": ["World News Service", "Tesla Johanneson", "First Central American War"]
+        "keywords": [
+          "World News Service",
+          "Tesla Johanneson",
+          "First Central American War"
+        ]
       },
       {
         "id": "louis-parker-dies-his-son-trenton-parker-assumes-control-of-2003",
         "name": "Louis Parker dies, his son Trenton Parker assumes control of Petrochem.",
         "year": 2003,
         "order": 200305,
-        "keywords": ["Louis Parker", "Trenton Parker", "Petrochem"]
+        "keywords": [
+          "Louis Parker",
+          "Trenton Parker",
+          "Petrochem"
+        ]
       },
       {
         "id": "the-khmer-rouge-is-driven-out-of-cambodia-and-deposes-the-go-2003",
@@ -1399,21 +1820,28 @@
         "name": "The Jodes return to agriculture.",
         "year": 2003,
         "order": 200307,
-        "keywords": ["Jodes"]
+        "keywords": [
+          "Jodes"
+        ]
       },
       {
         "id": "sugo-manufacturing-merges-with-mitsubishi-and-is-renamed-mit-2003",
         "name": "Sugo Manufacturing merges with Mitsubishi and is renamed Mitsubishi-Sugo.",
         "year": 2003,
         "order": 200308,
-        "keywords": ["Mitsubishi", "Mitsubishi-Sugo"]
+        "keywords": [
+          "Mitsubishi",
+          "Mitsubishi-Sugo"
+        ]
       },
       {
         "id": "directive-2002-ec-a-000306-is-launched-in-the-ec-2003",
         "name": "Directive 2002-EC-A-000306 is launched in the EC.",
         "year": 2003,
         "order": 200309,
-        "keywords": ["Directive 2002-EC-A-000306"]
+        "keywords": [
+          "Directive 2002-EC-A-000306"
+        ]
       },
       {
         "id": "the-eec-rules-that-european-citizens-can-hold-their-tax-paym-2003",
@@ -1426,21 +1854,28 @@
         "name": "Following Morocco's example, Tunisia enters the EEC sphere of influence.",
         "year": 2003,
         "order": 200311,
-        "keywords": ["Morocco", "Tunisia"]
+        "keywords": [
+          "Morocco",
+          "Tunisia"
+        ]
       },
       {
         "id": "samurai-is-founded-2003",
         "name": "Samurai is founded.",
         "year": 2003,
         "order": 200312,
-        "keywords": ["Samurai"]
+        "keywords": [
+          "Samurai"
+        ]
       },
       {
         "id": "tesla-johanneson-is-assassinated-in-cairo-egypt-by-nsa-oper-2004",
         "name": "Tesla Johanneson is assassinated in Cairo, Egypt by NSA operatives, causing t...",
         "year": 2004,
         "order": 200401,
-        "keywords": ["Tesla Johanneson"]
+        "keywords": [
+          "Tesla Johanneson"
+        ]
       },
       {
         "id": "the-first-corporate-war-begins-a-conflict-between-euro-bus-2004",
@@ -1465,56 +1900,79 @@
         "name": "Peter Kessler is born.",
         "year": 2004,
         "order": 200404,
-        "keywords": ["Peter Kessler"]
+        "keywords": [
+          "Peter Kessler"
+        ]
       },
       {
         "id": "lupold-korepino-joins-sovoil-2004",
         "name": "Lupold Korepino joins SovOil.",
         "year": 2004,
         "order": 200405,
-        "keywords": ["General Lupold Korepino", "SovOil"]
+        "keywords": [
+          "General Lupold Korepino",
+          "SovOil"
+        ]
       },
       {
         "id": "the-cia-and-army-unite-to-finish-off-the-gang-of-four-2004",
         "name": "The CIA and Army unite to finish off the Gang of Four.",
         "year": 2004,
         "order": 200406,
-        "keywords": ["Gang of Four"]
+        "keywords": [
+          "Gang of Four"
+        ]
       },
       {
         "id": "general-i-ryong-yon-launches-a-coup-in-south-korea-and-creat-2004",
         "name": "General I Ryong Yon launches a coup in South Korea and creates the United Kor...",
         "year": 2004,
         "order": 200407,
-        "keywords": ["I Ryong Yon"]
+        "keywords": [
+          "I Ryong Yon"
+        ]
       },
       {
         "id": "bureaucratic-reformation-occurs-in-the-eec-after-a-major-sca-2004",
         "name": "Bureaucratic reformation occurs in the EEC after a major scandal.",
         "year": 2004,
         "order": 200408,
-        "keywords": ["European Economic Community"]
+        "keywords": [
+          "European Economic Community"
+        ]
       },
       {
         "id": "italy-legalises-the-sicilian-mafia-and-neapolitan-camorra-as-2004",
         "name": "Italy legalises the Sicilian Mafia and Neapolitan Camorra as legitimate polit...",
         "year": 2004,
         "order": 200409,
-        "keywords": ["Italy", "Mafia", "Mafia", "Nuova Mafia"]
+        "keywords": [
+          "Italy",
+          "Mafia",
+          "Mafia",
+          "Nuova Mafia"
+        ]
       },
       {
         "id": "the-cybermodem-is-invented-allowing-brains-to-interface-wit-2005",
         "name": "The Cybermodem is invented, allowing brains to interface with the Net.",
         "year": 2005,
         "order": 200501,
-        "keywords": ["Cybermodem", "Net"]
+        "keywords": [
+          "Cybermodem",
+          "Net"
+        ]
       },
       {
         "id": "ebm-solos-attack-tokyo-office-of-kenjiri-technologies-killi-2005",
         "name": "EBM Solos attack Tokyo office of Kenjiri Technologies, Killing 18.",
         "year": 2005,
         "order": 200502,
-        "keywords": ["Euro Business Machines", "Tokyo", "Kenjiri Technology"]
+        "keywords": [
+          "Euro Business Machines",
+          "Tokyo",
+          "Kenjiri Technology"
+        ]
       },
       {
         "id": "the-first-corporate-war-ends-orbital-air-troops-breach-the-2005",
@@ -1533,77 +1991,109 @@
         "name": "The Mob rule over Night City begins.",
         "year": 2005,
         "order": 200504,
-        "keywords": ["The Mob", "Night City"]
+        "keywords": [
+          "The Mob",
+          "Night City"
+        ]
       },
       {
         "id": "peter-van-rijen-joins-sovoil-2005",
         "name": "Peter Van Rijen joins SovOil.",
         "year": 2005,
         "order": 200505,
-        "keywords": ["Peter Van Rijen", "SovOil"]
+        "keywords": [
+          "Peter Van Rijen",
+          "SovOil"
+        ]
       },
       {
         "id": "the-second-korean-war-ends-china-pulls-out-support-allowi-2005",
         "name": "The Second Korean War ends - China pulls out support, allowing North Korea to...",
         "year": 2005,
         "order": 200508,
-        "keywords": ["The Second Korean War", "China", "United Korea", "I Ryong Yon"]
+        "keywords": [
+          "The Second Korean War",
+          "China",
+          "United Korea",
+          "I Ryong Yon"
+        ]
       },
       {
         "id": "president-i-ryong-yon-is-killed-in-a-bombing-on-the-presiden-2005",
         "name": "President I Ryong Yon is killed in a bombing on the presidential palace. Gene...",
         "year": 2005,
         "order": 200509,
-        "keywords": ["I Ryong Yon", "General Park"]
+        "keywords": [
+          "I Ryong Yon",
+          "General Park"
+        ]
       },
       {
         "id": "the-maoist-loyalist-cabal-controls-southern-china-2005",
         "name": "The Maoist Loyalist Cabal controls southern China.",
         "year": 2005,
         "order": 200510,
-        "keywords": ["Maoist Loyalist Cabal", "China"]
+        "keywords": [
+          "Maoist Loyalist Cabal",
+          "China"
+        ]
       },
       {
         "id": "the-los-angeles-reconstruction-project-is-finished-most-nom-2005",
         "name": "The Los Angeles Reconstruction project is finished. Most Nomads leave Califor...",
         "year": 2005,
         "order": 200511,
-        "keywords": ["Los Angeles", "Nomad"]
+        "keywords": [
+          "Los Angeles",
+          "Nomad"
+        ]
       },
       {
         "id": "directive-2003-ec-a-001348-is-launched-in-the-ec-2005",
         "name": "Directive 2003-EC-A-001348 is launched in the EC.",
         "year": 2005,
         "order": 200512,
-        "keywords": ["Directive 2003-EC-A-001348"]
+        "keywords": [
+          "Directive 2003-EC-A-001348"
+        ]
       },
       {
         "id": "ebm-declares-hamburg-an-independent-nation-2005",
         "name": "EBM declares Hamburg an independent nation.",
         "year": 2005,
         "order": 200513,
-        "keywords": ["Euro Business Machines", "Hamburg"]
+        "keywords": [
+          "Euro Business Machines",
+          "Hamburg"
+        ]
       },
       {
         "id": "the-socialist-government-of-greece-menaces-with-nationalisat-2005",
         "name": "The socialist government of Greece menaces with nationalisations.",
         "year": 2005,
         "order": 200514,
-        "keywords": ["Greece"]
+        "keywords": [
+          "Greece"
+        ]
       },
       {
         "id": "november-5-presidential-appointee-henry-jacobi-is-assassina-2005",
         "name": "November 5: Presidential appointee Henry Jacobi is assassinated. Evidence poi...",
         "year": 2005,
         "order": 200584,
-        "keywords": ["Henry Jacobi", "Montoga Corporation"]
+        "keywords": [
+          "Henry Jacobi",
+          "Montoga Corporation"
+        ]
       },
       {
         "id": "november-17-operation-big-stick-the-mantoga-corporation-i-2005",
         "name": "November 17: Operation Big Stick - The Mantoga Corporation is asked to leave ...",
         "year": 2005,
         "order": 200588,
-        "keywords": ["Operation Big Stick"]
+        "keywords": [
+          "Operation Big Stick"
+        ]
       },
       {
         "id": "the-first-human-clone-is-grown-leading-to-the-development-o-2006",
@@ -1616,168 +2106,235 @@
         "name": "SovOil is granted a licence to produce CHOOH2.",
         "year": 2006,
         "order": 200602,
-        "keywords": ["SovOil", "CHOOH2"]
+        "keywords": [
+          "SovOil",
+          "CHOOH2"
+        ]
       },
       {
         "id": "operation-big-stick-officially-closes-with-the-last-living-m-2006",
         "name": "Operation Big Stick officially closes with the last living Mantoga Corporatio...",
         "year": 2006,
         "order": 200603,
-        "keywords": ["Operation Big Stick", "Mantoga Corporation"]
+        "keywords": [
+          "Operation Big Stick",
+          "Mantoga Corporation"
+        ]
       },
       {
         "id": "cyberlimbs-become-commonplace-among-the-united-states-milita-2006",
         "name": "Cyberlimbs become commonplace among the United States Military.",
         "year": 2006,
         "order": 200604,
-        "keywords": ["Cyberlimbs"]
+        "keywords": [
+          "Cyberlimbs"
+        ]
       },
       {
         "id": "vietnam-joins-the-association-of-southeastern-asian-nations-2006",
         "name": "Vietnam joins the Association of Southeastern Asian Nations.",
         "year": 2006,
         "order": 200605,
-        "keywords": ["wikipedia:Association of Southeast Asian Nations"]
+        "keywords": [
+          "wikipedia:Association of Southeast Asian Nations"
+        ]
       },
       {
         "id": "the-malagay-separatist-movement-is-launched-2006",
         "name": "The Malagay Separatist Movement is launched.",
         "year": 2006,
         "order": 200606,
-        "keywords": ["Malagay Separatist Movement"]
+        "keywords": [
+          "Malagay Separatist Movement"
+        ]
       },
       {
         "id": "in-preparation-for-the-planned-euro-sov-mission-to-mars-ope-2006",
         "name": "In preparation for the planned Euro/Sov mission to Mars, Operation \"Green Man...",
         "year": 2006,
         "order": 200607,
-        "keywords": ["Mars", "Operation \"Green Man\""]
+        "keywords": [
+          "Mars",
+          "Operation \"Green Man\""
+        ]
       },
       {
         "id": "the-greek-government-is-overthrown-by-the-army-with-corporat-2006",
         "name": "The Greek government is overthrown by the army with corporate backing. Surviv...",
         "year": 2006,
         "order": 200608,
-        "keywords": ["Greece", "Rhodes", "Turkey"]
+        "keywords": [
+          "Greece",
+          "Rhodes",
+          "Turkey"
+        ]
       },
       {
         "id": "lupold-korepino-is-named-commander-of-the-sovoil-armed-force-2007",
         "name": "Lupold Korepino is named commander of the SovOil armed forces.",
         "year": 2007,
         "order": 200701,
-        "keywords": ["General Lupold Korepino", "SovOil"]
+        "keywords": [
+          "General Lupold Korepino",
+          "SovOil"
+        ]
       },
       {
         "id": "the-second-corporate-war-begins-after-conflicts-over-drill-2007",
         "name": "The Second Corporate War begins - After conflicts over drilling rights in the...",
         "year": 2007,
         "order": 200702,
-        "keywords": ["Second Corporate War", "Petrochem", "SovOil"]
+        "keywords": [
+          "Second Corporate War",
+          "Petrochem",
+          "SovOil"
+        ]
       },
       {
         "id": "braindances-are-invented-2007",
         "name": "Braindances are invented.",
         "year": 2007,
         "order": 200703,
-        "keywords": ["Braindance"]
+        "keywords": [
+          "Braindance"
+        ]
       },
       {
         "id": "parker-petrochemicals-is-renamed-petrochemical-associates-in-2007",
         "name": "Parker Petrochemicals is renamed Petrochemical Associates International.",
         "year": 2007,
         "order": 200704,
-        "keywords": ["Petrochem"]
+        "keywords": [
+          "Petrochem"
+        ]
       },
       {
         "id": "the-maoist-loyalist-cabal-capture-hong-kong-and-begin-a-seri-2007",
         "name": "The Maoist Loyalist Cabal capture Hong Kong and begin a series of pogroms.",
         "year": 2007,
         "order": 200705,
-        "keywords": ["Maoist Loyalist Cabal", "Hong Kong"]
+        "keywords": [
+          "Maoist Loyalist Cabal",
+          "Hong Kong"
+        ]
       },
       {
         "id": "new-zealand-legalizes-marijuana-for-the-production-of-hemp-2007",
         "name": "New Zealand legalizes Marijuana for the production of Hemp.",
         "year": 2007,
         "order": 200706,
-        "keywords": ["New Zealand"]
+        "keywords": [
+          "New Zealand"
+        ]
       },
       {
         "id": "spain-redirects-funds-designated-for-the-rebuilding-of-towns-2007",
         "name": "Spain redirects funds designated for the rebuilding of towns destroyed by the...",
         "year": 2007,
         "order": 200707,
-        "keywords": ["Spain"]
+        "keywords": [
+          "Spain"
+        ]
       },
       {
         "id": "playland-by-the-sea-is-bought-out-by-tower-of-dark-and-refur-2007",
         "name": "Playland by the Sea is bought out by Tower of Dark and refurbished.",
         "year": 2007,
         "order": 200708,
-        "keywords": ["Playland by the Sea", "Tower of Dark"]
+        "keywords": [
+          "Playland by the Sea",
+          "Tower of Dark"
+        ]
       },
       {
         "id": "the-first-orbital-war-united-states-forces-attack-a-soviet-2008",
         "name": "The First Orbital War - United States forces attack a Soviet space installati...",
         "year": 2008,
         "order": 200801,
-        "keywords": ["First Orbital War", "ESA", "Tycho", "Colorado Springs"]
+        "keywords": [
+          "First Orbital War",
+          "ESA",
+          "Tycho",
+          "Colorado Springs"
+        ]
       },
       {
         "id": "alice-springs-in-australia-s-northern-territory-is-also-hi-2008",
         "name": "Alice Springs, in Australia's Northern territory, is also hit by the Tycho Ma...",
         "year": 2008,
         "order": 200802,
-        "keywords": ["Alice Springs", "Tycho Massdriver"]
+        "keywords": [
+          "Alice Springs",
+          "Tycho Massdriver"
+        ]
       },
       {
         "id": "the-band-samurai-splits-2008",
         "name": "The band Samurai splits.",
         "year": 2008,
         "order": 200803,
-        "keywords": ["Samurai"]
+        "keywords": [
+          "Samurai"
+        ]
       },
       {
         "id": "taiwan-declares-independence-with-the-assistance-of-the-aras-2008",
         "name": "Taiwan declares independence with the assistance of the Arasaka Corporation.",
         "year": 2008,
         "order": 200805,
-        "keywords": ["Taiwan", "Arasaka"]
+        "keywords": [
+          "Taiwan",
+          "Arasaka"
+        ]
       },
       {
         "id": "general-jiang-xiax-is-elected-head-of-the-chinese-communist-2008",
         "name": "General Jiang Xiax is elected head of the Chinese communist party.",
         "year": 2008,
         "order": 200806,
-        "keywords": ["Jiang Xiax"]
+        "keywords": [
+          "Jiang Xiax"
+        ]
       },
       {
         "id": "the-intercontinental-maglev-project-is-completed-2008",
         "name": "The Intercontinental MagLev project is completed.",
         "year": 2008,
         "order": 200807,
-        "keywords": ["Intercontinental MagLev"]
+        "keywords": [
+          "Intercontinental MagLev"
+        ]
       },
       {
         "id": "the-second-homestead-act-is-launched-to-try-and-repopulate-t-2008",
         "name": "The Second Homestead Act is launched to try and repopulate the southwest. Man...",
         "year": 2008,
         "order": 200808,
-        "keywords": ["Second Homestead Act", "Nomad"]
+        "keywords": [
+          "Second Homestead Act",
+          "Nomad"
+        ]
       },
       {
         "id": "greece-attempts-to-annex-cyprus-and-macedonia-but-fails-2008",
         "name": "Greece attempts to annex Cyprus and Macedonia but fails.",
         "year": 2008,
         "order": 200809,
-        "keywords": ["Greece", "Cyprus", "Macedonia"]
+        "keywords": [
+          "Greece",
+          "Cyprus",
+          "Macedonia"
+        ]
       },
       {
         "id": "corporations-attempt-to-buy-up-farmland-in-the-iberian-penin-2008",
         "name": "Corporations attempt to buy up farmland in the Iberian Peninsula. Portugal se...",
         "year": 2008,
         "order": 200810,
-        "keywords": ["Portugal", "Spain"]
+        "keywords": [
+          "Portugal",
+          "Spain"
+        ]
       },
       {
         "id": "november-7-the-united-states-government-undergoes-a-period-2008",
@@ -1790,56 +2347,81 @@
         "name": "Joint Euro-Soviet mission to Mars begins.",
         "year": 2009,
         "order": 200901,
-        "keywords": ["Mars"]
+        "keywords": [
+          "Mars"
+        ]
       },
       {
         "id": "the-mutual-defense-treaty-is-signed-by-the-united-states-and-2009",
         "name": "The Mutual Defense Treaty is signed by the United States and China.",
         "year": 2009,
         "order": 200902,
-        "keywords": ["United States of America", "China"]
+        "keywords": [
+          "United States of America",
+          "China"
+        ]
       },
       {
         "id": "the-mob-war-begins-corporations-begin-operations-against-t-2009",
         "name": "The Mob War begins - Corporations begin operations against the Mafia for cont...",
         "year": 2009,
         "order": 200903,
-        "keywords": ["Mob War", "Mafia", "Night City"]
+        "keywords": [
+          "Mob War",
+          "Mafia",
+          "Night City"
+        ]
       },
       {
         "id": "anatoly-novikovo-is-assassinated-by-petrochem-2009",
         "name": "Anatoly Novikovo is assassinated by Petrochem.",
         "year": 2009,
         "order": 200904,
-        "keywords": ["Anatoly Novikovo", "Petrochem"]
+        "keywords": [
+          "Anatoly Novikovo",
+          "Petrochem"
+        ]
       },
       {
         "id": "yarno-kurgasyn-assumes-control-of-sovoil-2009",
         "name": "Yarno Kurgasyn assumes control of SovOil.",
         "year": 2009,
         "order": 200905,
-        "keywords": ["Yarno Kurgasyn", "SovOil"]
+        "keywords": [
+          "Yarno Kurgasyn",
+          "SovOil"
+        ]
       },
       {
         "id": "the-united-states-begins-operation-to-take-control-of-the-cr-2009",
         "name": "The United States begins operation to take control of the Crystal Palace spac...",
         "year": 2009,
         "order": 200906,
-        "keywords": ["Crystal Palace", "Tycho massdriver", "Washington, D.C."]
+        "keywords": [
+          "Crystal Palace",
+          "Tycho massdriver",
+          "Washington, D.C."
+        ]
       },
       {
         "id": "indonesia-invades-papua-new-guinea-and-renames-it-east-irian-2009",
         "name": "Indonesia invades Papua New Guinea and renames it East Irian Jaya. The Papua ...",
         "year": 2009,
         "order": 200907,
-        "keywords": ["Indonesia", "Papua New Guinea", "New Zealand"]
+        "keywords": [
+          "Indonesia",
+          "Papua New Guinea",
+          "New Zealand"
+        ]
       },
       {
         "id": "the-association-of-southeastern-asian-nations-disbands-2009",
         "name": "The Association of Southeastern Asian Nations disbands.",
         "year": 2009,
         "order": 200908,
-        "keywords": ["wikipedia:Association of Southeast Asian Nations"]
+        "keywords": [
+          "wikipedia:Association of Southeast Asian Nations"
+        ]
       },
       {
         "id": "terrorists-bomb-the-olympic-games-opening-ceremony-among-th-2009",
@@ -1852,28 +2434,38 @@
         "name": "Taking Portugal's lead, Italy begins selling its southern regions to corporat...",
         "year": 2009,
         "order": 200910,
-        "keywords": ["Portugal", "Italy"]
+        "keywords": [
+          "Portugal",
+          "Italy"
+        ]
       },
       {
         "id": "directive-2009-ec-a-000039-is-launched-in-the-ec-2009",
         "name": "Directive 2009-EC-A-000039 is launched in the EC.",
         "year": 2009,
         "order": 200911,
-        "keywords": ["Directive 2009-EC-A-000039"]
+        "keywords": [
+          "Directive 2009-EC-A-000039"
+        ]
       },
       {
         "id": "the-second-central-american-war-ends-countless-soldiers-ar-2010",
         "name": "The Second Central American War ends - Countless soldiers are left to make th...",
         "year": 2010,
         "order": 201001,
-        "keywords": ["Second Central American War", "Panama"]
+        "keywords": [
+          "Second Central American War",
+          "Panama"
+        ]
       },
       {
         "id": "network-54-now-controls-62-of-all-media-broadcasting-in-u-s-2010",
         "name": "Network 54 now controls 62% of all media broadcasting in U.S.",
         "year": 2010,
         "order": 201002,
-        "keywords": ["Network News 54"]
+        "keywords": [
+          "Network News 54"
+        ]
       },
       {
         "id": "food-riots-occur-in-denver-colorado-2010",
@@ -1886,56 +2478,75 @@
         "name": "The Lazarus group is formed.",
         "year": 2010,
         "order": 201004,
-        "keywords": ["Lazarus"]
+        "keywords": [
+          "Lazarus"
+        ]
       },
       {
         "id": "the-second-corporate-war-ends-sovoil-takes-de-facto-contro-2010",
         "name": "The Second Corporate War ends - SovOil takes de facto control of the South Ch...",
         "year": 2010,
         "order": 201005,
-        "keywords": ["Second Corporate War", "SovOil"]
+        "keywords": [
+          "Second Corporate War",
+          "SovOil"
+        ]
       },
       {
         "id": "construction-of-the-o-neill-one-space-colony-begins-2010",
         "name": "Construction of the O'Neill One space colony begins.",
         "year": 2010,
         "order": 201006,
-        "keywords": ["O'Neill One"]
+        "keywords": [
+          "O'Neill One"
+        ]
       },
       {
         "id": "the-corporations-and-the-triads-of-hong-kong-ally-themselves-2010",
         "name": "The Corporations and the Triads of Hong Kong ally themselves against the Maoi...",
         "year": 2010,
         "order": 201007,
-        "keywords": ["Hong Kong", "Maoist Loyalist Cabal"]
+        "keywords": [
+          "Hong Kong",
+          "Maoist Loyalist Cabal"
+        ]
       },
       {
         "id": "the-night-city-psycho-squad-is-formed-by-the-psychotic-solo-2010",
         "name": "The Night City Psycho Squad is formed by the psychotic Solo Ares.",
         "year": 2010,
         "order": 201008,
-        "keywords": ["MaxTac", "Ares"]
+        "keywords": [
+          "MaxTac",
+          "Ares"
+        ]
       },
       {
         "id": "the-second-homestead-act-fails-due-to-inadequate-infrastruct-2010",
         "name": "The Second Homestead Act fails due to inadequate infrastructure support.",
         "year": 2010,
         "order": 201009,
-        "keywords": ["Second Homestead Act"]
+        "keywords": [
+          "Second Homestead Act"
+        ]
       },
       {
         "id": "the-south-of-romania-is-hit-by-an-earthquake-bucharest-is-h-2010",
         "name": "The south of Romania is hit by an earthquake. Bucharest is hit hardest as 267...",
         "year": 2010,
         "order": 201010,
-        "keywords": ["Romania"]
+        "keywords": [
+          "Romania"
+        ]
       },
       {
         "id": "algeria-begins-hiring-corporate-paramilitary-squads-to-comba-2010",
         "name": "Algeria begins hiring corporate paramilitary squads to combat rebels. Media c...",
         "year": 2010,
         "order": 201011,
-        "keywords": ["Algeria"]
+        "keywords": [
+          "Algeria"
+        ]
       },
       {
         "id": "corporations-restructure-the-night-city-council-due-to-the-2011",
@@ -1948,14 +2559,19 @@
         "name": "July 13: Bryan LeShawn sets record for deepest independent suit dive, utilizi...",
         "year": 2011,
         "order": 201102,
-        "keywords": ["Hydrosubsidium Diving Suit"]
+        "keywords": [
+          "Hydrosubsidium Diving Suit"
+        ]
       },
       {
         "id": "the-crystal-palace-space-station-is-completed-by-the-eurospa-2011",
         "name": "The Crystal Palace space station is completed by the EuroSpace Agency.",
         "year": 2011,
         "order": 201103,
-        "keywords": ["Crystal Palace", "ESA"]
+        "keywords": [
+          "Crystal Palace",
+          "ESA"
+        ]
       },
       {
         "id": "joint-euro-soviet-mission-to-mars-is-a-success-2011",
@@ -1968,14 +2584,20 @@
         "name": "The Mob War ends - Corporations oust the Mafia as the de facto leaders of Nig...",
         "year": 2011,
         "order": 201105,
-        "keywords": ["Mob War", "Night City"]
+        "keywords": [
+          "Mob War",
+          "Night City"
+        ]
       },
       {
         "id": "marshall-r-shepard-joins-petrochem-2011",
         "name": "Marshall R. Shepard joins Petrochem.",
         "year": 2011,
         "order": 201106,
-        "keywords": ["Marshall Rock Shepard", "Petrochem"]
+        "keywords": [
+          "Marshall Rock Shepard",
+          "Petrochem"
+        ]
       },
       {
         "id": "filipino-president-ramos-is-killed-and-is-succeed-by-preside-2011",
@@ -1994,70 +2616,96 @@
         "name": "An oil rig is hijacked in the Gulf of Mexico and a new Pirate haven is formed...",
         "year": 2011,
         "order": 201109,
-        "keywords": ["MetaKey"]
+        "keywords": [
+          "MetaKey"
+        ]
       },
       {
         "id": "compulsory-sale-of-land-below-the-required-level-of-producti-2011",
         "name": "Compulsory sale of land below the required level of productivity begin in Por...",
         "year": 2011,
         "order": 201110,
-        "keywords": ["Portugal"]
+        "keywords": [
+          "Portugal"
+        ]
       },
       {
         "id": "a-majority-of-southern-italy-is-placed-under-corporate-contr-2011",
         "name": "A majority of Southern Italy is placed under corporate control.",
         "year": 2011,
         "order": 201111,
-        "keywords": ["Italy"]
+        "keywords": [
+          "Italy"
+        ]
       },
       {
         "id": "greece-raises-taxes-to-gain-funds-to-fight-off-partisan-move-2011",
         "name": "Greece raises taxes to gain funds to fight off partisan movements. Most corpo...",
         "year": 2011,
         "order": 201112,
-        "keywords": ["Greece"]
+        "keywords": [
+          "Greece"
+        ]
       },
       {
         "id": "john-freeman-and-william-dolarhyde-open-the-forlorn-hope-in-2011",
         "name": "John Freeman and William Dolarhyde open the Forlorn Hope in Night City.",
         "year": 2011,
         "order": 201113,
-        "keywords": ["John Freeman", "William Dolarhyde", "Forlorn Hope (2020)", "Night City"]
+        "keywords": [
+          "John Freeman",
+          "William Dolarhyde",
+          "Forlorn Hope (2020)",
+          "Night City"
+        ]
       },
       {
         "id": "the-northern-seperation-war-begins-the-northern-half-of-ca-2011",
         "name": "The Northern Seperation War begins - The northern half of California declares...",
         "year": 2011,
         "order": 201114,
-        "keywords": ["Northern Seperation War"]
+        "keywords": [
+          "Northern Seperation War"
+        ]
       },
       {
         "id": "the-wasting-plague-is-unleashed-on-chicago-il-1700-are-kil-2012",
         "name": "The Wasting Plague is unleashed on Chicago, IL. 1700 are killed.",
         "year": 2012,
         "order": 201201,
-        "keywords": ["Wasting Plague", "Chicago"]
+        "keywords": [
+          "Wasting Plague",
+          "Chicago"
+        ]
       },
       {
         "id": "gerhard-kessler-is-assassinated-2012",
         "name": "Gerhard Kessler is assassinated.",
         "year": 2012,
         "order": 201202,
-        "keywords": ["Gerhard Kessler"]
+        "keywords": [
+          "Gerhard Kessler"
+        ]
       },
       {
         "id": "yarno-kurgasyn-retires-from-sovoil-2012",
         "name": "Yarno Kurgasyn retires from SovOil.",
         "year": 2012,
         "order": 201203,
-        "keywords": ["Yarno Kurgasyn", "SovOil"]
+        "keywords": [
+          "Yarno Kurgasyn",
+          "SovOil"
+        ]
       },
       {
         "id": "arkady-cherminino-assumes-control-of-sovoil-2012",
         "name": "Arkady Cherminino assumes control of SovOil.",
         "year": 2012,
         "order": 201204,
-        "keywords": ["Arkady Cherminino", "SovOil"]
+        "keywords": [
+          "Arkady Cherminino",
+          "SovOil"
+        ]
       },
       {
         "id": "nanotechnology-breakthrough-is-achieved-2012",
@@ -2076,49 +2724,68 @@
         "name": "After the destruction of Chicago, the government orders the construction of C...",
         "year": 2012,
         "order": 201207,
-        "keywords": ["Chicago Port", "Nomad"]
+        "keywords": [
+          "Chicago Port",
+          "Nomad"
+        ]
       },
       {
         "id": "the-nomad-long-walk-ends-with-only-10-returning-home-2012",
         "name": "The Nomad Long Walk ends with only 10% returning home.",
         "year": 2012,
         "order": 201208,
-        "keywords": ["The Long Walk"]
+        "keywords": [
+          "The Long Walk"
+        ]
       },
       {
         "id": "metacorp-is-founded-2012",
         "name": "MetaCorp is founded.",
         "year": 2012,
         "order": 201209,
-        "keywords": ["MetaCorp"]
+        "keywords": [
+          "MetaCorp"
+        ]
       },
       {
         "id": "operation-green-man-is-publicly-shut-down-after-informatio-2012",
         "name": "Operation \"Green Man\" is publicly shut down after information leaks to the pr...",
         "year": 2012,
         "order": 201210,
-        "keywords": ["Operation \"Green Man\"", "INTERPOL", "European Space Agency"]
+        "keywords": [
+          "Operation \"Green Man\"",
+          "INTERPOL",
+          "European Space Agency"
+        ]
       },
       {
         "id": "drought-decimates-spain-and-a-small-corporate-war-breaks-out-2012",
         "name": "Drought decimates Spain and a small Corporate war breaks out over water right...",
         "year": 2012,
         "order": 201211,
-        "keywords": ["Spain"]
+        "keywords": [
+          "Spain"
+        ]
       },
       {
         "id": "italy-officially-organises-itself-into-four-states-north-s-2012",
         "name": "Italy officially organises itself into four states: north, south, central, an...",
         "year": 2012,
         "order": 201212,
-        "keywords": ["Italy"]
+        "keywords": [
+          "Italy"
+        ]
       },
       {
         "id": "the-northern-seperation-war-ends-with-the-ratification-of-2012",
         "name": "The Northern Seperation War ends - With the ratification of the Northern Sepa...",
         "year": 2012,
         "order": 201213,
-        "keywords": ["Northern Seperation War", "North California", "South California"]
+        "keywords": [
+          "Northern Seperation War",
+          "North California",
+          "South California"
+        ]
       },
       {
         "id": "most-adventures-in-the-series-take-place-2013",
@@ -2131,35 +2798,47 @@
         "name": "Netwatch established by joint U.S./ Eurotheatre Treaty.",
         "year": 2013,
         "order": 201302,
-        "keywords": ["Netwatch"]
+        "keywords": [
+          "Netwatch"
+        ]
       },
       {
         "id": "the-first-artificial-intelligence-is-developed-by-microtech-2013",
         "name": "The first Artificial Intelligence is developed by Microtech.",
         "year": 2013,
         "order": 201303,
-        "keywords": ["Artificial intelligence", "Microtech"]
+        "keywords": [
+          "Artificial intelligence",
+          "Microtech"
+        ]
       },
       {
         "id": "the-central-african-conflict-begins-2013",
         "name": "The Central African conflict begins.",
         "year": 2013,
         "order": 201304,
-        "keywords": ["The Central African conflict"]
+        "keywords": [
+          "The Central African conflict"
+        ]
       },
       {
         "id": "emperor-showa-tenno-dies-and-emperor-shinka-tenno-ascends-th-2013",
         "name": "Emperor Showa-Tenno dies and Emperor Shinka-Tenno ascends the throne in Japan.",
         "year": 2013,
         "order": 201305,
-        "keywords": ["Shinka Tenno"]
+        "keywords": [
+          "Shinka Tenno"
+        ]
       },
       {
         "id": "maoist-loyalist-cabal-leader-hua-yuchi-is-assassinated-2013",
         "name": "Maoist Loyalist Cabal leader Hua Yuchi is assassinated.",
         "year": 2013,
         "order": 201306,
-        "keywords": ["Maoist Loyalist Cabal", "Hua Yuchi"]
+        "keywords": [
+          "Maoist Loyalist Cabal",
+          "Hua Yuchi"
+        ]
       },
       {
         "id": "filipino-president-tiapan-is-elected-2013",
@@ -2172,63 +2851,89 @@
         "name": "Johnny Silverhand goes into hiding for a while, with the help of the Aldecaldos.",
         "year": 2013,
         "order": 201310,
-        "keywords": ["Johnny Silverhand", "Aldecaldos"]
+        "keywords": [
+          "Johnny Silverhand",
+          "Aldecaldos"
+        ]
       },
       {
         "id": "the-reconstruction-of-mexico-city-is-completed-2013",
         "name": "The reconstruction of Mexico City is completed.",
         "year": 2013,
         "order": 201311,
-        "keywords": ["Mexico City"]
+        "keywords": [
+          "Mexico City"
+        ]
       },
       {
         "id": "algeria-s-anti-terrorism-operations-extend-to-libya-where-t-2013",
         "name": "Algeria's anti-terrorism operations extend to Libya, where the rebels train t...",
         "year": 2013,
         "order": 201312,
-        "keywords": ["Algeria", "Libya"]
+        "keywords": [
+          "Algeria",
+          "Libya"
+        ]
       },
       {
         "id": "eugene-hobson-forms-streetemps-2013",
         "name": "Eugene Hobson forms StreeTemps.",
         "year": 2013,
         "order": 201313,
-        "keywords": ["Eugene Hobson", "StreeTemps"]
+        "keywords": [
+          "Eugene Hobson",
+          "StreeTemps"
+        ]
       },
       {
         "id": "april-12-alt-cunningham-is-kidnapped-by-arasaka-2013",
         "name": "April 12: Alt Cunningham is kidnapped by Arasaka.",
         "year": 2013,
         "order": 201328,
-        "keywords": ["Altiera Cunningham", "Arasaka"]
+        "keywords": [
+          "Altiera Cunningham",
+          "Arasaka"
+        ]
       },
       {
         "id": "april-13-johnny-silverhand-provokes-a-riot-to-invade-arasak-2013",
         "name": "April 13: Johnny Silverhand provokes a riot to invade Arasaka Tower. Alt Cunn...",
         "year": 2013,
         "order": 201328,
-        "keywords": ["Johnny Silverhand", "Arasaka Towers", "Net"]
+        "keywords": [
+          "Johnny Silverhand",
+          "Arasaka Towers",
+          "Net"
+        ]
       },
       {
         "id": "turf-wars-begin-in-night-city-known-as-the-metal-wars-a-sec-2014",
         "name": "Turf wars begin in Night City known as The Metal Wars. A section of the city ...",
         "year": 2014,
         "order": 201401,
-        "keywords": ["Night City", "The Metal Wars", "Combat Zone (2020)"]
+        "keywords": [
+          "Night City",
+          "The Metal Wars",
+          "Combat Zone (2020)"
+        ]
       },
       {
         "id": "the-ihara-grubb-transformation-algorithm-standardises-the-ne-2014",
         "name": "The Ihara-Grubb Transformation Algorithm standardises the Net.",
         "year": 2014,
         "order": 201402,
-        "keywords": ["Net"]
+        "keywords": [
+          "Net"
+        ]
       },
       {
         "id": "emperor-shinka-tenno-is-removed-from-power-in-japan-2014",
         "name": "Emperor Shinka-Tenno is removed from power in Japan.",
         "year": 2014,
         "order": 201403,
-        "keywords": ["Shinka Tenno"]
+        "keywords": [
+          "Shinka Tenno"
+        ]
       },
       {
         "id": "the-peoples-liberation-party-regain-control-of-large-areas-o-2014",
@@ -2241,7 +2946,9 @@
         "name": "Hong Kong is liberated.",
         "year": 2014,
         "order": 201405,
-        "keywords": ["Hong Kong"]
+        "keywords": [
+          "Hong Kong"
+        ]
       },
       {
         "id": "the-association-of-southeastern-asian-nations-is-reformed-2014",
@@ -2254,7 +2961,9 @@
         "name": "The Amnesty International office in London is bombed. They set up a new HQ in...",
         "year": 2014,
         "order": 201407,
-        "keywords": ["New Zealand"]
+        "keywords": [
+          "New Zealand"
+        ]
       },
       {
         "id": "the-cape-york-spaceport-completes-construction-2014",
@@ -2267,161 +2976,222 @@
         "name": "Kizamasu Inc. own major portion of Houston to build corporate city.",
         "year": 2014,
         "order": 201409,
-        "keywords": ["Kizamasu Inc."]
+        "keywords": [
+          "Kizamasu Inc."
+        ]
       },
       {
         "id": "neo-catholic-reformation-celibacy-is-abolished-and-women-a-2014",
         "name": "Neo-Catholic Reformation - Celibacy is abolished and women are allowed to bec...",
         "year": 2014,
         "order": 201410,
-        "keywords": ["Neo-Catholic Reformation", "Church of Poland"]
+        "keywords": [
+          "Neo-Catholic Reformation",
+          "Church of Poland"
+        ]
       },
       {
         "id": "portuguese-farmers-immigrate-to-spain-and-france-2014",
         "name": "Portuguese farmers immigrate to Spain and France.",
         "year": 2014,
         "order": 201411,
-        "keywords": ["Portugal", "Spain", "France"]
+        "keywords": [
+          "Portugal",
+          "Spain",
+          "France"
+        ]
       },
       {
         "id": "lithuania-hires-cybernetic-mercenaries-to-repel-an-invasion-2015",
         "name": "Lithuania hires cybernetic Mercenaries to repel an invasion by Latvia. This i...",
         "year": 2015,
         "order": 201501,
-        "keywords": ["Lithuania", "Mercenary", "Latvia", "Solo"]
+        "keywords": [
+          "Lithuania",
+          "Mercenary",
+          "Latvia",
+          "Solo"
+        ]
       },
       {
         "id": "douglas-llewellyn-joins-the-lazarus-group-2015",
         "name": "Douglas Llewellyn joins the Lazarus Group.",
         "year": 2015,
         "order": 201502,
-        "keywords": ["Douglas Llewellyn", "Lazarus"]
+        "keywords": [
+          "Douglas Llewellyn",
+          "Lazarus"
+        ]
       },
       {
         "id": "nanotechnology-becomes-commercially-available-2015",
         "name": "Nanotechnology becomes commercially available.",
         "year": 2015,
         "order": 201503,
-        "keywords": ["Nanotechnology"]
+        "keywords": [
+          "Nanotechnology"
+        ]
       },
       {
         "id": "japan-is-removed-from-the-eec-after-ten-years-of-conflict-2015",
         "name": "Japan is removed from the EEC after ten years of conflict.",
         "year": 2015,
         "order": 201504,
-        "keywords": ["Japan", "European Economic Community"]
+        "keywords": [
+          "Japan",
+          "European Economic Community"
+        ]
       },
       {
         "id": "japan-establishes-the-new-yen-currency-2015",
         "name": "Japan establishes the New Yen currency.",
         "year": 2015,
         "order": 201505,
-        "keywords": ["New Yen"]
+        "keywords": [
+          "New Yen"
+        ]
       },
       {
         "id": "the-yen-war-begins-in-europe-with-germany-aiming-to-limit-i-2015",
         "name": "The Yen War begins in Europe, with Germany aiming to limit international corp...",
         "year": 2015,
         "order": 201506,
-        "keywords": ["Yen War", "Germany"]
+        "keywords": [
+          "Yen War",
+          "Germany"
+        ]
       },
       {
         "id": "metacorp-is-founded-2015",
         "name": "MetaCorp is founded.",
         "year": 2015,
         "order": 201507,
-        "keywords": ["MetaCorp"]
+        "keywords": [
+          "MetaCorp"
+        ]
       },
       {
         "id": "the-eec-declares-that-all-combat-oriented-cyberware-held-by-2015",
         "name": "The EEC declares that all combat-oriented Cyberware held by civilians must be...",
         "year": 2015,
         "order": 201508,
-        "keywords": ["Cyberware"]
+        "keywords": [
+          "Cyberware"
+        ]
       },
       {
         "id": "spain-ends-its-suppression-of-agricorps-highwaymen-begin-re-2015",
         "name": "Spain ends its suppression of AgriCorps. Highwaymen begin re-appearing as a r...",
         "year": 2015,
         "order": 201509,
-        "keywords": ["Spain"]
+        "keywords": [
+          "Spain"
+        ]
       },
       {
         "id": "europa-sur-an-alliance-of-criminal-organisations-is-founde-2015",
         "name": "Europa Sur, an alliance of criminal organisations, is founded.",
         "year": 2015,
         "order": 201510,
-        "keywords": ["Europa Sur"]
+        "keywords": [
+          "Europa Sur"
+        ]
       },
       {
         "id": "eugene-hobson-dies-2015",
         "name": "Eugene Hobson dies.",
         "year": 2015,
         "order": 201511,
-        "keywords": ["Eugene Hobson"]
+        "keywords": [
+          "Eugene Hobson"
+        ]
       },
       {
         "id": "the-third-corporate-war-begins-merrill-asukaga-finch-di-2016",
         "name": "The Third Corporate War begins - Merrill, Asukaga & Finch discovers a confide...",
         "year": 2016,
         "order": 201601,
-        "keywords": ["Third Corporate War", "Asukaga & Finch", "Rothstein Fund", "Net"]
+        "keywords": [
+          "Third Corporate War",
+          "Asukaga & Finch",
+          "Rothstein Fund",
+          "Net"
+        ]
       },
       {
         "id": "angus-youngblood-and-ellen-trieste-get-married-via-the-net-2016",
         "name": "Angus Youngblood and Ellen Trieste get married via the Net.",
         "year": 2016,
         "order": 201602,
-        "keywords": ["Angus Youngblood", "Ellen Trieste"]
+        "keywords": [
+          "Angus Youngblood",
+          "Ellen Trieste"
+        ]
       },
       {
         "id": "the-o-neill-one-space-colony-completes-construction-2016",
         "name": "The O'Neill One space colony completes construction.",
         "year": 2016,
         "order": 201603,
-        "keywords": ["O'Neill One"]
+        "keywords": [
+          "O'Neill One"
+        ]
       },
       {
         "id": "bioware-becomes-commercially-available-2016",
         "name": "Bioware becomes commercially available.",
         "year": 2016,
         "order": 201604,
-        "keywords": ["Bioware"]
+        "keywords": [
+          "Bioware"
+        ]
       },
       {
         "id": "the-scottish-uprising-begins-2016",
         "name": "The Scottish Uprising begins.",
         "year": 2016,
         "order": 201605,
-        "keywords": ["Scottish Uprising"]
+        "keywords": [
+          "Scottish Uprising"
+        ]
       },
       {
         "id": "water-riots-begin-in-australia-arasaka-funds-construction-o-2016",
         "name": "Water riots begin in Australia. Arasaka funds construction of a desalination ...",
         "year": 2016,
         "order": 201606,
-        "keywords": ["Arasaka"]
+        "keywords": [
+          "Arasaka"
+        ]
       },
       {
         "id": "the-bermeo-incident-127-protesters-are-killed-by-corporate-2016",
         "name": "The Bermeo Incident - 127 protesters are killed by corporate security teams.",
         "year": 2016,
         "order": 201607,
-        "keywords": ["Bermeo Incident"]
+        "keywords": [
+          "Bermeo Incident"
+        ]
       },
       {
         "id": "jihadists-begin-to-preach-against-a-westernising-morocco-and-2016",
         "name": "Jihadists begin to preach against a westernising Morocco and Tunisia.",
         "year": 2016,
         "order": 201608,
-        "keywords": ["Morocco", "Tunisia"]
+        "keywords": [
+          "Morocco",
+          "Tunisia"
+        ]
       },
       {
         "id": "blair-is-inaugurated-as-president-of-the-united-states-of-am-2017",
         "name": "Blair is inaugurated as President of the United States of America. His vice p...",
         "year": 2017,
         "order": 201701,
-        "keywords": ["Blair", "Elizabeth Kress"]
+        "keywords": [
+          "Blair",
+          "Elizabeth Kress"
+        ]
       },
       {
         "id": "the-first-self-aware-human-clone-is-created-2017",
@@ -2434,7 +3204,9 @@
         "name": "The O'Neill Two space colony is completed and named Galileo Cylinder.",
         "year": 2017,
         "order": 201703,
-        "keywords": ["O'Neill Two"]
+        "keywords": [
+          "O'Neill Two"
+        ]
       },
       {
         "id": "nasa-launches-a-mission-to-mars-2017",
@@ -2447,42 +3219,57 @@
         "name": "Imperial Metropolitan Agriculture forces capture Bristol, dealing a blow to t...",
         "year": 2017,
         "order": 201705,
-        "keywords": ["Imperial Metropolitan Agriculture"]
+        "keywords": [
+          "Imperial Metropolitan Agriculture"
+        ]
       },
       {
         "id": "london-is-flooded-as-the-thames-flood-barriers-are-bombed-2017",
         "name": "London is flooded as the Thames flood barriers are bombed.",
         "year": 2017,
         "order": 201706,
-        "keywords": ["London"]
+        "keywords": [
+          "London"
+        ]
       },
       {
         "id": "the-martial-law-authority-is-disbanded-and-the-monarchy-is-r-2017",
         "name": "The Martial Law Authority is disbanded and the monarchy is restored in the Un...",
         "year": 2017,
         "order": 201707,
-        "keywords": ["Martial Law Authority"]
+        "keywords": [
+          "Martial Law Authority"
+        ]
       },
       {
         "id": "arasaka-discovers-precious-natural-deposits-under-a-facility-2017",
         "name": "Arasaka discovers precious natural deposits under a facility in Africa. Milit...",
         "year": 2017,
         "order": 201708,
-        "keywords": ["Arasaka", "Militech"]
+        "keywords": [
+          "Arasaka",
+          "Militech"
+        ]
       },
       {
         "id": "the-seven-nomad-nations-are-officially-established-2017",
         "name": "The Seven Nomad Nations are officially established.",
         "year": 2017,
         "order": 201709,
-        "keywords": ["Seven Nations"]
+        "keywords": [
+          "Seven Nations"
+        ]
       },
       {
         "id": "metacorp-sells-the-jacksuit-the-first-assisted-combat-perso-2017",
         "name": "MetaCorp sells the JackSuit, the first Assisted Combat Personal Armor, to Mil...",
         "year": 2017,
         "order": 201710,
-        "keywords": ["MetaCorp", "Assisted Combat Personal Armor", "Militech"]
+        "keywords": [
+          "MetaCorp",
+          "Assisted Combat Personal Armor",
+          "Militech"
+        ]
       },
       {
         "id": "a-neurotoxin-spill-occurs-in-the-latvian-town-of-jelgava-li-2017",
@@ -2495,7 +3282,10 @@
         "name": "Germany signs a deal allowing their troops to train in Hungary in exchange fo...",
         "year": 2017,
         "order": 201712,
-        "keywords": ["Germany", "Hungary"]
+        "keywords": [
+          "Germany",
+          "Hungary"
+        ]
       },
       {
         "id": "eurospace-agency-launches-a-mission-to-jupiter-2018",
@@ -2508,21 +3298,28 @@
         "name": "The European Brushfire Wars begin.",
         "year": 2018,
         "order": 201802,
-        "keywords": ["Brushfire Wars"]
+        "keywords": [
+          "Brushfire Wars"
+        ]
       },
       {
         "id": "the-o-neill-three-space-colony-is-completed-and-named-paradi-2018",
         "name": "The O'Neill Three space colony is completed and named Paradise Station.",
         "year": 2018,
         "order": 201803,
-        "keywords": ["O'Neill Three"]
+        "keywords": [
+          "O'Neill Three"
+        ]
       },
       {
         "id": "the-eurospace-agency-sends-another-joint-mission-to-mars-wit-2018",
         "name": "The EuroSpace Agency sends another joint mission to Mars with SovOil.",
         "year": 2018,
         "order": 201804,
-        "keywords": ["ESA", "SovOil"]
+        "keywords": [
+          "ESA",
+          "SovOil"
+        ]
       },
       {
         "id": "human-cloning-laws-are-passed-in-europe-2018",
@@ -2535,35 +3332,46 @@
         "name": "The Pirate Haven of MetaKey is moved to Tampa, Florida to begin the salvage o...",
         "year": 2018,
         "order": 201806,
-        "keywords": ["MetaKey"]
+        "keywords": [
+          "MetaKey"
+        ]
       },
       {
         "id": "poland-is-attacked-by-czechoslovakia-but-the-invasion-is-re-2018",
         "name": "Poland is attacked by Czechoslovakia, but the invasion is repelled.",
         "year": 2018,
         "order": 201807,
-        "keywords": ["Poland"]
+        "keywords": [
+          "Poland"
+        ]
       },
       {
         "id": "romania-invades-bulgaria-2018",
         "name": "Romania invades Bulgaria.",
         "year": 2018,
         "order": 201808,
-        "keywords": ["Romania", "Bulgaria"]
+        "keywords": [
+          "Romania",
+          "Bulgaria"
+        ]
       },
       {
         "id": "rolf-schneider-is-elected-president-of-the-european-council-2018",
         "name": "Rolf Schneider is elected president of the European Council.",
         "year": 2018,
         "order": 201809,
-        "keywords": ["Rolf Schneider"]
+        "keywords": [
+          "Rolf Schneider"
+        ]
       },
       {
         "id": "evienne-de-tours-is-elected-to-join-the-european-council-2018",
         "name": "Evienne De Tours is elected to join the European Council.",
         "year": 2018,
         "order": 201810,
-        "keywords": ["Evienne De Tours"]
+        "keywords": [
+          "Evienne De Tours"
+        ]
       },
       {
         "id": "interpol-launches-their-organized-crime-division-2018",
@@ -2576,56 +3384,78 @@
         "name": "Directive 2017-EC-A-001021 is launched in the EC.",
         "year": 2018,
         "order": 201812,
-        "keywords": ["Directive 2017-EC-A-001021"]
+        "keywords": [
+          "Directive 2017-EC-A-001021"
+        ]
       },
       {
         "id": "greece-annexes-macedonia-with-the-aid-of-albania-in-retalia-2018",
         "name": "Greece annexes Macedonia with the aid of Albania. In retaliation, Serbia inva...",
         "year": 2018,
         "order": 201813,
-        "keywords": ["Greece", "Macedonia", "Albania", "Serbia"]
+        "keywords": [
+          "Greece",
+          "Macedonia",
+          "Albania",
+          "Serbia"
+        ]
       },
       {
         "id": "the-european-space-agency-begins-a-mission-to-jupiter-2018",
         "name": "The European Space Agency begins a mission to Jupiter.",
         "year": 2018,
         "order": 201814,
-        "keywords": ["European Space Agency", "Jupiter"]
+        "keywords": [
+          "European Space Agency",
+          "Jupiter"
+        ]
       },
       {
         "id": "the-first-laws-against-cloning-of-sentient-beings-are-passed-2018",
         "name": "The first laws against Cloning of sentient beings are passed in the EEC.",
         "year": 2018,
         "order": 201815,
-        "keywords": ["Cloning"]
+        "keywords": [
+          "Cloning"
+        ]
       },
       {
         "id": "terrorist-attacks-are-performed-across-italy-by-the-nuova-ma-2018",
         "name": "Terrorist attacks are performed across Italy by the Nuova Mafia. Sections of ...",
         "year": 2018,
         "order": 201816,
-        "keywords": ["Italy", "Nuova Mafia"]
+        "keywords": [
+          "Italy",
+          "Nuova Mafia"
+        ]
       },
       {
         "id": "pritap-suwarti-is-assassinated-2018",
         "name": "Pritap Suwarti is assassinated.",
         "year": 2018,
         "order": 201817,
-        "keywords": ["Pritap Suwarti"]
+        "keywords": [
+          "Pritap Suwarti"
+        ]
       },
       {
         "id": "amelia-young-dies-2018",
         "name": "Amelia Young dies.",
         "year": 2018,
         "order": 201818,
-        "keywords": ["Amelia Young"]
+        "keywords": [
+          "Amelia Young"
+        ]
       },
       {
         "id": "u-s-president-blair-falls-ill-and-is-incapacitated-his-vic-2018",
         "name": "U.S. President Blair falls ill and is incapacitated. His vice president, Eliz...",
         "year": 2018,
         "order": 201819,
-        "keywords": ["Blair", "Elizabeth Kress"]
+        "keywords": [
+          "Blair",
+          "Elizabeth Kress"
+        ]
       },
       {
         "id": "l-5-space-colonies-revolt-and-declare-independence-2019",
@@ -2656,42 +3486,61 @@
         "name": "Emperor Jinkyoku-Tenno ascends the throne in Japan.",
         "year": 2019,
         "order": 201906,
-        "keywords": ["Jinkyoku Tenno"]
+        "keywords": [
+          "Jinkyoku Tenno"
+        ]
       },
       {
         "id": "opium-production-begins-anew-in-the-golden-triangle-of-thail-2019",
         "name": "Opium production begins anew in the golden triangle of Thailand, Myanmar and ...",
         "year": 2019,
         "order": 201907,
-        "keywords": ["Thailand", "Myanmar", "Laos"]
+        "keywords": [
+          "Thailand",
+          "Myanmar",
+          "Laos"
+        ]
       },
       {
         "id": "stormtech-begins-operations-in-chicago-illinois-2019",
         "name": "StormTech begins operations in Chicago, Illinois.",
         "year": 2019,
         "order": 201908,
-        "keywords": ["StormTech", "Chicago", "Illinois"]
+        "keywords": [
+          "StormTech",
+          "Chicago",
+          "Illinois"
+        ]
       },
       {
         "id": "the-european-space-agency-begins-construction-of-a-mass-driv-2019",
         "name": "The European Space Agency begins construction of a Mass driver in the Canary ...",
         "year": 2019,
         "order": 201909,
-        "keywords": ["European Space Agency", "Mass driver"]
+        "keywords": [
+          "European Space Agency",
+          "Mass driver"
+        ]
       },
       {
         "id": "albania-is-annexed-by-yugoslavia-2019",
         "name": "Albania is annexed by Yugoslavia.",
         "year": 2019,
         "order": 201910,
-        "keywords": ["Albania", "Yugoslavia"]
+        "keywords": [
+          "Albania",
+          "Yugoslavia"
+        ]
       },
       {
         "id": "april-14-president-blair-dies-elizabeth-kress-is-sworn-in-2019",
         "name": "April 14: President Blair dies. Elizabeth Kress is sworn in as the next Presi...",
         "year": 2019,
         "order": 201928,
-        "keywords": ["Blair", "Elizabeth Kress"]
+        "keywords": [
+          "Blair",
+          "Elizabeth Kress"
+        ]
       },
       {
         "id": "most-adventures-in-the-series-take-place-2020",
@@ -2704,35 +3553,53 @@
         "name": "The Second Joint SovOil ESA Mars mission is successful.",
         "year": 2020,
         "order": 202002,
-        "keywords": ["SovOil", "ESA"]
+        "keywords": [
+          "SovOil",
+          "ESA"
+        ]
       },
       {
         "id": "stormtech-contracts-the-jodes-and-the-aldecaldos-to-begin-th-2020",
         "name": "StormTech contracts the Jodes and the Aldecaldos to begin the Chicago salvage...",
         "year": 2020,
         "order": 202003,
-        "keywords": ["StormTech", "Jodes", "Aldecaldos", "Chicago"]
+        "keywords": [
+          "StormTech",
+          "Jodes",
+          "Aldecaldos",
+          "Chicago"
+        ]
       },
       {
         "id": "the-snake-nation-and-folk-nation-are-contracted-to-build-an-2020",
         "name": "The Snake Nation and Folk Nation are contracted to build an extension of the ...",
         "year": 2020,
         "order": 202004,
-        "keywords": ["Snake Nation", "Folk Nation", "Intercontinental MagLev", "Boston"]
+        "keywords": [
+          "Snake Nation",
+          "Folk Nation",
+          "Intercontinental MagLev",
+          "Boston"
+        ]
       },
       {
         "id": "the-corporate-alliance-controlling-portugal-breaks-down-two-2020",
         "name": "The corporate alliance controlling Portugal breaks down. Two rival factions c...",
         "year": 2020,
         "order": 202005,
-        "keywords": ["Portugal"]
+        "keywords": [
+          "Portugal"
+        ]
       },
       {
         "id": "the-carbon-plague-ravages-night-city-for-two-weeks-then-mys-2020",
         "name": "The Carbon Plague ravages Night City for two weeks, then mysteriously stops.",
         "year": 2020,
         "order": 202006,
-        "keywords": ["Carbon Plague", "Night City"]
+        "keywords": [
+          "Carbon Plague",
+          "Night City"
+        ]
       },
       {
         "id": "chicago-rebuilding-project-begins-2020",
@@ -2745,42 +3612,66 @@
         "name": "NASA's crewed Pathfinder mission to Jupiter launches in the summer of 2020. I...",
         "year": 2020,
         "order": 202008,
-        "keywords": ["NASA", "Jupiter"]
+        "keywords": [
+          "NASA",
+          "Jupiter"
+        ]
       },
       {
         "id": "nasa-builds-a-base-on-mars-it-is-called-chryse-base-2021",
         "name": "NASA builds a base on Mars, it is called Chryse Base.",
         "year": 2021,
         "order": 202101,
-        "keywords": ["Mars", "Chryse Base"]
+        "keywords": [
+          "Mars",
+          "Chryse Base"
+        ]
       },
       {
         "id": "streetemps-open-regional-offices-in-san-francisco-and-seattl-2021",
         "name": "StreeTemps open regional offices in San Francisco and Seattle.",
         "year": 2021,
         "order": 202102,
-        "keywords": ["StreeTemps", "San Francisco", "Seattle"]
+        "keywords": [
+          "StreeTemps",
+          "San Francisco",
+          "Seattle"
+        ]
       },
       {
         "id": "aquacorp-ihag-is-manipulated-towards-bankruptcy-by-eurobank-2021",
         "name": "Aquacorp IHAG is manipulated towards bankruptcy by EuroBank. Rival Aquacorps ...",
         "year": 2021,
         "order": 202103,
-        "keywords": ["IHAG", "EuroBank", "OTEC", "CINO"]
+        "keywords": [
+          "IHAG",
+          "EuroBank",
+          "OTEC",
+          "CINO"
+        ]
       },
       {
         "id": "the-fourth-corporate-war-begins-otec-hires-militech-and-c-2022",
         "name": "The Fourth Corporate War begins - OTEC hires Militech, and conversely CINO hi...",
         "year": 2022,
         "order": 202201,
-        "keywords": ["Fourth Corporate War", "OTEC", "Militech", "CINO", "Arasaka", "EuroBank"]
+        "keywords": [
+          "Fourth Corporate War",
+          "OTEC",
+          "Militech",
+          "CINO",
+          "Arasaka",
+          "EuroBank"
+        ]
       },
       {
         "id": "the-events-of-cyberpunk-the-arasaka-s-plot-take-place-2022",
         "name": "The events of Cyberpunk: The Arasaka's Plot take place.",
         "year": 2022,
         "order": 202202,
-        "keywords": ["Cyberpunk: The Arasaka's Plot"]
+        "keywords": [
+          "Cyberpunk: The Arasaka's Plot"
+        ]
       },
       {
         "id": "febuary-22nd-eurobank-forces-a-ceasefire-between-otec-and-c-2022",
@@ -2793,21 +3684,29 @@
         "name": "Rache Bartmoss is killed in a Corporate raid. His dead man switch unleashes t...",
         "year": 2022,
         "order": 202204,
-        "keywords": ["Rache Bartmoss", "DataKrash"]
+        "keywords": [
+          "Rache Bartmoss",
+          "DataKrash"
+        ]
       },
       {
         "id": "the-chicago-rebuilding-project-collapses-when-arasaka-factio-2022",
         "name": "The Chicago Rebuilding Project collapses when Arasaka factions detonate a vir...",
         "year": 2022,
         "order": 202205,
-        "keywords": ["Arasaka", "Militech"]
+        "keywords": [
+          "Arasaka",
+          "Militech"
+        ]
       },
       {
         "id": "the-datakrash-virus-infests-78-2-of-the-net-2022",
         "name": "The DataKrash virus infests 78.2% of the NET.",
         "year": 2022,
         "order": 202206,
-        "keywords": ["DataKrash"]
+        "keywords": [
+          "DataKrash"
+        ]
       },
       {
         "id": "industrial-factories-appear-in-orbit-around-mars-2022",
@@ -2820,21 +3719,30 @@
         "name": "The ESA and SovOil build a base on Mars, called Isidis Base, and creates a co...",
         "year": 2022,
         "order": 202209,
-        "keywords": ["ESA", "SovOil", "Mars", "Isidis Base"]
+        "keywords": [
+          "ESA",
+          "SovOil",
+          "Mars",
+          "Isidis Base"
+        ]
       },
       {
         "id": "the-civic-order-bill-is-passed-in-the-united-kingdom-2022",
         "name": "The Civic Order bill is passed in the United Kingdom.",
         "year": 2022,
         "order": 202210,
-        "keywords": ["Civic Order bill"]
+        "keywords": [
+          "Civic Order bill"
+        ]
       },
       {
         "id": "september-29-the-seven-hour-war-occurs-o-neill-two-also-2022",
         "name": "September 29: The Seven Hour War occurs - O'Neill Two, also known as Galileo ...",
         "year": 2022,
         "order": 202274,
-        "keywords": ["Seven Hour War"]
+        "keywords": [
+          "Seven Hour War"
+        ]
       },
       {
         "id": "international-trade-breaks-down-2023",
@@ -2847,7 +3755,9 @@
         "name": "Gargoyles Nomad tribe plans New York City Maglev extension preliminary work t...",
         "year": 2023,
         "order": 202302,
-        "keywords": ["Gargoyles"]
+        "keywords": [
+          "Gargoyles"
+        ]
       },
       {
         "id": "nasa-begins-offering-commercial-flights-to-mars-2023",
@@ -2866,7 +3776,10 @@
         "name": "*The Night City Holocaust - A nuclear device is detonated in the Arasaka Towe...",
         "year": 2023,
         "order": 202308,
-        "keywords": ["Night City Holocaust", "Arasaka Towers"]
+        "keywords": [
+          "Night City Holocaust",
+          "Arasaka Towers"
+        ]
       },
       {
         "id": "events-of-the-second-half-of-take-place-2023",
@@ -2879,21 +3792,28 @@
         "name": "*The Time of the Red begins - Atmospheric particles from widespread devastati...",
         "year": 2023,
         "order": 202310,
-        "keywords": ["Time of the Red"]
+        "keywords": [
+          "Time of the Red"
+        ]
       },
       {
         "id": "the-forlorn-hope-is-converted-into-an-emergency-shelter-2023",
         "name": "*The Forlorn Hope is converted into an emergency shelter.",
         "year": 2023,
         "order": 202311,
-        "keywords": ["Forlorn Hope (2020)"]
+        "keywords": [
+          "Forlorn Hope (2020)"
+        ]
       },
       {
         "id": "kei-arasaka-is-talked-into-committing-seppuku-by-spider-mur-2023",
         "name": "*Kei Arasaka is talked into committing seppuku by Spider Murphy.",
         "year": 2023,
         "order": 202313,
-        "keywords": ["Kei Arasaka", "Spider Murphy"]
+        "keywords": [
+          "Kei Arasaka",
+          "Spider Murphy"
+        ]
       },
       {
         "id": "events-of-the-epilogue-of-take-place-2023",
@@ -2912,28 +3832,37 @@
         "name": "Militech nationalized by President Elizabeth Kress.",
         "year": 2023,
         "order": 202316,
-        "keywords": ["Militech", "Elizabeth Kress"]
+        "keywords": [
+          "Militech",
+          "Elizabeth Kress"
+        ]
       },
       {
         "id": "arasaka-forces-expelled-from-continental-us-2023",
         "name": "Arasaka forces expelled from continental US.",
         "year": 2023,
         "order": 202317,
-        "keywords": ["Arasaka"]
+        "keywords": [
+          "Arasaka"
+        ]
       },
       {
         "id": "washington-oregon-idaho-northern-california-and-british-2023",
         "name": "Washington, Oregon, Idaho, Northern California, and British Colombia unify in...",
         "year": 2023,
         "order": 202318,
-        "keywords": ["Pacifica Confederation"]
+        "keywords": [
+          "Pacifica Confederation"
+        ]
       },
       {
         "id": "the-net-is-shut-down-by-rache-bartmoss-2023",
         "name": "The Net is shut down by Rache Bartmoss.",
         "year": 2023,
         "order": 202319,
-        "keywords": ["Rache Bartmoss"]
+        "keywords": [
+          "Rache Bartmoss"
+        ]
       },
       {
         "id": "the-japanese-government-nearly-collapses-but-saves-itself-b-2023",
@@ -2946,7 +3875,9 @@
         "name": "May 12: The Forlorn Hope is caught in the conflict and shelled. Several of it...",
         "year": 2023,
         "order": 202336,
-        "keywords": ["Forlorn Hope (2020)"]
+        "keywords": [
+          "Forlorn Hope (2020)"
+        ]
       },
       {
         "id": "august-19-events-of-the-first-half-of-take-place-2023",
@@ -2983,42 +3914,62 @@
         "name": "NASA and the Japanese Aerospace Bureau launch a joint mission to Saturn.",
         "year": 2025,
         "order": 202503,
-        "keywords": ["Saturn"]
+        "keywords": [
+          "Saturn"
+        ]
       },
       {
         "id": "alt-cunningham-establishes-ghost-world-in-the-ruins-of-hong-2025",
         "name": "Alt Cunningham establishes Ghost World in the ruins of Hong Kong.",
         "year": 2025,
         "order": 202504,
-        "keywords": ["Alt Cunningham", "Ghost World"]
+        "keywords": [
+          "Alt Cunningham",
+          "Ghost World"
+        ]
       },
       {
         "id": "netwatch-officially-declares-the-net-inoperable-2025",
         "name": "NetWatch officially declares the Net inoperable.",
         "year": 2025,
         "order": 202505,
-        "keywords": ["NetWatch", "Net"]
+        "keywords": [
+          "NetWatch",
+          "Net"
+        ]
       },
       {
         "id": "the-opposing-sides-in-the-fourth-corporate-war-sign-a-belate-2026",
         "name": "The opposing sides in the Fourth Corporate War sign a belated formal truce. M...",
         "year": 2026,
         "order": 202601,
-        "keywords": ["Militech"]
+        "keywords": [
+          "Militech"
+        ]
       },
       {
         "id": "staff-of-the-norcal-military-base-swear-allegiance-to-north-2027",
         "name": "Staff of the NorCal Military Base swear allegiance to North California, becom...",
         "year": 2027,
         "order": 202701,
-        "keywords": ["NorCal Military Base", "North California", "Estero Bay Military COG"]
+        "keywords": [
+          "NorCal Military Base",
+          "North California",
+          "Estero Bay Military COG"
+        ]
       },
       {
         "id": "kiroshi-kidnaps-trace-santiago-to-use-as-a-bargaining-chip-w-2028",
         "name": "Kiroshi kidnaps Trace Santiago to use as a bargaining chip with the Aldecaldo...",
         "year": 2028,
         "order": 202801,
-        "keywords": ["Kiroshi", "Trace Santiago", "Aldecaldos", "Rogue Amendiares", "Willows"]
+        "keywords": [
+          "Kiroshi",
+          "Trace Santiago",
+          "Aldecaldos",
+          "Rogue Amendiares",
+          "Willows"
+        ]
       },
       {
         "id": "major-power-players-ratify-a-new-charter-and-officially-refo-2028",
@@ -3038,112 +3989,154 @@
         "name": "The Second Comming commits a series of violent terrorist attacks around Night...",
         "year": 2029,
         "order": 202901,
-        "keywords": ["Second Comming", "Night City", "Max Hammerman", "MaxTac"]
+        "keywords": [
+          "Second Comming",
+          "Night City",
+          "Max Hammerman",
+          "MaxTac"
+        ]
       },
       {
         "id": "ziggurat-founded-2030",
         "name": "Ziggurat founded.",
         "year": 2030,
         "order": 203001,
-        "keywords": ["Ziggurat"]
+        "keywords": [
+          "Ziggurat"
+        ]
       },
       {
         "id": "ziggurat-develops-first-citinet-and-data-pool-in-night-city-2030",
         "name": "Ziggurat develops first CitiNet and Data Pool in Night City.",
         "year": 2030,
         "order": 203002,
-        "keywords": ["Ziggurat", "CitiNet", "Data Pool", "Night City"]
+        "keywords": [
+          "Ziggurat",
+          "CitiNet",
+          "Data Pool",
+          "Night City"
+        ]
       },
       {
         "id": "rocklin-prosthetics-rebrands-to-rocklin-augmentics-2030",
         "name": "Rocklin Prosthetics rebrands to Rocklin Augmentics.",
         "year": 2030,
         "order": 203003,
-        "keywords": ["Rocklin Augmentics"]
+        "keywords": [
+          "Rocklin Augmentics"
+        ]
       },
       {
         "id": "the-forlorn-hope-reopens-as-a-bar-after-serving-as-a-shelter-2031",
         "name": "The Forlorn Hope reopens as a bar after serving as a shelter for 8 years.",
         "year": 2031,
         "order": 203102,
-        "keywords": ["Forlorn Hope (2020)"]
+        "keywords": [
+          "Forlorn Hope (2020)"
+        ]
       },
       {
         "id": "shinobu-nakagawa-buys-a-seat-on-the-night-city-council-offi-2031",
         "name": "Shinobu Nakagawa buys a seat on the Night City Council, officially making Kab...",
         "year": 2031,
         "order": 203103,
-        "keywords": ["Shinobu Nakagawa", "Kabuki"]
+        "keywords": [
+          "Shinobu Nakagawa",
+          "Kabuki"
+        ]
       },
       {
         "id": "july-4-jefferson-peralez-is-born-2031",
         "name": "July 4: Jefferson Peralez is born.",
         "year": 2031,
         "order": 203151,
-        "keywords": ["Jefferson Peralez"]
+        "keywords": [
+          "Jefferson Peralez"
+        ]
       },
       {
         "id": "makigai-maimai-begins-production-2032",
         "name": "Makigai MaiMai begins production.",
         "year": 2032,
         "order": 203202,
-        "keywords": ["Makigai MaiMai"]
+        "keywords": [
+          "Makigai MaiMai"
+        ]
       },
       {
         "id": "april-10-elizabeth-peralez-is-born-2032",
         "name": "April 10: Elizabeth Peralez is born.",
         "year": 2032,
         "order": 203227,
-        "keywords": ["Elizabeth Peralez"]
+        "keywords": [
+          "Elizabeth Peralez"
+        ]
       },
       {
         "id": "a-7-3-magnitude-earthquake-hits-night-city-setting-reconstr-2033",
         "name": "A 7.3 magnitude earthquake hits Night City, setting reconstruction back years.",
         "year": 2033,
         "order": 203301,
-        "keywords": ["Night City"]
+        "keywords": [
+          "Night City"
+        ]
       },
       {
         "id": "construction-begins-on-the-ncx-spaceport-2035",
         "name": "Construction begins on the NCX Spaceport.",
         "year": 2035,
         "order": 203501,
-        "keywords": ["NCX Spaceport"]
+        "keywords": [
+          "NCX Spaceport"
+        ]
       },
       {
         "id": "the-night-city-council-establishes-the-heywood-industrial-zo-2035",
         "name": "The Night City Council establishes the Heywood Industrial Zone as its own dis...",
         "year": 2035,
         "order": 203502,
-        "keywords": ["Heywood Industrial Zone"]
+        "keywords": [
+          "Heywood Industrial Zone"
+        ]
       },
       {
         "id": "night-city-is-ravaged-by-an-epidemic-of-varicella-h-a-treat-2036",
         "name": "Night City is ravaged by an epidemic of Varicella-H, a treatment-resistant st...",
         "year": 2036,
         "order": 203601,
-        "keywords": ["Night City"]
+        "keywords": [
+          "Night City"
+        ]
       },
       {
         "id": "the-port-of-night-city-separates-from-south-night-city-and-b-2036",
         "name": "The Port of Night City separates from South Night City and becomes its own di...",
         "year": 2036,
         "order": 203602,
-        "keywords": ["Port of Night City", "South Night City (RED)"]
+        "keywords": [
+          "Port of Night City",
+          "South Night City (RED)"
+        ]
       },
       {
         "id": "playland-by-the-sea-reopens-2036",
         "name": "Playland by the Sea reopens.",
         "year": 2036,
         "order": 203603,
-        "keywords": ["Playland by the Sea"]
+        "keywords": [
+          "Playland by the Sea"
+        ]
       },
       {
         "id": "shelly-simpson-buys-a-seat-on-the-night-city-council-offici-2036",
         "name": "Shelly Simpson buys a seat on the Night City Council, officially making Ranch...",
         "year": 2036,
         "order": 203604,
-        "keywords": ["Shelly Simpson", "Rancho Coronado (RED)", "Night City"]
+        "keywords": [
+          "Shelly Simpson",
+          "Rancho Coronado (RED)",
+          "Night City"
+        ]
       },
       {
         "id": "shelly-simpson-dies-her-seat-on-the-night-city-council-rema-2036",
@@ -3156,91 +4149,131 @@
         "name": "The Night City Council votes to make Charter Hill a district independent of N...",
         "year": 2037,
         "order": 203701,
-        "keywords": ["Charter Hill (RED)", "New Westbrook"]
+        "keywords": [
+          "Charter Hill (RED)",
+          "New Westbrook"
+        ]
       },
       {
         "id": "night-city-hall-and-the-hall-of-justice-are-opened-2037",
         "name": "Night City Hall and the Hall of Justice are opened.",
         "year": 2037,
         "order": 203702,
-        "keywords": ["Night City Hall", "Hall of Justice"]
+        "keywords": [
+          "Night City Hall",
+          "Hall of Justice"
+        ]
       },
       {
         "id": "heywood-is-split-into-santo-domingo-and-north-heywood-2038",
         "name": "Heywood is split into Santo Domingo and North Heywood.",
         "year": 2038,
         "order": 203801,
-        "keywords": ["Heywood (RED)", "Santo Domingo (RED)", "North Heywood"]
+        "keywords": [
+          "Heywood (RED)",
+          "Santo Domingo (RED)",
+          "North Heywood"
+        ]
       },
       {
         "id": "the-dorado-family-claims-the-reclamation-zone-and-takes-over-2039",
         "name": "The Dorado Family claims the Reclamation Zone and takes over management of NC...",
         "year": 2039,
         "order": 203901,
-        "keywords": ["Dorado Family", "Reclamation Zone", "Night City Area Rapid Transit"]
+        "keywords": [
+          "Dorado Family",
+          "Reclamation Zone",
+          "Night City Area Rapid Transit"
+        ]
       },
       {
         "id": "night-corp-proposes-the-construction-of-megabuildings-to-han-2039",
         "name": "Night Corp proposes the construction of Megabuildings to handle future popula...",
         "year": 2039,
         "order": 203902,
-        "keywords": ["Night Corp"]
+        "keywords": [
+          "Night Corp"
+        ]
       },
       {
         "id": "with-funding-from-the-night-city-co-prosperity-sphere-const-2040",
         "name": "With funding from the Night City Co-Prosperity Sphere, construction of Megabu...",
         "year": 2040,
         "order": 204001,
-        "keywords": ["Night City Co-Prosperity Sphere", "Megabuilding H10"]
+        "keywords": [
+          "Night City Co-Prosperity Sphere",
+          "Megabuilding H10"
+        ]
       },
       {
         "id": "sk-security-buys-a-seat-on-the-night-city-council-officiall-2040",
         "name": "SK Security buys a seat on the Night City Council, officially making Heywood ...",
         "year": 2040,
         "order": 204002,
-        "keywords": ["SK Security", "Heywood Docks"]
+        "keywords": [
+          "SK Security",
+          "Heywood Docks"
+        ]
       },
       {
         "id": "the-badlands-incident-a-confrontation-between-the-aldecald-2041",
         "name": "The Badlands Incident - A confrontation between the Aldecaldos and Jodes almo...",
         "year": 2041,
         "order": 204102,
-        "keywords": ["Badlands Incident", "Aldecaldos", "Jodes"]
+        "keywords": [
+          "Badlands Incident",
+          "Aldecaldos",
+          "Jodes"
+        ]
       },
       {
         "id": "september-3-john-freeman-is-diagnosed-with-als-2041",
         "name": "September 3: John Freeman is diagnosed with ALS.",
         "year": 2041,
         "order": 204167,
-        "keywords": ["John Freeman"]
+        "keywords": [
+          "John Freeman"
+        ]
       },
       {
         "id": "downtown-succeeds-from-little-europe-and-becomes-its-own-dis-2042",
         "name": "Downtown succeeds from Little Europe and becomes its own district.",
         "year": 2042,
         "order": 204201,
-        "keywords": ["Downtown (RED)", "Little Europe (RED)"]
+        "keywords": [
+          "Downtown (RED)",
+          "Little Europe (RED)"
+        ]
       },
       {
         "id": "brick-coleman-buys-a-seat-on-the-night-city-council-officia-2042",
         "name": "Brick Coleman buys a seat on the Night City Council, officially making the Ol...",
         "year": 2042,
         "order": 204202,
-        "keywords": ["Brick Coleman", "Old Combat Zone"]
+        "keywords": [
+          "Brick Coleman",
+          "Old Combat Zone"
+        ]
       },
       {
         "id": "members-of-the-forlorn-hope-rescue-squatters-at-the-brookhav-2044",
         "name": "Members of the Forlorn Hope rescue squatters at the Brookhaven Co-op from Mae...",
         "year": 2044,
         "order": 204401,
-        "keywords": ["Forlorn Hope (2020)", "Brookhaven Co-op", "Maelstrom"]
+        "keywords": [
+          "Forlorn Hope (2020)",
+          "Brookhaven Co-op",
+          "Maelstrom"
+        ]
       },
       {
         "id": "june-1-events-of-the-a-tale-of-hope-story-take-place-2044",
         "name": "June 1: Events of the A Tale of Hope story take place.",
         "year": 2044,
         "order": 204442,
-        "keywords": ["A Tale of Hope"]
+        "keywords": [
+          "A Tale of Hope"
+        ]
       },
       {
         "id": "most-adventures-in-the-series-take-place-2045",
@@ -3253,49 +4286,72 @@
         "name": "*Hilaria 2045 - The Bozos gang splinters off into multiple factions.",
         "year": 2045,
         "order": 204502,
-        "keywords": ["Hilaria 2045", "Bozos"]
+        "keywords": [
+          "Hilaria 2045",
+          "Bozos"
+        ]
       },
       {
         "id": "the-original-forlorn-hope-is-bombed-and-a-new-location-is-f-2045",
         "name": "*The original Forlorn Hope is bombed and a new location is founded in Woodlan...",
         "year": 2045,
         "order": 204503,
-        "keywords": ["Forlorn Hope (2020)", "Forlorn Hope", "Woodland Park"]
+        "keywords": [
+          "Forlorn Hope (2020)",
+          "Forlorn Hope",
+          "Woodland Park"
+        ]
       },
       {
         "id": "thorton-starts-production-of-the-colby-c125-2045",
         "name": "Thorton starts production of the Colby C125.",
         "year": 2045,
         "order": 204504,
-        "keywords": ["Thorton", "Thorton Colby C125"]
+        "keywords": [
+          "Thorton",
+          "Thorton Colby C125"
+        ]
       },
       {
         "id": "december-29-song-so-mi-is-born-2045",
         "name": "December 29: Song So Mi is born.",
         "year": 2045,
         "order": 204599,
-        "keywords": ["Song So Mi"]
+        "keywords": [
+          "Song So Mi"
+        ]
       },
       {
         "id": "colonel-shiming-xu-is-appointed-the-new-head-of-kang-tao-by-2046",
         "name": "Colonel Shiming Xu is appointed the new head of Kang Tao by the government of...",
         "year": 2046,
         "order": 204601,
-        "keywords": ["Shiming Xu", "Kang Tao", "China"]
+        "keywords": [
+          "Shiming Xu",
+          "Kang Tao",
+          "China"
+        ]
       },
       {
         "id": "may-26-jackie-welles-is-born-2046",
         "name": "May 26: Jackie Welles is born.",
         "year": 2046,
         "order": 204640,
-        "keywords": ["Jackie Welles"]
+        "keywords": [
+          "Jackie Welles"
+        ]
       },
       {
         "id": "shiming-xu-s-defense-company-now-debt-free-under-his-leader-2050",
         "name": "Shiming Xu's defense company, now debt-free under his leadership, is rebrande...",
         "year": 2050,
         "order": 205001,
-        "keywords": ["Shiming Xu", "Kang Tao", "A-22B Chao", "Arasaka"]
+        "keywords": [
+          "Shiming Xu",
+          "Kang Tao",
+          "A-22B Chao",
+          "Arasaka"
+        ]
       },
       {
         "id": "a-major-outbreak-of-bird-flu-occurs-in-night-city-killing-2051",
@@ -3308,56 +4364,76 @@
         "name": "April 30: Misty Olszewski is born.",
         "year": 2051,
         "order": 205133,
-        "keywords": ["Misty Olszewski"]
+        "keywords": [
+          "Misty Olszewski"
+        ]
       },
       {
         "id": "the-hot-zone-is-fully-cleared-and-construction-of-a-new-corp-2052",
         "name": "The Hot Zone is fully cleared and construction of a new Corporate Plaza begins.",
         "year": 2052,
         "order": 205201,
-        "keywords": ["Hot Zone", "Corpo Plaza"]
+        "keywords": [
+          "Hot Zone",
+          "Corpo Plaza"
+        ]
       },
       {
         "id": "the-united-states-of-america-is-officially-the-new-united-st-2053",
         "name": "The United States of America is officially the New United States with a new c...",
         "year": 2053,
         "order": 205302,
-        "keywords": ["New United States", "Elizabeth Kress"]
+        "keywords": [
+          "New United States",
+          "Elizabeth Kress"
+        ]
       },
       {
         "id": "david-whindam-is-elected-as-the-first-president-of-the-nusa-2053",
         "name": "David Whindam is elected as the first president of the NUSA.",
         "year": 2053,
         "order": 205303,
-        "keywords": ["David Whindam"]
+        "keywords": [
+          "David Whindam"
+        ]
       },
       {
         "id": "october-12-v-is-born-2053",
         "name": "October 12: V is born.",
         "year": 2053,
         "order": 205378,
-        "keywords": ["V (character)"]
+        "keywords": [
+          "V (character)"
+        ]
       },
       {
         "id": "quadra-starts-production-of-the-turbo-r-740-2055",
         "name": "Quadra starts production of the Turbo-R 740.",
         "year": 2055,
         "order": 205501,
-        "keywords": ["Quadra", "Quadra Turbo-R 740"]
+        "keywords": [
+          "Quadra",
+          "Quadra Turbo-R 740"
+        ]
       },
       {
         "id": "quadra-starts-production-of-the-turbo-r-v-tech-2058",
         "name": "Quadra starts production of the Turbo-R V-Tech.",
         "year": 2058,
         "order": 205801,
-        "keywords": ["Quadra", "Quadra Turbo-R V-Tech"]
+        "keywords": [
+          "Quadra",
+          "Quadra Turbo-R V-Tech"
+        ]
       },
       {
         "id": "david-martinez-is-born-2058",
         "name": "David Martinez is born.",
         "year": 2058,
         "order": 205802,
-        "keywords": ["David Martinez"]
+        "keywords": [
+          "David Martinez"
+        ]
       },
       {
         "id": "a-second-major-bird-flu-outbreak-occurs-in-night-city-killi-2059",
@@ -3370,7 +4446,10 @@
         "name": "Lucius Rhyne elected to the Night City Council as a member of the Devolutioni...",
         "year": 2060,
         "order": 206001,
-        "keywords": ["Lucius Rhyne", "Night City"]
+        "keywords": [
+          "Lucius Rhyne",
+          "Night City"
+        ]
       },
       {
         "id": "thorton-colby-c125-ends-production-2060",
@@ -3383,7 +4462,9 @@
         "name": "Lagaretta predicts that the pace of technological development of the time wou...",
         "year": 2060,
         "order": 206003,
-        "keywords": ["Lagaretta"]
+        "keywords": [
+          "Lagaretta"
+        ]
       },
       {
         "id": "a-third-major-bird-flu-outbreak-called-the-great-bird-flu-of-2061",
@@ -3396,7 +4477,11 @@
         "name": "Haiti is officially abandoned after a series of vicious storms. A large porti...",
         "year": 2062,
         "order": 206201,
-        "keywords": ["Haiti", "Night City", "Pacifica (2077)"]
+        "keywords": [
+          "Haiti",
+          "Night City",
+          "Pacifica (2077)"
+        ]
       },
       {
         "id": "quadra-turbo-r-740-ends-production-2062",
@@ -3409,28 +4494,37 @@
         "name": "The private security company Secure Services Incorporated (SSI) is founded.",
         "year": 2062,
         "order": 206203,
-        "keywords": ["Secure Services Incorporated"]
+        "keywords": [
+          "Secure Services Incorporated"
+        ]
       },
       {
         "id": "the-caribbean-exodus-begins-residents-flee-the-islands-fe-2062",
         "name": "The Caribbean Exodus begins - Residents flee the islands, fearing rising sea ...",
         "year": 2062,
         "order": 206205,
-        "keywords": ["Caribbean Exodus"]
+        "keywords": [
+          "Caribbean Exodus"
+        ]
       },
       {
         "id": "july-17-nc-dam-ltd-begins-construction-of-a-dam-and-reserv-2062",
         "name": "July 17: NC Dam Ltd. begins construction of a dam and reservoir outside Night...",
         "year": 2062,
         "order": 206254,
-        "keywords": ["NC Dam Ltd.", "Laguna Bend"]
+        "keywords": [
+          "NC Dam Ltd.",
+          "Laguna Bend"
+        ]
       },
       {
         "id": "may-4-night-city-adopts-the-avian-extermination-act-to-quel-2063",
         "name": "May 4: Night City adopts the Avian Extermination Act to quell outbreaks of av...",
         "year": 2063,
         "order": 206334,
-        "keywords": ["Avian Extermination Act"]
+        "keywords": [
+          "Avian Extermination Act"
+        ]
       },
       {
         "id": "2064-night-city-marathon-takes-place-2064",
@@ -3443,14 +4537,20 @@
         "name": "March 2: Premiere of Bushidō X: Fade to Black.",
         "year": 2064,
         "order": 206417,
-        "keywords": ["Bushidō X: Fade to Black"]
+        "keywords": [
+          "Bushidō X: Fade to Black"
+        ]
       },
       {
         "id": "january-rosalind-myers-previously-the-ceo-of-militech-bec-2065",
         "name": "January: Rosalind Myers, previously the CEO of Militech, becomes the third Pr...",
         "year": 2065,
         "order": 206500,
-        "keywords": ["Rosalind Myers", "Militech", "New United States of America"]
+        "keywords": [
+          "Rosalind Myers",
+          "Militech",
+          "New United States of America"
+        ]
       },
       {
         "id": "marc-de-santos-wins-the-2065-global-f1-championship-2065",
@@ -3463,14 +4563,19 @@
         "name": "An Arasaka bodyguard intercepts an assassin's bullet, saving the life of the ...",
         "year": 2067,
         "order": 206701,
-        "keywords": ["Arasaka"]
+        "keywords": [
+          "Arasaka"
+        ]
       },
       {
         "id": "the-moxes-are-formed-after-the-death-of-elizabeth-borden-2067",
         "name": "The Moxes are formed after the death of Elizabeth Borden.",
         "year": 2067,
         "order": 206702,
-        "keywords": ["Moxes", "Elizabeth Borden"]
+        "keywords": [
+          "Moxes",
+          "Elizabeth Borden"
+        ]
       },
       {
         "id": "the-first-permanent-human-settlement-is-constructed-in-antar-2067",
@@ -3489,21 +4594,31 @@
         "name": "A major bushfire in Australia kills the entire wild koala population with the...",
         "year": 2068,
         "order": 206801,
-        "keywords": ["Australia"]
+        "keywords": [
+          "Australia"
+        ]
       },
       {
         "id": "hunter-hyland-is-involved-in-war-crimes-committed-by-kendach-2068",
         "name": "Hunter Hyland is involved in war crimes committed by Kendachi in South Americ...",
         "year": 2068,
         "order": 206802,
-        "keywords": ["Hunter Hyland", "Kendachi", "South America", "Colombia"]
+        "keywords": [
+          "Hunter Hyland",
+          "Kendachi",
+          "South America",
+          "Colombia"
+        ]
       },
       {
         "id": "january-the-unification-war-begins-at-the-direction-of-pr-2069",
         "name": "January: The Unification War begins - At the direction of President Myers, th...",
         "year": 2069,
         "order": 206900,
-        "keywords": ["Unification War", "Free States"]
+        "keywords": [
+          "Unification War",
+          "Free States"
+        ]
       },
       {
         "id": "higurashi-20-13-mantis-blades-line-is-discontinued-because-o-2069",
@@ -3556,14 +4671,20 @@
         "name": "June 6: During the Unification War, the NUSA carpet bombs Sacramento. Night C...",
         "year": 2070,
         "order": 207043,
-        "keywords": ["Northern California", "Soviet Union", "Republic of Texas"]
+        "keywords": [
+          "Northern California",
+          "Soviet Union",
+          "Republic of Texas"
+        ]
       },
       {
         "id": "arasaka-security-forces-prevent-mass-riots-in-san-francisco-2071",
         "name": "Arasaka security forces prevent mass riots in San Francisco.",
         "year": 2071,
         "order": 207101,
-        "keywords": ["Arasaka"]
+        "keywords": [
+          "Arasaka"
+        ]
       },
       {
         "id": "night-city-criminalizes-the-sale-of-domesticated-fowl-such-a-2071",
@@ -3588,70 +4709,103 @@
         "name": "Declan \"Brick\" Griffin becomes the leader of the Maelstrom gang.",
         "year": 2072,
         "order": 207202,
-        "keywords": ["Declan Griffin", "Maelstrom"]
+        "keywords": [
+          "Declan Griffin",
+          "Maelstrom"
+        ]
       },
       {
         "id": "the-voodoo-boys-become-the-de-facto-rulers-of-pacifica-after-2072",
         "name": "The Voodoo Boys become the de facto rulers of Pacifica after repelling an NCP...",
         "year": 2072,
         "order": 207203,
-        "keywords": ["Voodoo Boys", "Pacifica (2077)", "Night City Police Department"]
+        "keywords": [
+          "Voodoo Boys",
+          "Pacifica (2077)",
+          "Night City Police Department"
+        ]
       },
       {
         "id": "dt-r-triples-their-airship-fuel-consumption-to-satisfy-austr-2073",
         "name": "DT&R triples their airship fuel consumption to satisfy Australia's growing ne...",
         "year": 2073,
         "order": 207301,
-        "keywords": ["Decker, Tanaka & Rogers", "Australia"]
+        "keywords": [
+          "Decker, Tanaka & Rogers",
+          "Australia"
+        ]
       },
       {
         "id": "an-arasaka-investigation-destroys-a-terrorist-cell-in-rio-de-2074",
         "name": "An Arasaka investigation destroys a terrorist cell in Rio de Janeiro, killing...",
         "year": 2074,
         "order": 207402,
-        "keywords": ["Rio de Janeiro"]
+        "keywords": [
+          "Rio de Janeiro"
+        ]
       },
       {
         "id": "nadia-begins-working-for-trauma-team-international-as-a-medt-2074",
         "name": "Nadia begins working for Trauma Team International as a medtech.",
         "year": 2074,
         "order": 207403,
-        "keywords": ["Nadia", "Trauma Team International", "medtech"]
+        "keywords": [
+          "Nadia",
+          "Trauma Team International",
+          "medtech"
+        ]
       },
       {
         "id": "lucyna-kushinada-meets-kiwi-for-the-first-time-who-brings-h-2074",
         "name": "Lucyna Kushinada meets Kiwi for the first time, who brings her into Maine's c...",
         "year": 2074,
         "order": 207404,
-        "keywords": ["Lucyna Kushinada", "Kiwi", "Maine (Edgerunners)"]
+        "keywords": [
+          "Lucyna Kushinada",
+          "Kiwi",
+          "Maine (Edgerunners)"
+        ]
       },
       {
         "id": "october-24-in-italy-an-earthquake-kills-an-estimated-98-pe-2074",
         "name": "October 24: In Italy, an earthquake kills an estimated 98 people. In Night Ci...",
         "year": 2074,
         "order": 207481,
-        "keywords": ["Italy", "Night City", "Militech", "Night City Police Department"]
+        "keywords": [
+          "Italy",
+          "Night City",
+          "Militech",
+          "Night City Police Department"
+        ]
       },
       {
         "id": "the-supposed-remains-of-rache-bartmoss-are-dumped-at-the-mun-2075",
         "name": "The supposed remains of Rache Bartmoss are dumped at the Municipal Landfill o...",
         "year": 2075,
         "order": 207501,
-        "keywords": ["Rache Bartmoss", "Municipal Landfill"]
+        "keywords": [
+          "Rache Bartmoss",
+          "Municipal Landfill"
+        ]
       },
       {
         "id": "sasquatch-becomes-the-leader-of-the-animals-gang-2075",
         "name": "Sasquatch becomes the leader of the Animals gang.",
         "year": 2075,
         "order": 207502,
-        "keywords": ["Sasquatch", "Animals"]
+        "keywords": [
+          "Sasquatch",
+          "Animals"
+        ]
       },
       {
         "id": "the-night-city-journal-names-somalia-the-1-tourism-destinat-2075",
         "name": "The Night City Journal names Somalia the #1 tourism destination of 2075.",
         "year": 2075,
         "order": 207503,
-        "keywords": ["Night City Journal"]
+        "keywords": [
+          "Night City Journal"
+        ]
       },
       {
         "id": "events-of-the-first-half-of-take-place-2075",
@@ -3664,14 +4818,19 @@
         "name": "Arasaka's counterintelligence unit successfully maintains the security of a c...",
         "year": 2076,
         "order": 207601,
-        "keywords": ["Jakarta"]
+        "keywords": [
+          "Jakarta"
+        ]
       },
       {
         "id": "nasa-s-crewed-pathfinder-mission-to-jupiter-remains-missing-2076",
         "name": "NASA's crewed Pathfinder mission to Jupiter remains missing after fifty years...",
         "year": 2076,
         "order": 207602,
-        "keywords": ["NASA", "Jupiter"]
+        "keywords": [
+          "NASA",
+          "Jupiter"
+        ]
       },
       {
         "id": "events-of-the-second-half-of-take-place-with-episodes-6-7-b-2076",
@@ -3684,14 +4843,19 @@
         "name": "*David Martinez, an edgerunner who had quickly risen to prominence in the pre...",
         "year": 2076,
         "order": 207604,
-        "keywords": ["David Martinez", "Corporate Center (2077)"]
+        "keywords": [
+          "David Martinez",
+          "Corporate Center (2077)"
+        ]
       },
       {
         "id": "events-of-take-place-some-time-after-the-end-of-cyberpunk-e-2076",
         "name": "Events of take place some time after the end of Cyberpunk: Edgerunners, but b...",
         "year": 2076,
         "order": 207605,
-        "keywords": ["Cyberpunk 2077"]
+        "keywords": [
+          "Cyberpunk 2077"
+        ]
       },
       {
         "id": "events-of-take-place-before-the-beginning-of-cyberpunk-2077-2076",
@@ -3704,35 +4868,48 @@
         "name": "October/November: Prologue takes place. V and Jackie Welles team up as mercen...",
         "year": 2076,
         "order": 207607,
-        "keywords": ["V (character)", "Jackie Welles", "Night City"]
+        "keywords": [
+          "V (character)",
+          "Jackie Welles",
+          "Night City"
+        ]
       },
       {
         "id": "arasaka-announces-the-development-of-the-relic-a-unique-bio-2077",
         "name": "Arasaka announces the development of the Relic, a unique biochip which users ...",
         "year": 2077,
         "order": 207701,
-        "keywords": ["Relic"]
+        "keywords": [
+          "Relic"
+        ]
       },
       {
         "id": "switzerland-s-publishing-house-since-1488-prints-its-final-b-2077",
         "name": "Switzerland's publishing house since 1488 prints its final book and goes bank...",
         "year": 2077,
         "order": 207702,
-        "keywords": ["Switzerland"]
+        "keywords": [
+          "Switzerland"
+        ]
       },
       {
         "id": "china-and-india-hold-an-economic-summit-and-sign-a-trade-agr-2077",
         "name": "China and India hold an economic summit and sign a trade agreement. China lif...",
         "year": 2077,
         "order": 207703,
-        "keywords": ["China", "India"]
+        "keywords": [
+          "China",
+          "India"
+        ]
       },
       {
         "id": "biotechnica-geneticists-announce-they-can-now-revive-three-e-2077",
         "name": "Biotechnica geneticists announce they can now revive three extinct species, t...",
         "year": 2077,
         "order": 207704,
-        "keywords": ["Biotechnica"]
+        "keywords": [
+          "Biotechnica"
+        ]
       },
       {
         "id": "worsening-atmospheric-conditions-reduce-the-common-gull-popu-2077",
@@ -3745,7 +4922,10 @@
         "name": "Antonio Luccessi, founder of Militech, dies.",
         "year": 2077,
         "order": 207706,
-        "keywords": ["Antonio Luccessi", "Militech"]
+        "keywords": [
+          "Antonio Luccessi",
+          "Militech"
+        ]
       },
       {
         "id": "april-before-august-acts-1-to-3-take-place-half-a-year-afte-2077",
@@ -3758,14 +4938,21 @@
         "name": "*Events of take place shortly before The Pickup.",
         "year": 2077,
         "order": 207709,
-        "keywords": ["The Pickup"]
+        "keywords": [
+          "The Pickup"
+        ]
       },
       {
         "id": "the-heist-at-konpeki-plaza-occurs-not-long-after-the-kujira-2077",
         "name": "*The heist at Konpeki Plaza occurs not long after the Kujira's arrival. Durin...",
         "year": 2077,
         "order": 207711,
-        "keywords": ["The Heist", "Konpeki Plaza", "Saburo Arasaka", "Goro Takemura"]
+        "keywords": [
+          "The Heist",
+          "Konpeki Plaza",
+          "Saburo Arasaka",
+          "Goro Takemura"
+        ]
       },
       {
         "id": "events-of-take-place-around-the-time-of-saburo-arasaka-s-mu-2077",
@@ -3790,14 +4977,20 @@
         "name": "*Yorinobu becomes Arasaka's next CEO, and blames his father's death on Milite...",
         "year": 2077,
         "order": 207715,
-        "keywords": ["Militech"]
+        "keywords": [
+          "Militech"
+        ]
       },
       {
         "id": "mayor-lucius-rhyne-of-night-city-dies-deputy-mayor-weldon-2077",
         "name": "*Mayor Lucius Rhyne of Night City dies. Deputy Mayor Weldon Holt becomes Acti...",
         "year": 2077,
         "order": 207716,
-        "keywords": ["Lucius Rhyne", "Weldon Holt", "Jefferson Peralez"]
+        "keywords": [
+          "Lucius Rhyne",
+          "Weldon Holt",
+          "Jefferson Peralez"
+        ]
       },
       {
         "id": "after-some-weeks-of-rest-v-starts-to-look-for-a-way-to-cur-2077",
@@ -3810,42 +5003,62 @@
         "name": "*\"Omega\", the last living wild koala, dies outside Sydney, Australia.",
         "year": 2077,
         "order": 207718,
-        "keywords": ["Australia"]
+        "keywords": [
+          "Australia"
+        ]
       },
       {
         "id": "nusa-president-rosalind-myers-announces-she-will-seek-anoth-2077",
         "name": "*NUSA President Rosalind Myers announces she will seek another term in office.",
         "year": 2077,
         "order": 207719,
-        "keywords": ["Rosalind Myers"]
+        "keywords": [
+          "Rosalind Myers"
+        ]
       },
       {
         "id": "militech-announces-plans-to-construct-a-new-colony-on-mars-2077",
         "name": "*Militech announces plans to construct a new colony on Mars, and begins selli...",
         "year": 2077,
         "order": 207720,
-        "keywords": ["Militech", "Mars"]
+        "keywords": [
+          "Militech",
+          "Mars"
+        ]
       },
       {
         "id": "v-with-the-help-of-panam-palmer-assault-a-power-plant-to-2077",
         "name": "*V, with the help of Panam Palmer, assault a power plant to create an EMP whi...",
         "year": 2077,
         "order": 207721,
-        "keywords": ["Panam Palmer", "Kang Tao", "Zetatech Surveyor", "Anders Hellman", "€$"]
+        "keywords": [
+          "Panam Palmer",
+          "Kang Tao",
+          "Zetatech Surveyor",
+          "Anders Hellman",
+          "€$"
+        ]
       },
       {
         "id": "hanako-arasaka-is-kidnapped-by-v-and-goro-takemura-during-t-2077",
         "name": "*Hanako Arasaka is kidnapped by V and Goro Takemura during the Aratama Matsur...",
         "year": 2077,
         "order": 207722,
-        "keywords": ["Hanako Arasaka", "Aratama Matsuri", "Adam Smasher"]
+        "keywords": [
+          "Hanako Arasaka",
+          "Aratama Matsuri",
+          "Adam Smasher"
+        ]
       },
       {
         "id": "v-manages-to-contact-with-alt-cunningham-to-find-informatio-2077",
         "name": "*V manages to contact with Alt Cunningham to find information about Soulkiller.",
         "year": 2077,
         "order": 207723,
-        "keywords": ["Alt Cunningham", "Soulkiller"]
+        "keywords": [
+          "Alt Cunningham",
+          "Soulkiller"
+        ]
       },
       {
         "id": "mid-late-june-events-of-take-place-2077",
@@ -3858,7 +5071,13 @@
         "name": "*April: V and Jackie are hired by fixer Dexter DeShawn to carry out a heist t...",
         "year": 2077,
         "order": 207725,
-        "keywords": ["fixer", "Dexter DeShawn", "Relic", "Yorinobu Arasaka", "Konpeki Plaza"]
+        "keywords": [
+          "fixer",
+          "Dexter DeShawn",
+          "Relic",
+          "Yorinobu Arasaka",
+          "Konpeki Plaza"
+        ]
       },
       {
         "id": "v-confronts-their-imminent-death-due-to-the-relic-and-choos-2077",
@@ -3885,21 +5104,34 @@
         "name": "*May 1: The Kujira arrives in Night City, aboard are Saburo Arasaka, Hanako A...",
         "year": 2077,
         "order": 207733,
-        "keywords": ["Kujira", "Night City", "Saburo Arasaka", "Hanako Arasaka", "Goro Takemura"]
+        "keywords": [
+          "Kujira",
+          "Night City",
+          "Saburo Arasaka",
+          "Hanako Arasaka",
+          "Goro Takemura"
+        ]
       },
       {
         "id": "april-20-30-night-corp-expects-to-finalize-the-first-connec-2078",
         "name": "April 20–30: Night Corp expects to finalize the first connections of a maglev...",
         "year": 2078,
         "order": 207801,
-        "keywords": ["Night Corp", "Maglev Network", "Night City"]
+        "keywords": [
+          "Night Corp",
+          "Maglev Network",
+          "Night City"
+        ]
       },
       {
         "id": "may-3-5-lizzy-wizzy-is-scheduled-to-play-concerts-at-the-cr-2078",
         "name": "May 3–5: Lizzy Wizzy is scheduled to play concerts at the Crystal Palace as p...",
         "year": 2078,
         "order": 207802,
-        "keywords": ["Lizzy Wizzy", "Crystal Palace"]
+        "keywords": [
+          "Lizzy Wizzy",
+          "Crystal Palace"
+        ]
       },
       {
         "id": "winter-the-first-connections-of-night-corp-s-intercontinent-2078",
@@ -3912,21 +5144,28 @@
         "name": "Moore Technologies plans to release the Artifex, an advanced 3D printer that ...",
         "year": 2078,
         "order": 207804,
-        "keywords": ["Moore Technologies"]
+        "keywords": [
+          "Moore Technologies"
+        ]
       },
       {
         "id": "epilogue-takes-place-if-v-gets-the-surgery-from-the-nusa-in-2079",
         "name": "epilogue takes place. If V gets the surgery from the NUSA in 2077 they recove...",
         "year": 2079,
         "order": 207901,
-        "keywords": ["Cyberpunk 2077 Endings"]
+        "keywords": [
+          "Cyberpunk 2077 Endings"
+        ]
       },
       {
         "id": "night-corp-s-3-hour-maglev-connection-to-chicago-is-expected-2080",
         "name": "Night Corp's 3-hour maglev connection to Chicago is expected to become operat...",
         "year": 2080,
         "order": 208002,
-        "keywords": ["Night Corp", "Chicago"]
+        "keywords": [
+          "Night Corp",
+          "Chicago"
+        ]
       },
       {
         "id": "leading-ai-analytics-predicts-with-74-confidence-that-a-s-2080",
@@ -3939,32 +5178,44 @@
         "name": "August 20: Premiere of Bushidō 13: Solitude.",
         "year": 2080,
         "order": 208063,
-        "keywords": ["Bushidō"]
+        "keywords": [
+          "Bushidō"
+        ]
       },
       {
         "id": "orbital-air-launched-a-space-probe-equipped-with-an-ai-that-2095",
         "name": "Orbital Air launched a space probe equipped with an AI that is expected to re...",
         "year": 2095,
         "order": 209501,
-        "keywords": ["Orbital Air", "AI", "wikipedia:Proxima Centauri b"]
+        "keywords": [
+          "Orbital Air",
+          "AI",
+          "wikipedia:Proxima Centauri b"
+        ]
       }
     ]
   },
+  "timelineMeta": {
+    "articleTitle": "Timeline",
+    "eventCount": 569,
+    "minYear": 1905,
+    "maxYear": 2095
+  },
   "files": {
-    "embeddings": {
-      "path": "embeddings.i8.bin",
-      "sizeBytes": 14578720,
-      "sha256": "798e43f17582f0269b8ebafefa6b59e58c9a127ca53a64a9f1c6dd2c619cb834"
+    "nodes": {
+      "path": "graph-nodes.json.gz",
+      "sizeBytes": 5473051,
+      "sha256": "560f4c6ee124ddd8b1591ee761284473b8160c42e6411a119cc33ea672b36981"
     },
-    "chunks": {
-      "path": "chunks.json.gz",
-      "sizeBytes": 5096622,
-      "sha256": "070f62a92373e3e171dc8b56bdc30e5596daa40912c43223a7053ebba89a42b9"
+    "edges": {
+      "path": "graph-edges.json.gz",
+      "sizeBytes": 1637774,
+      "sha256": "ee19acc3d41cf7f7660272acb0e3d205a7678e1c2876a79dfdb4dae142f4daad"
     },
-    "bm25": {
-      "path": "bm25.json.gz",
-      "sizeBytes": 9209065,
-      "sha256": "62d7ce770b48bb2113bf63ce0f10fa8e6f612a81ea467b6735827dbb20a7f36e"
+    "aliases": {
+      "path": "aliases.json.gz",
+      "sizeBytes": 356305,
+      "sha256": "a5b3f45ed2dbbf85779900255cebce9a84bffdad26e146c821ee49ee50038f70"
     }
   }
 }
