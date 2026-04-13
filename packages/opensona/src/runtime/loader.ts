@@ -5,13 +5,24 @@ import MiniSearch from "minisearch";
 import type { Chunk, Manifest } from "../types.ts";
 import { gunzip } from "./util.ts";
 
+/**
+ * Parsed and in-memory form of a bundle, returned by the loader. Exposed so
+ * downstream tooling can build custom retrieval pipelines; the standard
+ * runtime consumes this via {@link createRuntime} and callers normally do not
+ * interact with it directly.
+ */
 export interface LoadedBundle {
   manifest: Manifest;
   chunks: Chunk[];
+  /** Per-vector scale factors used to dequantise `quants`. */
   scales: Float32Array;
+  /** Int8-quantised embeddings laid out as `count * dim` contiguous values. */
   quants: Int8Array;
+  /** Number of chunks / vectors. */
   count: number;
+  /** Embedding dimensionality. */
   dim: number;
+  /** MiniSearch instance populated from the bundle's BM25 index. */
   bm25: MiniSearch;
 }
 

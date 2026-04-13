@@ -4,7 +4,7 @@
 export type {
   Chunk,
   Manifest,
-  OpersonaRuntime,
+  OpensonaRuntime,
   QueryOptions,
   RetrievedChunk,
   Timeline,
@@ -14,7 +14,7 @@ export type {
 export type { LoadedBundle } from "./loader.ts";
 export type { LoreMeta } from "./prompt.ts";
 
-import type { Manifest, OpersonaRuntime, QueryOptions, RetrievedChunk } from "../types.ts";
+import type { Manifest, OpensonaRuntime, QueryOptions, RetrievedChunk } from "../types.ts";
 
 import type { LoadedBundle } from "./loader.ts";
 import { ensureLoaded } from "./loader.ts";
@@ -22,7 +22,12 @@ import { embedQuery } from "./embedder.ts";
 import { retrieve } from "./retrieve.ts";
 export { assembleLorePreamble } from "./prompt.ts";
 
-export function createRuntime(): OpersonaRuntime {
+/**
+ * Create a new {@link OpensonaRuntime} instance. The returned object holds no
+ * bundle state until `load()` is called. Multiple runtimes can coexist; they
+ * share an internal load cache keyed by `bundlePath`.
+ */
+export function createRuntime(): OpensonaRuntime {
   let bundlePath: string | null = null;
   let loadedBundle: LoadedBundle | null = null;
 
