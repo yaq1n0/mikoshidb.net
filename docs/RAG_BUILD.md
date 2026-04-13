@@ -6,7 +6,7 @@ How mikoshidb.net uses [opensona](packages/opensona/) to build the RAG bundle th
 
 The canonical RAG bundle lives at `.opensona/output/` and is committed to git. `public/rag/` is a gitignored publish copy populated via `pnpm rag:publish` (auto-run by `predev`/`prebuild`). The build pipeline downloads a Fandom wiki XML dump, parses it into chunks, embeds them, and packs everything into a compact bundle.
 
-For full details on how the pipeline works internally, see the [opensona BUILD docs](packages/opensona/BUILD.md).
+For full details on how the pipeline works internally, see the [opensona BUILD docs](packages/opensona/docs/BUILD.md).
 
 ## Build steps
 
@@ -17,7 +17,7 @@ pnpm rag:build       # parse -> chunk -> embed -> quantise -> pack
 pnpm rag:verify      # smoke-test temporal filtering and retrieval
 ```
 
-These scripts wrap the [opensona CLI](packages/opensona/BUILD.md#cli-commands) with project-specific config from `.opensona/`.
+These scripts wrap the [opensona CLI](packages/opensona/docs/BUILD.md#cli-commands) with project-specific config from `.opensona/`.
 
 ## What gets built
 
@@ -34,4 +34,4 @@ The pipeline produces a bundle in `.opensona/output/` containing:
 
 Each engram has a **temporal cutoff** -- the build pipeline tags every chunk with the in-universe events it references. At query time, chunks about events after the character's cutoff are excluded. This prevents anachronistic responses (e.g. Johnny Silverhand won't discuss events after the Arasaka Tower raid).
 
-See the [opensona BUILD docs](packages/opensona/BUILD.md#temporal-filtering) for how tagging works.
+See the [opensona BUILD docs](packages/opensona/docs/BUILD.md#temporal-filtering) for how tagging works.

@@ -6,7 +6,7 @@ How mikoshidb.net uses [opensona](packages/opensona/) at runtime to ground chat 
 
 When a user sends a message, the app retrieves relevant lore chunks from the pre-built RAG bundle before passing the message to the LLM. The retrieved context is injected into the system prompt so the model can answer in-character with accurate lore.
 
-For full details on how retrieval works internally, see the [opensona QUERY docs](packages/opensona/QUERY.md).
+For full details on how retrieval works internally, see the [opensona QUERY docs](packages/opensona/docs/QUERY.md).
 
 ## Query flow
 
