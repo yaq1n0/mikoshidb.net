@@ -118,6 +118,67 @@ describe("verify run()", () => {
     expect(stdoutSpy).toHaveBeenCalled();
   });
 
+  it("throws CliError with path when cases JSON is malformed", async () => {
+    readFileMock.mockResolvedValue("{not json");
+    await expect(run({ cases: "/tmp/cases.json", bundle: "/tmp/b" })).rejects.toThrow(CliError);
+    await expect(run({ cases: "/tmp/cases.json", bundle: "/tmp/b" })).rejects.toThrow(
+      /Failed to parse JSON at \/tmp\/cases\.json/,
+    );
+  });
+
+  it("logs every dangling array when integrity fails", async () => {
+    readFileMock.mockResolvedValue("[]");
+    verifyBundleMock.mockResolvedValue({
+      integrity: {
+        ...passingIntegrity,
+        passed: false,
+        dangling: {
+          edgeSrc: ["links:x"],
+          edgeDst: ["links:x->y"],
+          aliasTarget: ["foo -> bar"],
+          sectionArticle: ["s1 -> a1"],
+          categoryArticle: ["cat-one -> a1"],
+          nodeEventIds: ["article:a:e-missing"],
+        },
+      },
+      cases: [],
+      blocked: true,
+    });
+
+    await expect(run({ cases: "/tmp/cases.json", bundle: "/tmp/b" })).rejects.toThrow(CliError);
+    const allLogs = logSpy.mock.calls.map((c: unknown[]) => c.join(" ")).join("\n");
+    expect(allLogs).toContain("edgeSrc (1)");
+    expect(allLogs).toContain("edgeDst (1)");
+    expect(allLogs).toContain("aliasTarget (1)");
+    expect(allLogs).toContain("sectionArticle (1)");
+    expect(allLogs).toContain("categoryArticle (1)");
+    expect(allLogs).toContain("nodeEventIds (1)");
+    expect(allLogs).toContain("[-] FAIL");
+  });
+
+  it("prints SOFT-FAIL icon for allowedFailure cases", async () => {
+    readFileMock.mockResolvedValue("[]");
+    verifyBundleMock.mockResolvedValue({
+      integrity: passingIntegrity,
+      cases: [
+        {
+          id: "soft",
+          layer: "alias",
+          passed: false,
+          allowedFailure: true,
+          chunks: [],
+          failures: ["soft issue"],
+        },
+      ],
+      blocked: false,
+    });
+
+    await run({ cases: "/tmp/cases.json", bundle: "/tmp/b" });
+    const allLogs = logSpy.mock.calls.map((c: unknown[]) => c.join(" ")).join("\n");
+    expect(allLogs).toContain("SOFT-FAIL: soft");
+    expect(allLogs).toContain("1 soft-failed");
+  });
+
   it("logs chunk info and failure messages for failed cases", async () => {
     readFileMock.mockResolvedValue(
       JSON.stringify([{ id: "c1", query: "q1", cutoffEventId: "e1" }]),
