@@ -46,13 +46,6 @@ async function onEvictWebLLM(): Promise<void> {
   await cache.evictWebLLM();
 }
 
-async function onEvictTransformers(): Promise<void> {
-  if (!confirm("Evict the transformers-cache? Embedder model will redownload on next jack-in.")) {
-    return;
-  }
-  await cache.evictTransformers();
-}
-
 async function onEvictBundleAll(): Promise<void> {
   if (!confirm("Evict ALL bundle-cache assets? Engram bundle will redownload on next jack-in.")) {
     return;
@@ -154,42 +147,6 @@ onMounted(() => {
                 <span class="text-fg">{{ fmtBytes(cache.webllm.estSizeBytes) }}</span>
                 <span
                   v-if="cache.webllm.estSizeBytes === 0 && cache.webllm.entries > 0"
-                  class="text-dim ml-1"
-                  >(no Content-Length headers)</span
-                >
-              </div>
-            </template>
-            <div v-else class="text-dim italic">no data — click refresh</div>
-          </div>
-        </section>
-
-        <!-- Transformers -->
-        <section class="border border-dim rounded">
-          <div class="flex items-center justify-between px-2 py-1 border-b border-dim">
-            <span class="text-accent font-bold">transformers</span>
-            <button
-              class="text-xs px-2 py-0.5 border border-dim rounded text-dim hover:text-danger hover:border-danger cursor-pointer disabled:opacity-50"
-              :disabled="cache.loading"
-              @click="onEvictTransformers"
-            >
-              evict all
-            </button>
-          </div>
-          <div class="px-2 py-1.5 space-y-0.5">
-            <template v-if="cache.transformers">
-              <div>
-                <span class="text-dim">cache: </span>
-                <span class="text-fg">transformers-cache</span>
-              </div>
-              <div>
-                <span class="text-dim">entries: </span>
-                <span class="text-fg">{{ cache.transformers.entries }}</span>
-              </div>
-              <div>
-                <span class="text-dim">est size: </span>
-                <span class="text-fg">{{ fmtBytes(cache.transformers.estSizeBytes) }}</span>
-                <span
-                  v-if="cache.transformers.estSizeBytes === 0 && cache.transformers.entries > 0"
                   class="text-dim ml-1"
                   >(no Content-Length headers)</span
                 >

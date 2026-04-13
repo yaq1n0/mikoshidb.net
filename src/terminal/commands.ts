@@ -16,8 +16,17 @@ import {
 } from "./session";
 import { useSessionStore } from "@/stores/session";
 import { useChatStore } from "@/stores/chat";
-import type { RetrievedChunk } from "opensona/runtime";
+import type {
+  CharacterContext,
+  GetTraversalPath,
+  ResolverInput,
+  ResolverMessage,
+  RetrievedChunk,
+  TraversalDirective,
+  TraverseTrace,
+} from "opensona/runtime";
 import { appendRagLog } from "./ragLog";
+import type { ResolverFallback } from "@/stores/rag";
 import { createCachedFetcher, sweepStale } from "@/storage/bundleCache";
 
 export interface Command {
@@ -295,6 +304,13 @@ export const commands: Command[] = [
         return;
       }
       store.currentEngramId = e.id;
+      // Pre-compute the entity vocab for the resolver prompt. Throws if the
+      // engram article isn't in the graph — callers treat that as non-fatal.
+      try {
+        ragRef.value?.warmEngram(e.id);
+      } catch (err) {
+        console.warn(`[rag] warmEngram failed for ${e.id}`, err);
+      }
       const chat = useChatStore();
       // Fresh link: wipe any prior conversation, (re)bind firmware+engram.
       chat.chatHistory = [];
@@ -416,6 +432,20 @@ const APPROX_CONTEXT_TOKENS = 4096;
 /** Rough char-per-token estimate for Llama-family BPE tokenizers. */
 const CHARS_PER_TOKEN = 4;
 
+/**
+ * Character budget for the per-turn lore preamble. Graph-RAG traversal emits up
+ * to 40 whole article sections, which easily exceeds the 4096-token wasm ceiling
+ * once stacked alongside the engram system prompt (~2250 tokens for V),
+ * restored chat history, and the response allocation. Chunks arrive sorted by
+ * hops asc, so we keep prefix chunks until the budget is exhausted.
+ *
+ * Why: on chat resume, the restored history is piled on top of a fresh
+ * preamble each turn — unbounded preambles that "just fit" on turn 1 blow up
+ * on turn 2. Capping at assembly time keeps both fresh-load and resume paths
+ * inside the window.
+ */
+const PREAMBLE_CHAR_BUDGET = 2800;
+
 const slashCommands: SlashCommand[] = [
   {
     name: "disconnect",
@@ -500,50 +530,182 @@ export async function runSlashCommand(input: string): Promise<void> {
 }
 
 /**
- * Attempt RAG retrieval for the current query. Best-effort: returns empty
- * preamble on any error so the chat still works without lore grounding.
- *
- * Returns coarse per-phase `timing` (ms) for diagnostic logging — `retrieve`
- * covers the vector query; `assemble` covers preamble formatting. Missing
- * phases indicate the pipeline short-circuited.
+ * Full per-turn retrieval result — opensona runs the graph traversal, the
+ * caller runs the LLM resolver. Everything that feeds the debug log is
+ * captured here so `sendChat` only has to forward it.
  */
-async function retrieveLore(userInput: string): Promise<{
+interface RetrievalBundle {
   preamble: string;
   chunks: RetrievedChunk[];
+  resolverInput: ResolverInput | null;
+  resolverMessages: ResolverMessage[];
+  resolverRaw: string;
+  resolverOutput: TraversalDirective | { error: string; raw: string } | null;
+  resolverFallback: ResolverFallback;
+  resolvedEntities: Array<{ alias: string; articleId: string }>;
+  traversalNodes: TraverseTrace["nodes"];
   timing: Record<string, number>;
-}> {
+}
+
+const TRAVERSAL_DIRECTIVE_SCHEMA = JSON.stringify({
+  type: "object",
+  properties: {
+    entities: { type: "array", items: { type: "string" } },
+    neighbors: { type: "string", enum: ["none", "direct", "two_hop"] },
+    include_categories: { type: "array", items: { type: "string" } },
+    reasoning: { type: "string" },
+  },
+  required: ["entities", "neighbors", "include_categories"],
+});
+
+const EMPTY_RETRIEVAL: RetrievalBundle = {
+  preamble: "",
+  chunks: [],
+  resolverInput: null,
+  resolverMessages: [],
+  resolverRaw: "",
+  resolverOutput: null,
+  resolverFallback: "none",
+  resolvedEntities: [],
+  traversalNodes: [],
+  timing: {},
+};
+
+async function retrieveLore(userInput: string): Promise<RetrievalBundle> {
   const rag = ragRef.value;
+  const engine = engineRef.value;
   const store = useSessionStore();
   const engram = store.currentEngramId ? findEngram(store.currentEngramId) : null;
-  if (!rag || !engram) return { preamble: "", chunks: [], timing: {} };
+  if (!rag || !engine || !engram) return EMPTY_RETRIEVAL;
+
+  const { buildResolverMessages, parseTraversalDirective, assembleLorePreamble } =
+    await import("opensona/runtime");
+
+  const characterContext: CharacterContext = {
+    id: engram.id,
+    bio: engram.bio,
+    ...(engram.cutoffEventId ? { cutoffEventId: engram.cutoffEventId } : {}),
+    ...(engram.excludeTags ? { excludeTags: engram.excludeTags } : {}),
+  };
+
+  // The caller owns the LLM round-trip. Capture the raw output and the parsed
+  // directive so both land in the debug log regardless of the outcome.
+  let capturedInput: ResolverInput | null = null;
+  let capturedMessages: ResolverMessage[] = [];
+  let capturedRaw = "";
+  let parsedDirective: TraversalDirective | null = null;
+  let fallback: ResolverFallback = "none";
+  let resolveMs = 0;
+
+  const getTraversalPath: GetTraversalPath = async (input) => {
+    capturedInput = input;
+    capturedMessages = buildResolverMessages(input);
+    const tResolve = performance.now();
+    try {
+      const resp = await engine.chat.completions.create({
+        messages: capturedMessages,
+        response_format: {
+          type: "json_object",
+          schema: TRAVERSAL_DIRECTIVE_SCHEMA,
+        },
+        temperature: 0.1,
+        max_tokens: 120,
+        stream: false,
+      });
+      capturedRaw = resp.choices?.[0]?.message?.content ?? "";
+    } catch (err) {
+      fallback = "throw";
+      throw err;
+    } finally {
+      resolveMs = Math.round(performance.now() - tResolve);
+    }
+    parsedDirective = parseTraversalDirective(capturedRaw);
+    if (!parsedDirective) {
+      fallback = "parse-error";
+      return null;
+    }
+    if (parsedDirective.entities.length === 0) {
+      fallback = "empty-directive";
+    }
+    return parsedDirective;
+  };
+
+  const traceHolder: { trace: TraverseTrace | null } = { trace: null };
 
   const timing: Record<string, number> = {};
   try {
-    const t0 = performance.now();
+    const tTotal = performance.now();
     const chunks = await rag.query(userInput, {
-      topK: 3,
-      cutoffEventId: engram.cutoffEventId,
-      excludeTags: engram.excludeTags,
+      getTraversalPath,
+      characterContext,
+      onTrace: (trace) => {
+        traceHolder.trace = trace;
+      },
     });
-    timing.retrieve = Math.round(performance.now() - t0);
+    timing.resolve = resolveMs;
+    timing.traverse = Math.round(performance.now() - tTotal) - resolveMs;
 
-    if (chunks.length === 0) return { preamble: "", chunks: [], timing };
+    const resolverOutput: RetrievalBundle["resolverOutput"] =
+      parsedDirective ??
+      (capturedRaw ? { error: "parse-error", raw: capturedRaw } : null);
 
-    // Dynamically import prompt assembly
-    const t1 = performance.now();
-    const { assembleLorePreamble } = await import("opensona/runtime");
+    if (chunks.length === 0) {
+      return {
+        ...EMPTY_RETRIEVAL,
+        resolverInput: capturedInput,
+        resolverMessages: capturedMessages,
+        resolverRaw: capturedRaw,
+        resolverOutput,
+        resolverFallback: fallback === "none" ? "empty-directive" : fallback,
+        resolvedEntities: traceHolder.trace?.resolvedEntities ?? [],
+        traversalNodes: traceHolder.trace?.nodes ?? [],
+        timing,
+      };
+    }
+
+    const tAssemble = performance.now();
     const manifest = rag.manifest();
     const meta = {
       source: manifest?.source ?? "",
       license: manifest?.license ?? "",
     };
-    const preamble = assembleLorePreamble(chunks, meta);
-    timing.assemble = Math.round(performance.now() - t1);
-    return { preamble, chunks, timing };
+    // Keep only enough prefix chunks (hops-sorted) to fit the preamble budget.
+    // We count raw chunk text, not the assembled wrapper, so the budget tracks
+    // the dominant cost regardless of the <lore> scaffolding around it.
+    const budgetedChunks: RetrievedChunk[] = [];
+    let chunkCharTotal = 0;
+    for (const c of chunks) {
+      const cost = c.chunk.header.length + c.chunk.text.length + 1;
+      if (budgetedChunks.length > 0 && chunkCharTotal + cost > PREAMBLE_CHAR_BUDGET) break;
+      budgetedChunks.push(c);
+      chunkCharTotal += cost;
+    }
+    const preamble = assembleLorePreamble(budgetedChunks, meta);
+    timing.assemble = Math.round(performance.now() - tAssemble);
+
+    return {
+      preamble,
+      chunks: budgetedChunks,
+      resolverInput: capturedInput,
+      resolverMessages: capturedMessages,
+      resolverRaw: capturedRaw,
+      resolverOutput,
+      resolverFallback: fallback,
+      resolvedEntities: traceHolder.trace?.resolvedEntities ?? [],
+      traversalNodes: traceHolder.trace?.nodes ?? [],
+      timing,
+    };
   } catch (err) {
-    // RAG is best-effort — fall through with empty preamble
     console.warn("[rag] retrieval failed:", err);
-    return { preamble: "", chunks: [], timing };
+    return {
+      ...EMPTY_RETRIEVAL,
+      resolverInput: capturedInput,
+      resolverMessages: capturedMessages,
+      resolverRaw: capturedRaw,
+      resolverOutput: capturedRaw ? { error: String(err), raw: capturedRaw } : null,
+      resolverFallback: "throw",
+      timing,
+    };
   }
 }
 
@@ -560,11 +722,8 @@ export async function sendChat(userInput: string): Promise<void> {
 
   // RAG retrieval (best-effort)
   const tTurnStart = performance.now();
-  const {
-    preamble: lorePreamble,
-    chunks: retrievedChunks,
-    timing: ragTiming,
-  } = await retrieveLore(userInput);
+  const retrieval = await retrieveLore(userInput);
+  const lorePreamble = retrieval.preamble;
   // Compose the system content the way streamReply does, so the logged
   // systemPrompt mirrors what actually reaches the model.
   const composedSystemPrompt = lorePreamble
@@ -574,11 +733,18 @@ export async function sendChat(userInput: string): Promise<void> {
     query: userInput,
     engramId: engram.id,
     cutoffEventId: engram.cutoffEventId ?? null,
-    chunks: retrievedChunks,
-    preamble: lorePreamble || undefined,
+    resolverInput: retrieval.resolverInput,
+    resolverMessages: retrieval.resolverMessages,
+    resolverRaw: retrieval.resolverRaw,
+    resolverOutput: retrieval.resolverOutput,
+    resolverFallback: retrieval.resolverFallback,
+    resolvedEntities: retrieval.resolvedEntities,
+    traversalNodes: retrieval.traversalNodes,
+    selected: retrieval.chunks,
+    preamble: lorePreamble,
     systemPrompt: composedSystemPrompt,
     timing: {
-      ...ragTiming,
+      ...retrieval.timing,
       total: Math.round(performance.now() - tTurnStart),
     },
   });
