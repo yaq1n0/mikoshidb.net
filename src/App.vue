@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import BootSequence from "@/components/BootSequence.vue";
 import Terminal from "@/components/Terminal.vue";
 import LockoutScreen from "@/components/LockoutScreen.vue";
+import DebugSidebar from "@/components/DebugSidebar.vue";
 import { detectWebGPU } from "@/llm/webgpu";
 import { loadSavedTheme } from "@/themes";
 import { session, clearScrollback } from "@/terminal/session";
+
+const debugMode = computed(() => new URLSearchParams(window.location.search).has("debug"));
 
 type Phase = "checking" | "lockout" | "booting" | "ready";
 
@@ -38,5 +41,6 @@ onMounted(boot);
     <BootSequence v-if="phase === 'checking' || phase === 'booting'" @done="onBootDone" />
     <Terminal v-else-if="phase === 'ready'" @reboot="onReboot" />
     <LockoutScreen v-else-if="phase === 'lockout'" />
+    <DebugSidebar v-if="debugMode" />
   </div>
 </template>
