@@ -11,10 +11,19 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "fmt": "prettier --check .",
-    "fmt:fix": "prettier --write ."
+    "fmt:fix": "prettier --write .",
+    "rag:download": "tsx packages/opensona/src/cli/index.ts download --wiki cyberpunk --output .opensona/downloads/dump.xml",
+    "rag:prebuild": "tsx packages/opensona/src/cli/index.ts prebuild --config .opensona/opensona.config.json --output .opensona/generated",
+    "rag:build": "tsx packages/opensona/src/cli/index.ts build --config .opensona/opensona.config.json --output .opensona/output && bash scripts/publish-rag.sh",
+    "rag:build:partial": "tsx packages/opensona/src/cli/index.ts build --config .opensona/opensona.config.json --output .opensona/output --limit 1000 && bash scripts/publish-rag.sh",
+    "rag:verify": "tsx packages/opensona/src/cli/index.ts verify --cases .opensona/verify-cases.json --bundle .opensona/output",
+    "rag:publish": "bash scripts/publish-rag.sh",
+    "predev": "pnpm rag:publish",
+    "prebuild": "pnpm rag:publish"
   },
   "dependencies": {
     "@mlc-ai/web-llm": "^0.2.82",
+    "opensona": "workspace:*",
     "vue": "^3.5.32"
   },
   "devDependencies": {
@@ -28,6 +37,7 @@
     "globals": "^17.4.0",
     "prettier": "^3.8.2",
     "tailwindcss": "^4.2.2",
+    "tsx": "^4.19.4",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.58.1",
     "vite": "^8.0.8",
