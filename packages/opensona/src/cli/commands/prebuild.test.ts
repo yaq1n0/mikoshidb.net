@@ -56,7 +56,10 @@ describe("prebuild run()", () => {
 
   it("throws CliError when the timeline article is missing from the dump", async () => {
     loadConfigMock.mockResolvedValue(makeConfig());
-    parseDumpMock.mockResolvedValue({ articles: [{ title: "SomethingElse", sections: [] }], redirects: [] });
+    parseDumpMock.mockResolvedValue({
+      articles: [{ title: "SomethingElse", sections: [] }],
+      redirects: [],
+    });
 
     await expect(run({ config: "cfg.json", output: "/tmp/out" })).rejects.toThrow(CliError);
     await expect(run({ config: "cfg.json", output: "/tmp/out" })).rejects.toThrow(/Timeline/);
@@ -72,7 +75,10 @@ describe("prebuild run()", () => {
       }),
     );
 
-    parseDumpMock.mockResolvedValue({ articles: [{ title: "Timeline", sections: [] }], redirects: [] });
+    parseDumpMock.mockResolvedValue({
+      articles: [{ title: "Timeline", sections: [] }],
+      redirects: [],
+    });
     generateTimelineMock.mockReturnValue({
       events: [
         { id: "e1", name: "X", year: 2005, order: 1 },
@@ -92,7 +98,10 @@ describe("prebuild run()", () => {
 
   it("writes timeline.json to opts.output and does not write category-map.json", async () => {
     loadConfigMock.mockResolvedValue(makeConfig());
-    parseDumpMock.mockResolvedValue({ articles: [{ title: "Timeline", sections: [] }], redirects: [] });
+    parseDumpMock.mockResolvedValue({
+      articles: [{ title: "Timeline", sections: [] }],
+      redirects: [],
+    });
     generateTimelineMock.mockReturnValue({ events: [] });
 
     await run({ config: "cfg.json", output: "/tmp/out" });
@@ -105,7 +114,10 @@ describe("prebuild run()", () => {
 
   it("matches timeline article case-insensitively", async () => {
     loadConfigMock.mockResolvedValue(makeConfig({ timelineArticleTitle: "Timeline" }));
-    parseDumpMock.mockResolvedValue({ articles: [{ title: "timeline", sections: [] }], redirects: [] });
+    parseDumpMock.mockResolvedValue({
+      articles: [{ title: "timeline", sections: [] }],
+      redirects: [],
+    });
     generateTimelineMock.mockReturnValue({ events: [] });
 
     await expect(run({ config: "cfg.json", output: "/tmp/out" })).resolves.toBeUndefined();
