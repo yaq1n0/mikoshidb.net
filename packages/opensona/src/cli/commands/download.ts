@@ -1,13 +1,23 @@
 // packages/opensona/src/cli/commands/download.ts
 
-import { mkdir, stat } from "node:fs/promises";
+import { mkdir, stat, rename, rm } from "node:fs/promises";
 import { createWriteStream } from "node:fs";
-import { dirname } from "node:path";
+import { Readable } from "node:stream";
+import { pipeline } from "node:stream/promises";
+import { dirname, join } from "node:path";
+import { tmpdir } from "node:os";
 import type { Command } from "commander";
+import _7z from "7zip-min";
 import { CliError } from "../errors.ts";
 
-export function escapeXml(s: string): string {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+export function dumpUrl(wiki: string): string {
+  if (!/^[a-z0-9-]+$/i.test(wiki) || wiki.length < 1) {
+    throw new CliError(`Invalid wiki subdomain: ${wiki}`);
+  }
+  const lower = wiki.toLowerCase();
+  const a = lower[0];
+  const ab = lower.slice(0, Math.min(2, lower.length));
+  return `https://s3.amazonaws.com/wikia_xml_dumps/${a}/${ab}/${lower}_pages_current.xml.7z`;
 }
 
 export async function run(opts: { wiki: string; output: string; force?: boolean }): Promise<void> {
@@ -26,132 +36,61 @@ export async function run(opts: { wiki: string; output: string; force?: boolean 
     }
   }
 
-  const wikiBase = `https://${opts.wiki}.fandom.com`;
+  const url = dumpUrl(opts.wiki);
   console.log(`Wiki: ${opts.wiki}.fandom.com`);
+  console.log(`Source: ${url}`);
 
-  console.log("Verifying wiki...");
-  const apiUrl = `${wikiBase}/api.php?action=query&meta=siteinfo&siprop=general&format=json`;
-  const siteResp = await fetch(apiUrl);
-  if (!siteResp.ok) {
-    throw new CliError(`Could not reach ${opts.wiki}.fandom.com (HTTP ${siteResp.status})`);
+  const resp = await fetch(url);
+  if (!resp.ok) {
+    throw new CliError(`Could not download dump from ${url} (HTTP ${resp.status})`);
   }
-  const siteInfo = (await siteResp.json()) as {
-    query?: { general?: { sitename?: string } };
-  };
-  const siteName = siteInfo.query?.general?.sitename ?? opts.wiki;
-  console.log(`Found wiki: ${siteName}`);
+  if (!resp.body) {
+    throw new CliError(`Empty response body from ${url}`);
+  }
 
-  console.log("Fetching page list...");
-  const allTitles: string[] = [];
-  let apcontinue: string | undefined;
+  const lastModified = resp.headers.get("last-modified") ?? "unknown";
+  const totalBytes = Number(resp.headers.get("content-length") ?? 0);
+  console.log(`Last-Modified: ${lastModified}`);
+  console.log(`Size: ${(totalBytes / 1024 / 1024).toFixed(1)} MB compressed`);
 
-  do {
-    const params = new URLSearchParams({
-      action: "query",
-      list: "allpages",
-      aplimit: "500",
-      apnamespace: "0",
-      apfilterredir: "nonredirects",
-      format: "json",
-    });
-    if (apcontinue) params.set("apcontinue", apcontinue);
-
-    const resp = await fetch(`${wikiBase}/api.php?${params}`);
-    if (!resp.ok) {
-      throw new CliError(`Error fetching page list: HTTP ${resp.status}`);
-    }
-
-    const data = (await resp.json()) as {
-      query?: { allpages?: { title: string }[] };
-      continue?: { apcontinue?: string };
-    };
-    const pages = data.query?.allpages ?? [];
-    for (const p of pages) allTitles.push(p.title);
-
-    apcontinue = data.continue?.apcontinue;
-    process.stdout.write(`\r  Found ${allTitles.length} pages...`);
-  } while (apcontinue);
-
-  console.log(`\n  Total: ${allTitles.length} content pages`);
-
-  console.log("Downloading page content...");
   await mkdir(dirname(opts.output), { recursive: true });
+  const workDir = await mkdtempScratch();
+  const archivePath = join(workDir, "dump.xml.7z");
 
-  const batchSize = 50;
-  const batches: string[][] = [];
-  for (let i = 0; i < allTitles.length; i += batchSize) {
-    batches.push(allTitles.slice(i, i + batchSize));
+  console.log("Downloading...");
+  await pipeline(
+    Readable.fromWeb(resp.body as unknown as Parameters<typeof Readable.fromWeb>[0]),
+    createWriteStream(archivePath),
+  );
+
+  console.log("Decompressing...");
+  await _7z.unpack(archivePath, workDir);
+
+  const extractedName = `${opts.wiki.toLowerCase()}_pages_current.xml`;
+  const extractedPath = join(workDir, extractedName);
+  try {
+    await stat(extractedPath);
+  } catch {
+    throw new CliError(`Expected ${extractedName} in archive but it was not found`);
   }
 
-  const outStream = createWriteStream(opts.output);
-  outStream.write('<?xml version="1.0" encoding="UTF-8"?>\n');
-  outStream.write('<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.11/" xml:lang="en">\n');
-
-  let exportedCount = 0;
-  for (let i = 0; i < batches.length; i++) {
-    const batch = batches[i];
-    const params = new URLSearchParams({
-      action: "query",
-      prop: "revisions|categories",
-      rvprop: "content",
-      rvslots: "main",
-      cllimit: "max",
-      titles: batch.join("|"),
-      format: "json",
-      formatversion: "2",
-    });
-
-    const resp = await fetch(`${wikiBase}/api.php?${params}`);
-    if (!resp.ok) {
-      throw new CliError(`Error fetching batch ${i + 1}/${batches.length}: HTTP ${resp.status}`);
-    }
-
-    const data = (await resp.json()) as {
-      query?: {
-        pages?: {
-          title: string;
-          ns: number;
-          missing?: boolean;
-          redirect?: boolean;
-          revisions?: { slots?: { main?: { content?: string } } }[];
-        }[];
-      };
-    };
-
-    const pages = data.query?.pages ?? [];
-    for (const page of pages) {
-      if (page.missing) continue;
-      const wikitext = page.revisions?.[0]?.slots?.main?.content ?? "";
-      if (!wikitext) continue;
-
-      const isRedirect = page.redirect === true;
-      outStream.write("  <page>\n");
-      outStream.write(`    <title>${escapeXml(page.title)}</title>\n`);
-      outStream.write(`    <ns>${page.ns}</ns>\n`);
-      if (isRedirect) outStream.write("    <redirect />\n");
-      outStream.write("    <revision>\n");
-      outStream.write(`      <text>${escapeXml(wikitext)}</text>\n`);
-      outStream.write("    </revision>\n");
-      outStream.write("  </page>\n");
-      exportedCount++;
-    }
-
-    process.stdout.write(
-      `\r  Downloaded ${exportedCount}/${allTitles.length} pages (batch ${i + 1}/${batches.length})`,
-    );
-  }
-
-  outStream.write("</mediawiki>\n");
-  outStream.end();
-
-  await new Promise<void>((resolve, reject) => {
-    outStream.on("finish", resolve);
-    outStream.on("error", reject);
+  await rename(extractedPath, opts.output).catch(async (err: NodeJS.ErrnoException) => {
+    // rename across filesystems fails with EXDEV — fall back to copy+unlink
+    if (err.code !== "EXDEV") throw err;
+    const { copyFile, unlink } = await import("node:fs/promises");
+    await copyFile(extractedPath, opts.output);
+    await unlink(extractedPath);
   });
 
+  await rm(workDir, { recursive: true, force: true });
+
   const finalStat = await stat(opts.output);
-  console.log(`\n\nDump saved to ${opts.output} (${(finalStat.size / 1024 / 1024).toFixed(1)} MB)`);
-  console.log(`Exported ${exportedCount} pages from ${siteName}`);
+  console.log(`\nDump saved to ${opts.output} (${(finalStat.size / 1024 / 1024).toFixed(1)} MB)`);
+}
+
+async function mkdtempScratch(): Promise<string> {
+  const { mkdtemp } = await import("node:fs/promises");
+  return mkdtemp(join(tmpdir(), "opensona-dump-"));
 }
 
 export function register(program: Command): void {

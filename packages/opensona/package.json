@@ -57,6 +57,7 @@
     "prepublishOnly": "pnpm typecheck && pnpm test:coverage && pnpm build"
   },
   "dependencies": {
+    "7zip-min": "^3.0.1",
     "@huggingface/transformers": "^4.0.1",
     "commander": "^14.0.3",
     "minisearch": "^7.2.0",
