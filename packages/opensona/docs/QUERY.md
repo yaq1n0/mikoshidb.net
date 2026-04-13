@@ -47,7 +47,7 @@ const results = await rt.query("who is Adam Smasher", {
 });
 
 for (const r of results) {
-  console.log(`[${r.source}] ${r.chunk.header} (score: ${r.score.toFixed(3)})`);
+  console.log(`[${r.source}] ${r.chunk.header} (h${r.hops})`);
   console.log(r.chunk.text);
 }
 ```
@@ -107,7 +107,7 @@ interface Chunk {
 
 interface RetrievedChunk {
   chunk: Chunk;
-  score: number;
-  source: "dense" | "bm25" | "both";
+  source: "lead" | "section" | "neighbor";
+  hops: number; // link distance from resolved entity (0 = entity itself)
 }
 ```

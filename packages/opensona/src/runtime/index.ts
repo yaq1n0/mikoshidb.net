@@ -1,42 +1,60 @@
 // packages/opensona/src/runtime/index.ts
-// Public runtime entry point — wire loader, embedder, retriever, and prompt
+// Public runtime entry point — graph retrieval. LLM-agnostic.
 
 export type {
+  CharacterContext,
   Chunk,
   EnsureLoadedOptions,
+  EntityVocab,
+  GetTraversalPath,
   Manifest,
   OpensonaRuntime,
   QueryOptions,
+  ResolverInput,
   RetrievedChunk,
   Timeline,
   TimelineEvent,
+  TraversalDirective,
 } from "../types.ts";
 
-export type { LoadedBundle } from "./loader.ts";
+export type { LoadedGraph } from "./graph.ts";
 export type { LoreMeta } from "./prompt.ts";
+export type { ResolverMessage } from "./resolve.ts";
+export type { TraverseTrace } from "./traverse.ts";
 
 import type {
   EnsureLoadedOptions,
+  EntityVocab,
   Manifest,
   OpensonaRuntime,
   QueryOptions,
   RetrievedChunk,
 } from "../types.ts";
 
-import type { LoadedBundle } from "./loader.ts";
+import type { LoadedGraph } from "./graph.ts";
 import { ensureLoaded } from "./loader.ts";
-import { embedQuery } from "./embedder.ts";
-import { retrieve } from "./retrieve.ts";
+import { warmEngram } from "./resolve.ts";
+import { traverse } from "./traverse.ts";
+
 export { assembleLorePreamble } from "./prompt.ts";
+export { buildResolverMessages, parseTraversalDirective, warmEngram } from "./resolve.ts";
+export { traverse } from "./traverse.ts";
 
 /**
- * Create a new {@link OpensonaRuntime} instance. The returned object holds no
- * bundle state until `load()` is called. Multiple runtimes can coexist; they
- * share an internal load cache keyed by `bundlePath`.
+ * Create a new {@link OpensonaRuntime}. The returned object holds no bundle
+ * state until `load()` is called.
  */
 export function createRuntime(): OpensonaRuntime {
   let bundlePath: string | null = null;
-  let loadedBundle: LoadedBundle | null = null;
+  let loadedGraph: LoadedGraph | null = null;
+  const vocabCache = new Map<string, EntityVocab>();
+
+  const ensureGraph = async (): Promise<LoadedGraph> => {
+    if (loadedGraph) return loadedGraph;
+    if (!bundlePath) throw new Error("Runtime not loaded. Call load() first.");
+    loadedGraph = await ensureLoaded(bundlePath);
+    return loadedGraph;
+  };
 
   return {
     async load(
@@ -44,39 +62,52 @@ export function createRuntime(): OpensonaRuntime {
       arg?: ((p: { phase: string; ratio: number }) => void) | EnsureLoadedOptions,
     ): Promise<void> {
       bundlePath = path;
-      loadedBundle = await ensureLoaded(path, arg);
+      loadedGraph = await ensureLoaded(path, arg);
+      vocabCache.clear();
     },
 
-    async query(text: string, options?: QueryOptions): Promise<RetrievedChunk[]> {
-      if (!bundlePath) {
-        throw new Error("Runtime not loaded. Call load() first.");
+    async query(userQuery: string, options: QueryOptions): Promise<RetrievedChunk[]> {
+      const graph = await ensureGraph();
+      const { getTraversalPath, characterContext, onTrace } = options;
+
+      let vocab = vocabCache.get(characterContext.id);
+      if (!vocab) {
+        vocab = warmEngram(characterContext.id, graph);
+        vocabCache.set(characterContext.id, vocab);
       }
-      const bundle = loadedBundle ?? (await ensureLoaded(bundlePath));
-      const modelId = bundle.manifest.embedder.model;
-      const queryVec = await embedQuery(text, modelId);
-      const { fused } = retrieve(bundle, queryVec, text, options);
-      return fused;
+
+      let directive;
+      try {
+        directive = await getTraversalPath({
+          userQuery,
+          characterContext,
+          entityVocab: vocab,
+        });
+      } catch {
+        return [];
+      }
+      if (!directive || directive.entities.length === 0) return [];
+
+      const { chunks, trace } = traverse(directive, graph, characterContext);
+      if (onTrace) onTrace(trace, directive);
+      return chunks;
     },
 
-    async inspect(
-      text: string,
-      options?: QueryOptions,
-    ): Promise<{
-      dense: RetrievedChunk[];
-      bm25: RetrievedChunk[];
-      fused: RetrievedChunk[];
-    }> {
-      if (!bundlePath) {
+    warmEngram(engramId: string): EntityVocab {
+      if (!loadedGraph) {
         throw new Error("Runtime not loaded. Call load() first.");
       }
-      const bundle = loadedBundle ?? (await ensureLoaded(bundlePath));
-      const modelId = bundle.manifest.embedder.model;
-      const queryVec = await embedQuery(text, modelId);
-      return retrieve(bundle, queryVec, text, options);
+      let vocab = vocabCache.get(engramId);
+      if (!vocab) {
+        vocab = warmEngram(engramId, loadedGraph);
+        vocabCache.set(engramId, vocab);
+      }
+      return vocab;
     },
 
     manifest(): Manifest | null {
-      return loadedBundle?.manifest ?? null;
+      return loadedGraph?.manifest ?? null;
     },
   };
 }
+
