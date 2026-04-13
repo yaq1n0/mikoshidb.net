@@ -18,13 +18,17 @@
     "rag:build:partial": "tsx packages/opensona/src/cli/index.ts build --config .opensona/opensona.config.json --output .opensona/output --limit 1000 && bash scripts/publish-rag.sh",
     "rag:verify": "tsx packages/opensona/src/cli/index.ts verify --cases .opensona/verify-cases.json --bundle .opensona/output",
     "rag:publish": "bash scripts/publish-rag.sh",
+    "test": "vitest run",
     "predev": "pnpm rag:publish",
     "prebuild": "pnpm rag:publish",
     "deploy": "pnpm run build && wrangler deploy"
   },
   "dependencies": {
     "@mlc-ai/web-llm": "^0.2.82",
+    "idb": "^8.0.3",
     "opensona": "workspace:*",
+    "pinia": "^3.0.4",
+    "pinia-plugin-persistedstate": "^4.7.1",
     "vue": "^3.5.32"
   },
   "devDependencies": {
@@ -36,6 +40,7 @@
     "eslint": "^10.2.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-vue": "^10.8.0",
+    "fake-indexeddb": "^6.2.5",
     "globals": "^17.4.0",
     "prettier": "^3.8.2",
     "tailwindcss": "^4.2.2",
@@ -43,6 +48,7 @@
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.58.1",
     "vite": "^8.0.8",
+    "vitest": "^4.1.4",
     "vue-eslint-parser": "^10.4.0",
     "vue-tsc": "^3.2.6",
     "wrangler": "^4.81.1"

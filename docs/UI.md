@@ -27,11 +27,11 @@ Per-turn RAG diagnostics are kept in a separate module, [src/terminal/ragLog.ts]
 
 ### localStorage keys
 
-| Key                   | Written by                                             | Purpose                              |
-| --------------------- | ------------------------------------------------------ | ------------------------------------ |
-| `mikoshi.theme`       | [src/themes/index.ts](../src/themes/index.ts)          | Last selected theme id               |
-| `mikoshi.rag.log`     | [src/terminal/ragLog.ts](../src/terminal/ragLog.ts)    | Rolling RAG query diagnostics (≤200) |
-| `mikoshi.debug.width` | [src/App.vue](../src/App.vue)                          | Debug sidebar width (px)             |
+| Key                   | Written by                                          | Purpose                              |
+| --------------------- | --------------------------------------------------- | ------------------------------------ |
+| `mikoshi.theme`       | [src/themes/index.ts](../src/themes/index.ts)       | Last selected theme id               |
+| `mikoshi.rag.log`     | [src/terminal/ragLog.ts](../src/terminal/ragLog.ts) | Rolling RAG query diagnostics (≤200) |
+| `mikoshi.debug.width` | [src/App.vue](../src/App.vue)                       | Debug sidebar width (px)             |
 
 ## Theming
 
