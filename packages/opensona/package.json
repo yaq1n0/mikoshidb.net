@@ -1,6 +1,6 @@
 {
   "name": "opensona",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "description": "Toolkit for building RAG pipelines using Fandom wiki data, used to enhance LLM personas. Ships a Node CLI (download, prebuild, build, verify) and a browser + Node runtime (graph traversal with timeline-aware filtering).",
   "license": "MIT",
   "author": "yaq1n0",
@@ -39,7 +39,6 @@
   },
   "files": [
     "dist",
-    "docs",
     "config.default.json",
     "README.md",
     "LICENSE"
