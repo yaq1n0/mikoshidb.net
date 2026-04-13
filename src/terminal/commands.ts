@@ -6,12 +6,14 @@ import { streamReply } from "@/llm/chat";
 import {
   session,
   engineRef,
+  ragRef,
   print,
   printLines,
   pushProgress,
   clearScrollback,
   beginChatReply,
 } from "./session";
+import type { RetrievedChunk } from "opensona/runtime";
 
 export interface Command {
   name: string;
@@ -184,21 +186,57 @@ export const commands: Command[] = [
       session.mode = "loading";
       print(`>> flashing biochip: ${f.displayName}`, "info");
       print(`>> source: ${f.mlcModelId} (~${f.approxSizeMB}MB)`, "info");
-      const progressLine = pushProgress("[          ]   0%  initializing");
+      const fwProgress = pushProgress("[          ]   0%  initializing firmware");
+      const ragProgress = pushProgress("[          ]   0%  initializing lore db");
+
+      function formatBar(pct: number, label: string): string {
+        const clamped = Math.max(0, Math.min(1, pct));
+        const bars = Math.round(clamped * 20);
+        const bar = "#".repeat(bars) + "-".repeat(20 - bars);
+        return `[${bar}] ${Math.round(clamped * 100)
+          .toString()
+          .padStart(3, " ")}%  ${label.slice(0, 60)}`;
+      }
+
       try {
-        const engine = await loadFirmware(f, (p) => {
-          const pct = Math.max(0, Math.min(1, p.progress));
-          const bars = Math.round(pct * 20);
-          const bar = "#".repeat(bars) + "-".repeat(20 - bars);
-          progressLine.progress = pct;
-          progressLine.text = `[${bar}] ${Math.round(pct * 100)
-            .toString()
-            .padStart(3, " ")}%  ${p.text.slice(0, 60)}`;
+        // Load firmware and RAG bundle in parallel
+        const firmwarePromise = loadFirmware(f, (p) => {
+          fwProgress.progress = p.progress;
+          fwProgress.text = formatBar(p.progress, p.text);
         });
+
+        const ragPromise = (async () => {
+          try {
+            const { createRuntime } = await import("opensona/runtime");
+            const runtime = createRuntime();
+            await runtime.load("/rag/", (p) => {
+              ragProgress.progress = p.ratio;
+              ragProgress.text = formatBar(p.ratio, p.phase);
+            });
+            return runtime;
+          } catch (err) {
+            // RAG is best-effort — don't block firmware loading
+            const msg = err instanceof Error ? err.message : String(err);
+            ragProgress.text = formatBar(0, `lore db unavailable: ${msg}`);
+            return null;
+          }
+        })();
+
+        const [engine, ragRuntime] = await Promise.all([firmwarePromise, ragPromise]);
+
         engineRef.value = engine;
         session.currentFirmware = f;
-        progressLine.progress = 1;
-        progressLine.text = `[${"#".repeat(20)}] 100%  FLASH COMPLETE`;
+        fwProgress.progress = 1;
+        fwProgress.text = formatBar(1, "FLASH COMPLETE");
+
+        if (ragRuntime) {
+          ragRef.value = ragRuntime;
+          ragProgress.progress = 1;
+          ragProgress.text = formatBar(1, "LORE DB ONLINE");
+        }
+
+        // Yield so Vue paints the final progress bars before printing below.
+        await new Promise((r) => setTimeout(r, 0));
         print(`>> biochip online: ${f.displayName}`, "info");
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
@@ -419,6 +457,41 @@ export async function runSlashCommand(input: string): Promise<void> {
   await cmd.run(args);
 }
 
+/**
+ * Attempt RAG retrieval for the current query. Best-effort: returns empty
+ * preamble on any error so the chat still works without lore grounding.
+ */
+async function retrieveLore(
+  userInput: string,
+): Promise<{ preamble: string; chunks: RetrievedChunk[] }> {
+  const rag = ragRef.value;
+  const engram = session.currentEngram;
+  if (!rag || !engram) return { preamble: "", chunks: [] };
+
+  try {
+    const chunks = await rag.query(userInput, {
+      topK: 3,
+      cutoffEventId: engram.cutoffEventId,
+      excludeTags: engram.excludeTags,
+    });
+
+    if (chunks.length === 0) return { preamble: "", chunks: [] };
+
+    // Dynamically import prompt assembly
+    const { assembleLorePreamble } = await import("opensona/runtime");
+    const manifest = rag.manifest();
+    const meta = {
+      source: manifest?.source ?? "",
+      license: manifest?.license ?? "",
+    };
+    return { preamble: assembleLorePreamble(chunks, meta), chunks };
+  } catch (err) {
+    // RAG is best-effort — fall through with empty preamble
+    console.warn("[rag] retrieval failed:", err);
+    return { preamble: "", chunks: [] };
+  }
+}
+
 /** Handle free-form chat input while in chat mode. */
 export async function sendChat(userInput: string): Promise<void> {
   const engine = engineRef.value;
@@ -428,6 +501,11 @@ export async function sendChat(userInput: string): Promise<void> {
     return;
   }
   print(userInput, "chat-user");
+
+  // RAG retrieval (best-effort)
+  const { preamble: lorePreamble, chunks: retrievedChunks } = await retrieveLore(userInput);
+  session.lastRetrieval = retrievedChunks;
+
   const replyLine = beginChatReply();
   try {
     for await (const chunk of streamReply(
@@ -435,6 +513,7 @@ export async function sendChat(userInput: string): Promise<void> {
       engram.systemPrompt,
       session.chatHistory,
       userInput,
+      lorePreamble || undefined,
     )) {
       if (chunk.delta) replyLine.text += chunk.delta;
       if (chunk.done) replyLine.streaming = false;
