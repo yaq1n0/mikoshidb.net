@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview",
+    "preview": "pnpm run build && wrangler dev",
     "typecheck": "vue-tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -19,7 +19,8 @@
     "rag:verify": "tsx packages/opensona/src/cli/index.ts verify --cases .opensona/verify-cases.json --bundle .opensona/output",
     "rag:publish": "bash scripts/publish-rag.sh",
     "predev": "pnpm rag:publish",
-    "prebuild": "pnpm rag:publish"
+    "prebuild": "pnpm rag:publish",
+    "deploy": "pnpm run build && wrangler deploy"
   },
   "dependencies": {
     "@mlc-ai/web-llm": "^0.2.82",
@@ -27,6 +28,7 @@
     "vue": "^3.5.32"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.31.2",
     "@eslint/js": "^10.0.1",
     "@tailwindcss/vite": "^4.2.2",
     "@types/node": "^25.6.0",
@@ -42,6 +44,7 @@
     "typescript-eslint": "^8.58.1",
     "vite": "^8.0.8",
     "vue-eslint-parser": "^10.4.0",
-    "vue-tsc": "^3.2.6"
+    "vue-tsc": "^3.2.6",
+    "wrangler": "^4.81.1"
   }
 }
