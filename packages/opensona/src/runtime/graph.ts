@@ -3,7 +3,7 @@
 
 import type { Manifest, TimelineEvent } from "../types.ts";
 
-export interface ArticleNode {
+export type ArticleNode = {
   kind: "article";
   id: string;
   title: string;
@@ -13,9 +13,9 @@ export interface ArticleNode {
   tags: string[];
   lead: string;
   sectionIds: string[];
-}
+};
 
-export interface SectionNode {
+export type SectionNode = {
   kind: "section";
   id: string;
   articleId: string;
@@ -24,16 +24,16 @@ export interface SectionNode {
   latestEventOrder: number;
   eventIds: string[];
   tags: string[];
-}
+};
 
-export interface CategoryNode {
+export type CategoryNode = {
   kind: "category";
   id: string;
   name: string;
   articleIds: string[];
-}
+};
 
-export interface LoadedGraph {
+export type LoadedGraph = {
   manifest: Manifest;
   articles: Map<string, ArticleNode>;
   sections: Map<string, SectionNode>;
@@ -50,21 +50,21 @@ export interface LoadedGraph {
   aliases: Map<string, string>;
   /** eventId → order. */
   eventOrder: Map<string, number>;
-}
+};
 
-export interface RawNodesPayload {
+export type RawNodesPayload = {
   articles: ArticleNode[];
   sections: SectionNode[];
   categories: CategoryNode[];
-}
+};
 
-export interface RawEdgesPayload {
+export type RawEdgesPayload = {
   links: Record<string, string[]>;
   contains: Record<string, string[]>;
   inCategory: Record<string, string[]>;
   inEvent: Record<string, string[]>;
   mentions: Record<string, string[]>;
-}
+};
 
 function objToAdjacency(obj: Record<string, string[]>): Map<string, Set<string>> {
   const out = new Map<string, Set<string>>();

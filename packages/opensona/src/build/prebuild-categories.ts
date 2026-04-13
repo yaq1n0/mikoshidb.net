@@ -4,10 +4,10 @@
 import type { OpensonaConfig, Timeline } from "../types.ts";
 import type { ParsedArticle } from "./parse.ts";
 
-export interface CategoryEventMap {
+export type CategoryEventMap = {
   mapping: Record<string, string>; // category -> eventId
   skipped: string[]; // categories that were skipped
-}
+};
 
 function shouldSkipCategory(category: string, skip: OpensonaConfig["categorySkip"]): boolean {
   if (skip.exact.includes(category)) return true;

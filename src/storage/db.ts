@@ -7,25 +7,25 @@ export const CACHE_DB_NAME = "mikoshi-cache";
 
 // --- Persisted record types ---
 
-export interface PersistedScrollbackLine {
+export type PersistedScrollbackLine = {
   schemaVersion: 1;
   id?: number;
   kind: string;
   text: string;
   progress?: number;
   timestamp: number;
-}
+};
 
-export interface PersistedChatSession {
+export type PersistedChatSession = {
   schemaVersion: 1;
   chatHistory: Array<{ role: "user" | "assistant"; content: string }>;
   firmwareId: string | null;
   engramId: string | null;
   startedAt: number;
   lastTurnAt: number;
-}
+};
 
-export interface PersistedRagEntry {
+export type PersistedRagEntry = {
   schemaVersion: 2;
   id?: number;
   timestamp: number;
@@ -43,13 +43,13 @@ export interface PersistedRagEntry {
   preamble?: string;
   systemPrompt?: string;
   timing?: Record<string, number>;
-}
+};
 
-export interface PersistedBundleAsset {
+export type PersistedBundleAsset = {
   bytes: ArrayBuffer;
   storedAt: number;
   sizeBytes: number;
-}
+};
 
 // --- DB schemas ---
 

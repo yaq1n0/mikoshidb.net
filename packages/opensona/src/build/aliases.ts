@@ -20,12 +20,12 @@ export function softNormalize(s: string): string {
     .trim();
 }
 
-export interface AliasMap {
+export type AliasMap = {
   /** Normalized string → article slug. */
   map: Map<string, string>;
   /** Count of redirects that couldn't be resolved to a known article. */
   unresolvedRedirects: number;
-}
+};
 
 export function buildAliasMap(articles: ParsedArticle[], redirects: Redirect[]): AliasMap {
   const titleLowerToSlug = new Map<string, string>();

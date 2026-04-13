@@ -4,12 +4,12 @@
 import type { RetrievedChunk } from "../types.ts";
 
 /** Attribution stamped onto the assembled `<lore>` block. */
-export interface LoreMeta {
+export type LoreMeta = {
   /** Attribution URL for the source wiki; typically `manifest.source`. */
   source: string;
   /** Licence string for the source content; typically `manifest.license`. */
   license: string;
-}
+};
 
 /**
  * Format retrieved chunks into a `<lore>` block suitable for prepending to an

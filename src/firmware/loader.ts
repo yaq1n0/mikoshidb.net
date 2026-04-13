@@ -1,10 +1,10 @@
 import type { MLCEngineInterface } from "@mlc-ai/web-llm";
 import type { Firmware } from "./index";
 
-export interface LoadProgress {
+export type LoadProgress = {
   progress: number; // 0..1
   text: string;
-}
+};
 
 /**
  * Loads @mlc-ai/web-llm dynamically so the ~6MB runtime is not part of the

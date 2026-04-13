@@ -2,11 +2,11 @@
  * Very small command tokenizer. Splits on whitespace, respects double quotes
  * for multi-word args, and lowercases the leading command.
  */
-export interface ParsedCommand {
+export type ParsedCommand = {
   command: string;
   args: string[];
   raw: string;
-}
+};
 
 export function parse(input: string): ParsedCommand | null {
   const trimmed = input.trim();

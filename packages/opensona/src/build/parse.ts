@@ -9,15 +9,15 @@ import { createReadStream } from "node:fs";
 import sax from "sax";
 import wtf from "wtf_wikipedia";
 
-export interface ParsedSection {
+export type ParsedSection = {
   heading: string;
   text: string;
   rawText?: string;
   /** Plain wiki link targets (de-anchored, de-piped) found in this section. */
   links: string[];
-}
+};
 
-export interface ParsedArticle {
+export type ParsedArticle = {
   title: string;
   slug: string;
   sections: ParsedSection[];
@@ -26,17 +26,17 @@ export interface ParsedArticle {
   links: string[];
   /** Infobox fields (name, aliases, etc.), flattened to plain strings. */
   infobox: Record<string, string>;
-}
+};
 
-export interface Redirect {
+export type Redirect = {
   from: string;
   to: string;
-}
+};
 
-export interface ParseResult {
+export type ParseResult = {
   articles: ParsedArticle[];
   redirects: Redirect[];
-}
+};
 
 /** Slugify a title: lowercase, replace non-alphanumerics with hyphens, collapse, trim */
 export function slugify(text: string): string {
@@ -76,13 +76,13 @@ function shouldDrop(title: string, wikitext: string, categories: string[]): bool
   return false;
 }
 
-interface RawPage {
+type RawPage = {
   title: string;
   ns: string;
   redirect: boolean;
   redirectTarget: string | null;
   text: string;
-}
+};
 
 /**
  * Parse a MediaWiki XML dump file.
@@ -163,10 +163,10 @@ function extractSections(doc: WtfDoc, wantRaw: boolean): ParsedSection[] {
   return result;
 }
 
-interface WtfLinkLike {
+type WtfLinkLike = {
   page?: () => string | undefined;
   text?: () => string | undefined;
-}
+};
 
 function extractDocLinks(doc: WtfDoc): string[] {
   const raw = (doc as unknown as { links: () => WtfLinkLike[] }).links?.() ?? [];

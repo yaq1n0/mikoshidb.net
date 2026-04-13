@@ -1,8 +1,8 @@
-export interface ThemeMeta {
+export type ThemeMeta = {
   id: string;
   displayName: string;
   description: string;
-}
+};
 
 export const themes: ThemeMeta[] = [
   {

@@ -19,14 +19,14 @@
 
 const WEBLLM_CACHE_PREFIX = "webllm/";
 
-export interface WebLLMStats {
+export type WebLLMStats = {
   /** CacheStorage names matching `webllm/*`. */
   caches: string[];
   /** Total entry count across all webllm caches. */
   entries: number;
   /** Best-effort size from `Content-Length` headers. May be 0 if headers absent. */
   estSizeBytes: number;
-}
+};
 
 function isCacheStorageAvailable(): boolean {
   return typeof caches !== "undefined" && typeof caches.keys === "function";

@@ -16,14 +16,14 @@
  * The `mlcModelId` values must match an entry in `prebuiltAppConfig.model_list`
  * from @mlc-ai/web-llm. Sizes are approximate and informational.
  */
-export interface Firmware {
+export type Firmware = {
   id: string;
   displayName: string;
   manufacturer: string;
   description: string;
   mlcModelId: string;
   approxSizeMB: number;
-}
+};
 
 export const firmware: Firmware[] = [
   {

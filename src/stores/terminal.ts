@@ -22,13 +22,13 @@ export type LineKind =
   | "chat-user"
   | "chat-reply";
 
-export interface ScrollbackLine {
+export type ScrollbackLine = {
   id: number;
   kind: LineKind;
   text: string;
   progress?: number;
   streaming?: boolean;
-}
+};
 
 // In-memory line id sequence — monotonically increasing, unrelated to the IDB
 // autoinc id. Used as the Vue :key for rendering.

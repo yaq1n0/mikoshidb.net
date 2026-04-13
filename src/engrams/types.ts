@@ -1,4 +1,4 @@
-export interface Engram {
+export type Engram = {
   id: string;
   displayName: string;
   handle: string;
@@ -17,4 +17,4 @@ export interface Engram {
   cutoffEventId: string;
   /** Tags to exclude from RAG results (e.g. "phantom-liberty" for pre-DLC engrams). */
   excludeTags?: string[];
-}
+};

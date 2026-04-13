@@ -20,10 +20,10 @@ export type Mode = "shell" | "chat" | "loading";
  * into `useChatStore` (see src/stores/chat.ts), but the type still lives here
  * so existing importers across commands.ts / llm/chat.ts keep a single source.
  */
-export interface ChatHistoryEntry {
+export type ChatHistoryEntry = {
   role: "user" | "assistant";
   content: string;
-}
+};
 
 // Engine lives outside reactive state so Vue does not try to proxy it.
 export const engineRef = shallowRef<MLCEngineInterface | null>(null);

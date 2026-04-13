@@ -14,10 +14,10 @@ import { slugify } from "../build/parse.ts";
 
 export type { TraverseTrace } from "../types.ts";
 
-export interface TraverseOptions {
+export type TraverseOptions = {
   /** Soft cap on emitted chunks. Default 40. */
   maxChunks?: number;
-}
+};
 
 const DEFAULT_MAX_CHUNKS = 40;
 

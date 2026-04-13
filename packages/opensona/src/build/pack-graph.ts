@@ -7,16 +7,16 @@ import type { FileMeta, Manifest, OpensonaConfig, Timeline, TimelineMeta } from 
 import type { GraphArtifact } from "./graph.ts";
 import { countEdges } from "./graph.ts";
 
-export interface PackedFile {
+export type PackedFile = {
   path: string;
   data: Uint8Array;
   meta: FileMeta;
-}
+};
 
-export interface PackGraphResult {
+export type PackGraphResult = {
   manifest: Manifest;
   files: PackedFile[];
-}
+};
 
 function sha256(bytes: Uint8Array): string {
   return createHash("sha256").update(bytes).digest("hex");
@@ -36,11 +36,11 @@ function nodeMapToArray<T>(map: Map<string, T>): T[] {
   return [...map.values()];
 }
 
-export interface PackGraphOptions {
+export type PackGraphOptions = {
   timeline: Timeline;
   timelineMeta: TimelineMeta;
   config: OpensonaConfig;
-}
+};
 
 export async function packGraph(
   graph: GraphArtifact,

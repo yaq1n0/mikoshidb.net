@@ -57,7 +57,7 @@ export type GraphBuildOptions = z.infer<typeof GraphBuildOptionsSchema>;
 export type OpensonaConfig = z.infer<typeof OpensonaConfigSchema>;
 
 /** A single in-universe event on the timeline. */
-export interface TimelineEvent {
+export type TimelineEvent = {
   /** Slugified unique id, e.g. `"night-city-holocaust-nuclear-device-detonated"`. */
   id: string;
   /** Human-readable name, roughly 80 chars or fewer. */
@@ -68,23 +68,23 @@ export interface TimelineEvent {
   order: number;
   /** Wiki-linked entity names used for auto-tagging chunks with this event. */
   keywords?: string[];
-}
+};
 
 /** Ordered collection of timeline events, stamped into the bundle manifest. */
-export interface Timeline {
+export type Timeline = {
   events: TimelineEvent[];
-}
+};
 
 /** Metadata stamped into the manifest for traceability. */
-export interface TimelineMeta {
+export type TimelineMeta = {
   articleTitle: string;
   eventCount: number;
   minYear: number;
   maxYear: number;
-}
+};
 
 /** A retrievable unit of lore text, produced by graph traversal. */
-export interface Chunk {
+export type Chunk = {
   /** Stable id, e.g. article slug or `${slug}#${sectionIndex}`. */
   id: string;
   /** Slugified source article id. */
@@ -103,7 +103,7 @@ export interface Chunk {
   tags: string[];
   /** Source wiki categories. */
   categories: string[];
-}
+};
 
 /**
  * A retrieval result from graph traversal.
@@ -113,15 +113,15 @@ export interface Chunk {
  * from the resolved entity (0 for the entity itself); results are ordered by
  * ascending `hops`.
  */
-export interface RetrievedChunk {
+export type RetrievedChunk = {
   chunk: Chunk;
   source: "lead" | "section" | "neighbor";
   /** Number of link hops from the resolved entity (0 for the entity itself). */
   hops: number;
-}
+};
 
 /** Caller-supplied projection of an engram, used to ground retrieval. */
-export interface CharacterContext {
+export type CharacterContext = {
   /** Article id / slug the engram corresponds to (used to anchor neighborhoods). */
   id: string;
   /** Short bio — used by the resolver prompt as extra context. */
@@ -130,26 +130,26 @@ export interface CharacterContext {
   cutoffEventId?: string;
   /** Tag slugs; chunks carrying any of these are filtered out. */
   excludeTags?: string[];
-}
+};
 
 /** Entity vocabulary opensona computes per character switch. */
-export interface EntityVocab {
+export type EntityVocab = {
   engramId: string;
   /** Roughly 80–150 aliases: the engram's own article plus 1-hop link neighbors. */
   names: string[];
   /** Top-level categories touched by the neighborhood. */
   categories: string[];
-}
+};
 
 /** Input opensona hands to the resolver callback. */
-export interface ResolverInput {
+export type ResolverInput = {
   userQuery: string;
   characterContext: CharacterContext;
   entityVocab: EntityVocab;
-}
+};
 
 /** Output the resolver callback is expected to return. */
-export interface TraversalDirective {
+export type TraversalDirective = {
   /** Alias strings from `entityVocab.names` that anchor the retrieval. */
   entities: string[];
   /** How aggressively to expand from the resolved entities. */
@@ -157,7 +157,7 @@ export interface TraversalDirective {
   /** Extra categories to widen the pull with. */
   include_categories: string[];
   reasoning?: string;
-}
+};
 
 /**
  * The callback contract. Callers wire this to their LLM of choice (opensona is
@@ -166,7 +166,7 @@ export interface TraversalDirective {
 export type GetTraversalPath = (input: ResolverInput) => Promise<TraversalDirective | null>;
 
 /** Options accepted by {@link OpensonaRuntime.query}. */
-export interface QueryOptions {
+export type QueryOptions = {
   getTraversalPath: GetTraversalPath;
   characterContext: CharacterContext;
   /**
@@ -175,14 +175,14 @@ export interface QueryOptions {
    * it. Skipped when the resolver yields no directive or throws.
    */
   onTrace?: (trace: TraverseTrace, directive: TraversalDirective) => void;
-}
+};
 
 /**
  * Diagnostic trace for a single traversal. Shape mirrors
  * `runtime/traverse.ts#TraverseTrace`; re-declared here to keep `types.ts`
  * free of runtime imports.
  */
-export interface TraverseTrace {
+export type TraverseTrace = {
   resolvedEntities: Array<{ alias: string; articleId: string }>;
   unresolvedEntities: string[];
   nodes: Array<{
@@ -192,17 +192,17 @@ export interface TraverseTrace {
     included: boolean;
     droppedReason?: "cutoff" | "excluded-tag" | "unknown-article";
   }>;
-}
+};
 
 /** File metadata stamped in the manifest for each bundle asset. */
-export interface FileMeta {
+export type FileMeta = {
   path: string;
   sizeBytes: number;
   sha256: string;
-}
+};
 
 /** Bundle manifest written by the graph build pipeline. */
-export interface Manifest {
+export type Manifest = {
   /** Bundle format version. Current runtime supports `2`. */
   version: 2;
   /** Retrieval kind. Always `"graph"`. */
@@ -234,10 +234,10 @@ export interface Manifest {
   timelineMeta: TimelineMeta;
   /** Map of logical file name → `{ path, sizeBytes, sha256 }`. */
   files: Record<string, FileMeta>;
-}
+};
 
 /** Options bag accepted by `ensureLoaded` / `OpensonaRuntime.load`. */
-export interface EnsureLoadedOptions {
+export type EnsureLoadedOptions = {
   onProgress?: (p: { phase: string; ratio: number }) => void;
   /**
    * Optional per-file fetch hook. When provided, the loader calls this in
@@ -245,13 +245,13 @@ export interface EnsureLoadedOptions {
    * URL and the manifest's expected SHA-256 for that asset.
    */
   fetchOverride?: (url: string, expectedSha256: string) => Promise<Response>;
-}
+};
 
 /**
  * Public runtime handle. Lifecycle: `load()` once, then `query()` /
  * `warmEngram()` / `manifest()` any number of times.
  */
-export interface OpensonaRuntime {
+export type OpensonaRuntime = {
   load(
     bundlePath: string,
     arg?: ((p: { phase: string; ratio: number }) => void) | EnsureLoadedOptions,
@@ -271,4 +271,4 @@ export interface OpensonaRuntime {
 
   /** Returns the loaded {@link Manifest}, or `null` if `load()` has not completed. */
   manifest(): Manifest | null;
-}
+};

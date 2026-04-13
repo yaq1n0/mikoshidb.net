@@ -29,12 +29,12 @@ import { appendRagLog } from "./ragLog";
 import type { ResolverFallback } from "@/stores/rag";
 import { createCachedFetcher, sweepStale } from "@/storage/bundleCache";
 
-export interface Command {
+export type Command = {
   name: string;
   usage: string;
   summary: string;
   run: (args: string[]) => Promise<void> | void;
-}
+};
 
 /** Pad a string to a column width (space-padded, right side). */
 function pad(s: string, n: number): string {
@@ -415,11 +415,11 @@ export async function runCommand(name: string, args: string[]): Promise<void> {
  * chat message. Keeping these separate from the shell `commands` list lets the
  * in-link vocabulary stay small and thematic.
  */
-interface SlashCommand {
+type SlashCommand = {
   name: string;
   summary: string;
   run: (args: string[]) => Promise<void> | void;
-}
+};
 
 /**
  * Approximate context window of the firmware in this catalog. All three
@@ -534,7 +534,7 @@ export async function runSlashCommand(input: string): Promise<void> {
  * caller runs the LLM resolver. Everything that feeds the debug log is
  * captured here so `sendChat` only has to forward it.
  */
-interface RetrievalBundle {
+type RetrievalBundle = {
   preamble: string;
   chunks: RetrievedChunk[];
   resolverInput: ResolverInput | null;
@@ -545,7 +545,7 @@ interface RetrievalBundle {
   resolvedEntities: Array<{ alias: string; articleId: string }>;
   traversalNodes: TraverseTrace["nodes"];
   timing: Record<string, number>;
-}
+};
 
 const TRAVERSAL_DIRECTIVE_SCHEMA = JSON.stringify({
   type: "object",

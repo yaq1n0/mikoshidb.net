@@ -18,7 +18,7 @@ export type ResolverFallback = "none" | "empty-directive" | "parse-error" | "thr
  * `id` is the IDB autoinc key (assigned post-write). DebugSidebar.vue keys
  * its `v-for` off `entry.id`, so the autoinc value must remain stable.
  */
-export interface RagLogEntry {
+export type RagLogEntry = {
   schemaVersion: 2;
   id: number;
   timestamp: number;
@@ -36,7 +36,7 @@ export interface RagLogEntry {
   preamble: string;
   systemPrompt: string;
   timing: Record<string, number>;
-}
+};
 
 export const useRagStore = defineStore("rag", () => {
   const ragLog = ref<RagLogEntry[]>([]);

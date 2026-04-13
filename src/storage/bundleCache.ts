@@ -91,10 +91,10 @@ export async function sweepStale(keepShas: Set<string>): Promise<number> {
   }
 }
 
-export interface CacheStats {
+export type CacheStats = {
   count: number;
   sizeBytes: number;
-}
+};
 
 /** Lightweight aggregate over the bundle-assets store. */
 export async function getCacheStats(): Promise<CacheStats> {

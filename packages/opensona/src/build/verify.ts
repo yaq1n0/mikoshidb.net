@@ -19,7 +19,7 @@ import {
 } from "../runtime/graph.ts";
 import { traverse } from "../runtime/traverse.ts";
 
-export interface IntegrityReport {
+export type IntegrityReport = {
   articleCount: number;
   sectionCount: number;
   categoryCount: number;
@@ -34,9 +34,9 @@ export interface IntegrityReport {
     nodeEventIds: string[];
   };
   passed: boolean;
-}
+};
 
-export interface GraphVerifyCase {
+export type GraphVerifyCase = {
   id: string;
   query: string;
   layer: "alias";
@@ -60,23 +60,23 @@ export interface GraphVerifyCase {
   assertNoPostCutoff?: boolean;
   /** If true, a failure is recorded but does not count toward the failure total. */
   allowFailure?: boolean;
-}
+};
 
-export interface CaseResult {
+export type CaseResult = {
   id: string;
   layer: "alias" | "llm";
   passed: boolean;
   allowedFailure: boolean;
   chunks: Array<{ id: string; articleId: string; header: string; hops: number }>;
   failures: string[];
-}
+};
 
-export interface VerifyReport {
+export type VerifyReport = {
   integrity: IntegrityReport;
   cases: CaseResult[];
   /** PASS/FAIL aggregate ignoring `allowFailure`. */
   blocked: boolean;
-}
+};
 
 async function loadBundle(bundleDir: string): Promise<{ manifest: Manifest; graph: LoadedGraph }> {
   const manifestRaw = await readFile(join(bundleDir, "manifest.json"), "utf-8");

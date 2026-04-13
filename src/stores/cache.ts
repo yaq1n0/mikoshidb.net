@@ -14,10 +14,10 @@ import {
 } from "@/cache/bundleInspector";
 import { ragRef } from "@/terminal/session";
 
-export interface StorageEstimate {
+export type StorageEstimate = {
   usage?: number;
   quota?: number;
-}
+};
 
 /**
  * Cache store — stats + eviction across WebLLM and the opensona bundle cache.

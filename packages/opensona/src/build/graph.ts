@@ -7,7 +7,7 @@ import { slugify } from "./parse.ts";
 import { buildAliasMap, resolveAlias } from "./aliases.ts";
 import type { CategoryEventMap } from "./prebuild-categories.ts";
 
-export interface ArticleNode {
+export type ArticleNode = {
   kind: "article";
   id: string;
   title: string;
@@ -18,9 +18,9 @@ export interface ArticleNode {
   tags: string[];
   lead: string;
   sectionIds: string[];
-}
+};
 
-export interface SectionNode {
+export type SectionNode = {
   kind: "section";
   id: string;
   articleId: string;
@@ -30,16 +30,16 @@ export interface SectionNode {
   latestEventOrder: number;
   eventIds: string[];
   tags: string[];
-}
+};
 
-export interface CategoryNode {
+export type CategoryNode = {
   kind: "category";
   id: string;
   name: string;
   articleIds: string[];
-}
+};
 
-export interface GraphArtifact {
+export type GraphArtifact = {
   nodes: {
     articles: Map<string, ArticleNode>;
     sections: Map<string, SectionNode>;
@@ -60,7 +60,7 @@ export interface GraphArtifact {
   };
   aliases: Map<string, string>;
   deadLinkCount: number;
-}
+};
 
 /**
  * Parse explicit 4-digit years from a section heading. Decade suffixes like
