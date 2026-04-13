@@ -11,10 +11,12 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
+/** Bytes of. */
 const bytesOf = (...xs: number[]): ArrayBuffer => {
   return new Uint8Array(xs).buffer;
 };
 
+/** Creates fetch mock. */
 const makeFetchMock = (bytes: ArrayBuffer, init?: ResponseInit) => {
   return vi.fn(async (_url: string) => new Response(bytes, init));
 };

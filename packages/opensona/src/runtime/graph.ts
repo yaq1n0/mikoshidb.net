@@ -66,6 +66,7 @@ export type RawEdgesPayload = {
   mentions: Record<string, string[]>;
 };
 
+/** Obj to adjacency. */
 const objToAdjacency = (obj: Record<string, string[]>): Map<string, Set<string>> => {
   const out = new Map<string, Set<string>>();
   for (const [k, arr] of Object.entries(obj)) {
@@ -74,6 +75,7 @@ const objToAdjacency = (obj: Record<string, string[]>): Map<string, Set<string>>
   return out;
 };
 
+/** Hydrates graph. */
 export const hydrateGraph = (
   manifest: Manifest,
   nodes: RawNodesPayload,

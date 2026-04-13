@@ -27,6 +27,7 @@ Rules:
 - Return an empty entities array if the query has no clear anchor in the vocabulary — do not guess.
 - Keep reasoning under 40 words.`;
 
+/** Formats user. */
 const formatUser = (input: ResolverInput): string => {
   const { userQuery, characterContext, entityVocab } = input;
   const namesBlock = entityVocab.names.join(", ");

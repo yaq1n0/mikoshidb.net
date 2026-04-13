@@ -8,6 +8,7 @@ const PREVIEW_CHARS = 200;
 const debug = useDebugStore();
 const copied = ref(false);
 
+/** Handles copy. */
 const onCopy = async (): Promise<void> => {
   try {
     await navigator.clipboard.writeText(exportRagLogJson());
@@ -18,6 +19,7 @@ const onCopy = async (): Promise<void> => {
   }
 };
 
+/** Handles download. */
 const onDownload = (): void => {
   const blob = new Blob([exportRagLogJson()], { type: "application/json" });
   const url = URL.createObjectURL(blob);
@@ -28,15 +30,18 @@ const onDownload = (): void => {
   URL.revokeObjectURL(url);
 };
 
+/** Handles clear. */
 const onClear = (): void => {
   if (confirm("Clear all logged RAG queries?")) clearRagLog();
 };
 
+/** Fmt time. */
 const fmtTime = (ts: number): string => {
   const d = new Date(ts);
   return d.toLocaleTimeString(undefined, { hour12: false });
 };
 
+/** Fmt directive. */
 const fmtDirective = (out: unknown): string => {
   if (!out) return "null";
   return JSON.stringify(out, null, 2);

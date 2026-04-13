@@ -44,14 +44,17 @@ export const focusInput = ref(0);
 export type ResumeAnswerHandler = (answer: string) => void | Promise<void>;
 const resumeHandler = shallowRef<ResumeAnswerHandler | null>(null);
 
+/** Sets resume handler. */
 export const setResumeHandler = (h: ResumeAnswerHandler | null): void => {
   resumeHandler.value = h;
 };
 
+/** Returns resume handler. */
 export const getResumeHandler = (): ResumeAnswerHandler | null => {
   return resumeHandler.value;
 };
 
+/** True if pending resume. */
 export const hasPendingResume = (): boolean => {
   return resumeHandler.value !== null;
 };
@@ -68,6 +71,7 @@ export const print = (text: string, kind: LineKind = "out"): ScrollbackLine => {
   return line;
 };
 
+/** Prints lines. */
 export const printLines = (lines: string[], kind: LineKind = "out"): void => {
   for (const l of lines) print(l, kind);
 };
@@ -97,10 +101,12 @@ export const finishProgress = (line: ScrollbackLine): void => {
   useTerminalStore().finalizeStreamingLine(line);
 };
 
+/** Clears scrollback. */
 export const clearScrollback = async (): Promise<void> => {
   await useTerminalStore().clearScrollback();
 };
 
+/** Begin chat reply. */
 export const beginChatReply = (): ScrollbackLine => {
   const line = reactive<ScrollbackLine>({
     id: _nextLineId(),

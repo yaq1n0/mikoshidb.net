@@ -13,12 +13,14 @@ import {
 type ProgressCb = (p: { phase: string; ratio: number }) => void;
 type EnsureLoadedArg = ProgressCb | EnsureLoadedOptions;
 
+/** Normalizes options. */
 const normalizeOptions = (arg?: EnsureLoadedArg): EnsureLoadedOptions => {
   return typeof arg === "function" ? { onProgress: arg } : (arg ?? {});
 };
 
 const loading = new Map<string, Promise<LoadedGraph>>();
 
+/** Ensures loaded. */
 export const ensureLoaded = (bundlePath: string, arg?: EnsureLoadedArg): Promise<LoadedGraph> => {
   const existing = loading.get(bundlePath);
   if (existing) return existing;
@@ -33,10 +35,12 @@ export const ensureLoaded = (bundlePath: string, arg?: EnsureLoadedArg): Promise
   return promise;
 };
 
+/** Progress. */
 const progress = (cb: ProgressCb | undefined, phase: string, ratio: number): void => {
   if (cb) cb({ phase, ratio });
 };
 
+/** Fetches asset. */
 const fetchAsset = async (
   url: string,
   name: "nodes" | "edges" | "aliases",
@@ -50,6 +54,7 @@ const fetchAsset = async (
   return fetch(url);
 };
 
+/** Do load. */
 async function doLoad(bundlePath: string, opts: EnsureLoadedOptions): Promise<LoadedGraph> {
   const { onProgress, fetchOverride } = opts;
   const base = bundlePath.endsWith("/") ? bundlePath : bundlePath + "/";

@@ -19,6 +19,7 @@ const usagePercent = computed<number | null>(() => {
   return (est.usage / est.quota) * 100;
 });
 
+/** Fmt bytes. */
 const fmtBytes = (n: number | null | undefined): string => {
   if (n === null || n === undefined || !Number.isFinite(n)) return "?";
   if (n < 1024) return `${n} B`;
@@ -32,20 +33,24 @@ const fmtBytes = (n: number | null | undefined): string => {
   return `${v.toFixed(v >= 100 ? 0 : v >= 10 ? 1 : 2)} ${units[i]}`;
 };
 
+/** Fmt time. */
 const fmtTime = (ts: number | null): string => {
   if (!ts) return "(never)";
   return new Date(ts).toLocaleTimeString(undefined, { hour12: false });
 };
 
+/** Handles refresh. */
 const onRefresh = async (): Promise<void> => {
   await cache.refresh();
 };
 
+/** Handles evict web llm. */
 const onEvictWebLLM = async (): Promise<void> => {
   if (!confirm("Evict ALL WebLLM caches? Models will redownload on next firmware load.")) return;
   await cache.evictWebLLM();
 };
 
+/** Handles evict bundle all. */
 const onEvictBundleAll = async (): Promise<void> => {
   if (!confirm("Evict ALL bundle-cache assets? Engram bundle will redownload on next jack-in.")) {
     return;
@@ -53,6 +58,7 @@ const onEvictBundleAll = async (): Promise<void> => {
   await cache.evictBundleAll();
 };
 
+/** Handles evict bundle stale. */
 const onEvictBundleStale = async (): Promise<void> => {
   if (!ragLoaded.value) return;
   if (!confirm("Evict bundle assets not referenced by the currently loaded runtime?")) return;

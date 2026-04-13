@@ -33,6 +33,7 @@ export type ScrollbackLine = {
 // In-memory line id sequence — monotonically increasing, unrelated to the IDB
 // autoinc id. Used as the Vue :key for rendering.
 let lineSeq = 0;
+/** Next line id. */
 const nextLineId = (): number => {
   return ++lineSeq;
 };

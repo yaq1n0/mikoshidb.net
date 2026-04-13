@@ -55,6 +55,7 @@ const script: Array<{ text: string; delay: number }> = [
   { text: "", delay: 40 },
 ];
 
+/** Delay. */
 const delay = (ms: number): Promise<void> => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };

@@ -18,20 +18,24 @@ export type PackGraphResult = {
   files: PackedFile[];
 };
 
+/** Sha256. */
 const sha256 = (bytes: Uint8Array): string => {
   return createHash("sha256").update(bytes).digest("hex");
 };
 
+/** Gzip. */
 const gzip = (text: string): Uint8Array => {
   return zlibGzipSync(Buffer.from(text, "utf-8"));
 };
 
+/** Adjacency to object. */
 const adjacencyToObject = (map: Map<string, Set<string>>): Record<string, string[]> => {
   const out: Record<string, string[]> = {};
   for (const [k, v] of map) out[k] = [...v];
   return out;
 };
 
+/** Node map to array. */
 const nodeMapToArray = <T>(map: Map<string, T>): T[] => {
   return [...map.values()];
 };
@@ -42,6 +46,7 @@ export type PackGraphOptions = {
   config: OpensonaConfig;
 };
 
+/** Packs graph. */
 export const packGraph = async (
   graph: GraphArtifact,
   options: PackGraphOptions,

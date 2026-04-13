@@ -78,6 +78,7 @@ export type VerifyReport = {
   blocked: boolean;
 };
 
+/** Loads bundle. */
 const loadBundle = async (bundleDir: string): Promise<{ manifest: Manifest; graph: LoadedGraph }> => {
   const manifestRaw = await readFile(join(bundleDir, "manifest.json"), "utf-8");
   const manifest = JSON.parse(manifestRaw) as Manifest;
@@ -100,6 +101,7 @@ const loadBundle = async (bundleDir: string): Promise<{ manifest: Manifest; grap
   return { manifest, graph };
 };
 
+/** Verifies integrity. */
 export const verifyIntegrity = (graph: LoadedGraph): IntegrityReport => {
   const dangling: IntegrityReport["dangling"] = {
     edgeSrc: [],
@@ -178,6 +180,7 @@ export const verifyIntegrity = (graph: LoadedGraph): IntegrityReport => {
   };
 };
 
+/** Runs alias case. */
 const runAliasCase = (testCase: GraphVerifyCase, graph: LoadedGraph): CaseResult => {
   const failures: string[] = [];
 
@@ -274,6 +277,7 @@ const runAliasCase = (testCase: GraphVerifyCase, graph: LoadedGraph): CaseResult
   };
 };
 
+/** Verifies bundle. */
 export const verifyBundle = async (
   bundleDir: string,
   cases: GraphVerifyCase[],

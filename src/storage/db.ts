@@ -78,6 +78,7 @@ export interface CacheDbSchema extends DBSchema {
 
 // --- Openers ---
 
+/** Opens session db. */
 export const openSessionDb = (): Promise<IDBPDatabase<SessionDbSchema>> => {
   return openDB<SessionDbSchema>(SESSION_DB_NAME, DB_SCHEMA_VERSION, {
     upgrade(db, oldVersion) {
@@ -107,6 +108,7 @@ export const openSessionDb = (): Promise<IDBPDatabase<SessionDbSchema>> => {
   });
 };
 
+/** Opens cache db. */
 export const openCacheDb = (): Promise<IDBPDatabase<CacheDbSchema>> => {
   return openDB<CacheDbSchema>(CACHE_DB_NAME, DB_SCHEMA_VERSION, {
     upgrade(db) {

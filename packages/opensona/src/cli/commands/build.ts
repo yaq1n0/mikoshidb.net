@@ -11,6 +11,7 @@ import { loadConfig } from "../../config.ts";
 import type { Timeline, TimelineMeta } from "../../types.ts";
 import { CliError } from "../errors.ts";
 
+/** Parses json file. */
 const parseJsonFile = <T>(raw: string, path: string): T => {
   try {
     return JSON.parse(raw) as T;
@@ -20,6 +21,7 @@ const parseJsonFile = <T>(raw: string, path: string): T => {
   }
 };
 
+/** Builds timeline meta. */
 const buildTimelineMeta = (timeline: Timeline, articleTitle: string): TimelineMeta => {
   if (timeline.events.length === 0) {
     return { articleTitle, eventCount: 0, minYear: 0, maxYear: 0 };
@@ -33,6 +35,7 @@ const buildTimelineMeta = (timeline: Timeline, articleTitle: string): TimelineMe
   };
 };
 
+/** Runs. */
 export const run = async (opts: { config: string; output: string; limit?: number }): Promise<void> => {
   const config = await loadConfig(opts.config);
 
@@ -93,6 +96,7 @@ export const run = async (opts: { config: string; output: string; limit?: number
   console.log(`  Build date: ${m.buildDate}`);
 };
 
+/** Registers. */
 export const register = (program: Command): void => {
   program
     .command("build")

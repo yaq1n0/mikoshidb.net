@@ -38,6 +38,7 @@ const createWriteStreamMock = createWriteStream as unknown as ReturnType<typeof 
 const pipelineMock = pipeline as unknown as ReturnType<typeof vi.fn>;
 const unpackMock = _7z.unpack as unknown as ReturnType<typeof vi.fn>;
 
+/** Ok response. */
 const okResponse = (body = "") => {
   // A minimal ReadableStream-like body that pipeline is mocked anyway
   return {
@@ -56,6 +57,7 @@ const okResponse = (body = "") => {
   } as unknown as Response;
 };
 
+/** Err response. */
 const errResponse = (status: number) => {
   return { ok: false, status, body: null, headers: new Headers() } as unknown as Response;
 };

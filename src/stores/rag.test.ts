@@ -6,6 +6,7 @@ import { openSessionDb, type PersistedRagEntry } from "@/storage/db";
 
 type StubInput = Omit<RagLogEntry, "id" | "timestamp" | "schemaVersion">;
 
+/** Stub. */
 const stub = (overrides: Partial<StubInput> = {}): StubInput => {
   return {
     query: "",

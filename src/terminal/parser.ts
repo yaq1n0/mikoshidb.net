@@ -8,6 +8,7 @@ export type ParsedCommand = {
   raw: string;
 };
 
+/** Parses. */
 export const parse = (input: string): ParsedCommand | null => {
   const trimmed = input.trim();
   if (!trimmed) return null;

@@ -8,6 +8,7 @@ import { generateTimeline } from "../../build/timeline.ts";
 import { loadConfig } from "../../config.ts";
 import { CliError } from "../errors.ts";
 
+/** Runs. */
 export const run = async (opts: { config: string; output: string }): Promise<void> => {
   const config = await loadConfig(opts.config);
 
@@ -60,6 +61,7 @@ export const run = async (opts: { config: string; output: string }): Promise<voi
   console.log(`\nTotal: ${timeline.events.length} events`);
 };
 
+/** Registers. */
 export const register = (program: Command): void => {
   program
     .command("prebuild")

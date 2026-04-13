@@ -40,6 +40,7 @@ const lockReason = ref<LockoutReason | null>(null);
 const debugStore = useDebugStore();
 const dragging = ref(false);
 
+/** Handles drag move. */
 const onDragMove = (e: MouseEvent): void => {
   const w = window.innerWidth - e.clientX;
   // Clamping happens inside the store; passing the raw value keeps both ends
@@ -47,6 +48,7 @@ const onDragMove = (e: MouseEvent): void => {
   debugStore.setWidth(Math.max(MIN_W, Math.min(MAX_W, w)));
 };
 
+/** Handles drag end. */
 const onDragEnd = (): void => {
   dragging.value = false;
   document.body.style.userSelect = "";
@@ -55,6 +57,7 @@ const onDragEnd = (): void => {
   window.removeEventListener("mouseup", onDragEnd);
 };
 
+/** Starts drag. */
 const startDrag = (e: MouseEvent): void => {
   e.preventDefault();
   dragging.value = true;
@@ -148,6 +151,7 @@ const makeResumeAnswerHandler = () => {
   };
 };
 
+/** Boot. */
 const boot = async (): Promise<void> => {
   // Gate 1: single-tab lock.
   const lockAcquired = await acquireSessionLock();
@@ -192,10 +196,12 @@ const boot = async (): Promise<void> => {
   phase.value = "booting";
 };
 
+/** Handles boot done. */
 const onBootDone = (): void => {
   phase.value = "ready";
 };
 
+/** Handles reboot. */
 const onReboot = (): void => {
   // Fire-and-forget; the booting phase kicks off immediately while the IDB
   // wipes proceed in the background. Per PLAN §7: reboot clears chat in

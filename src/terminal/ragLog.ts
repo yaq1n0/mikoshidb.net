@@ -28,10 +28,12 @@ export const appendRagLog = (entry: Omit<RagLogEntry, "id" | "timestamp" | "sche
   void useRagStore().appendEntry(entry);
 };
 
+/** Clears rag log. */
 export const clearRagLog = (): void => {
   void useRagStore().clear();
 };
 
+/** Export rag log json. */
 export const exportRagLogJson = (): string => {
   return useRagStore().exportJson();
 };

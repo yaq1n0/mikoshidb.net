@@ -28,10 +28,12 @@ export type WebLLMStats = {
   estSizeBytes: number;
 };
 
+/** True if cache storage available. */
 const isCacheStorageAvailable = (): boolean => {
   return typeof caches !== "undefined" && typeof caches.keys === "function";
 };
 
+/** Returns web llm stats. */
 export const getWebLLMStats = async (): Promise<WebLLMStats> => {
   if (!isCacheStorageAvailable()) {
     return { caches: [], entries: 0, estSizeBytes: 0 };

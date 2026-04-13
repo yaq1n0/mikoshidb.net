@@ -80,6 +80,7 @@ export const parseSectionYear = (heading: string): number | null => {
   return Math.max(...years);
 };
 
+/** Adds edge. */
 const addEdge = (map: Map<string, Set<string>>, src: string, dst: string): void => {
   let set = map.get(src);
   if (!set) {
@@ -89,6 +90,7 @@ const addEdge = (map: Map<string, Set<string>>, src: string, dst: string): void 
   set.add(dst);
 };
 
+/** Truncate. */
 const truncate = (text: string, maxChars: number): string => {
   if (text.length <= maxChars) return text;
   // Try to end at a sentence boundary within maxChars.
@@ -100,6 +102,7 @@ const truncate = (text: string, maxChars: number): string => {
   return slice.trim();
 };
 
+/** Builds graph. */
 export const buildGraph = (
   articles: ParsedArticle[],
   redirects: Redirect[],

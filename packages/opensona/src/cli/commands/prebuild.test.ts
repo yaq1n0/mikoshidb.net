@@ -28,6 +28,7 @@ const loadConfigMock = loadConfig as unknown as ReturnType<typeof vi.fn>;
 const mkdirMock = mkdir as unknown as ReturnType<typeof vi.fn>;
 const writeFileMock = writeFile as unknown as ReturnType<typeof vi.fn>;
 
+/** Creates config. */
 const makeConfig = (overrides: Record<string, unknown> = {}) => {
   return {
     dumpPath: "/tmp/dump.xml",

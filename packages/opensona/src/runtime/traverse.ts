@@ -21,6 +21,7 @@ export type TraverseOptions = {
 
 const DEFAULT_MAX_CHUNKS = 40;
 
+/** Resolves cutoff order. */
 const resolveCutoffOrder = (characterContext: CharacterContext, graph: LoadedGraph): number => {
   const cutoff = characterContext.cutoffEventId;
   if (!cutoff || cutoff === "__LAST_EVENT__") return Infinity;
@@ -28,17 +29,20 @@ const resolveCutoffOrder = (characterContext: CharacterContext, graph: LoadedGra
   return order ?? Infinity;
 };
 
+/** Passes cutoff. */
 const passesCutoff = (latestEventOrder: number, cutoffOrder: number): boolean => {
   if (latestEventOrder === -1) return true;
   return latestEventOrder <= cutoffOrder;
 };
 
+/** Passes tags. */
 const passesTags = (tags: string[], excluded: Set<string>): boolean => {
   if (excluded.size === 0) return true;
   for (const t of tags) if (excluded.has(t)) return false;
   return true;
 };
 
+/** Traverses. */
 export const traverse = (
   directive: TraversalDirective,
   graph: LoadedGraph,

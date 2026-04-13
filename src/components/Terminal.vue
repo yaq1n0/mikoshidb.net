@@ -20,6 +20,7 @@ const scrollRef = ref<HTMLDivElement | null>(null);
 const draft = ref("");
 const busy = ref(false);
 
+/** Scroll to bottom. */
 const scrollToBottom = (): void => {
   nextTick(() => {
     if (scrollRef.value) {
@@ -53,6 +54,7 @@ watch(
 // scroll position with the scrollHeight-delta trick so the viewport stays
 // anchored on the line the user was looking at.
 let loadingEarlier = false;
+/** Maybe load earlier. */
 const maybeLoadEarlier = async (): Promise<void> => {
   const el = scrollRef.value;
   if (!el) return;
@@ -71,6 +73,7 @@ const maybeLoadEarlier = async (): Promise<void> => {
   }
 };
 
+/** Handles scroll. */
 const onScroll = (): void => {
   void maybeLoadEarlier();
 };
@@ -82,6 +85,7 @@ onMounted(() => {
   scrollToBottom();
 });
 
+/** Prompt prefix. */
 const promptPrefix = (): string => {
   if (sessionStore.mode === "chat" && currentEngram.value) {
     return `${currentEngram.value.handle}> `;
@@ -90,6 +94,7 @@ const promptPrefix = (): string => {
   return "mikoshi> ";
 };
 
+/** Handles submit. */
 const onSubmit = async (): Promise<void> => {
   if (busy.value) return;
   const raw = draft.value;
@@ -158,6 +163,7 @@ const onSubmit = async (): Promise<void> => {
   }
 };
 
+/** Handles key down. */
 const onKeyDown = (e: KeyboardEvent): void => {
   if (e.key === "ArrowUp") {
     // Inert in chat mode — let the input handle the keystroke natively.
@@ -175,6 +181,7 @@ const onKeyDown = (e: KeyboardEvent): void => {
   }
 };
 
+/** Line class. */
 const lineClass = (kind: string): string => {
   switch (kind) {
     case "cmd":

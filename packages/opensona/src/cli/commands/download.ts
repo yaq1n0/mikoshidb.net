@@ -10,6 +10,7 @@ import type { Command } from "commander";
 import _7z from "7zip-min";
 import { CliError } from "../errors.ts";
 
+/** Dump url. */
 export const dumpUrl = (wiki: string): string => {
   if (!/^[a-z0-9-]+$/i.test(wiki) || wiki.length < 1) {
     throw new CliError(`Invalid wiki subdomain: ${wiki}`);
@@ -20,6 +21,7 @@ export const dumpUrl = (wiki: string): string => {
   return `https://s3.amazonaws.com/wikia_xml_dumps/${a}/${ab}/${lower}_pages_current.xml.7z`;
 };
 
+/** Runs. */
 export const run = async (opts: { wiki: string; output: string; force?: boolean }): Promise<void> => {
   if (!opts.force) {
     try {
@@ -88,11 +90,13 @@ export const run = async (opts: { wiki: string; output: string; force?: boolean 
   console.log(`\nDump saved to ${opts.output} (${(finalStat.size / 1024 / 1024).toFixed(1)} MB)`);
 };
 
+/** Mkdtemp scratch. */
 async function mkdtempScratch(): Promise<string> {
   const { mkdtemp } = await import("node:fs/promises");
   return mkdtemp(join(tmpdir(), "opensona-dump-"));
 }
 
+/** Registers. */
 export const register = (program: Command): void => {
   program
     .command("download")

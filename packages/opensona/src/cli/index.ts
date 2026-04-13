@@ -6,6 +6,7 @@ import { register as registerPrebuild } from "./commands/prebuild.ts";
 import { register as registerBuild } from "./commands/build.ts";
 import { register as registerVerify } from "./commands/verify.ts";
 
+/** Builds program. */
 export const buildProgram = (): Command => {
   const program = new Command();
 
@@ -22,6 +23,7 @@ export const buildProgram = (): Command => {
   return program;
 };
 
+/** Main. */
 export const main = async (argv?: readonly string[]): Promise<void> => {
   const program = buildProgram();
   try {

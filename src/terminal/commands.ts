@@ -42,6 +42,7 @@ const pad = (s: string, n: number): string => {
   return s + " ".repeat(n - s.length);
 };
 
+/** Unknown. */
 const unknown = (cmd: string): void => {
   print(`mikoshi: unknown command: ${cmd}`, "error");
   print("type 'help' for a list of available commands.", "info");
@@ -571,6 +572,7 @@ const EMPTY_RETRIEVAL: RetrievalBundle = {
   timing: {},
 };
 
+/** Retrieve lore. */
 const retrieveLore = async (userInput: string): Promise<RetrievalBundle> => {
   const rag = ragRef.value;
   const engine = engineRef.value;

@@ -7,6 +7,7 @@ beforeEach(() => {
   globalThis.indexedDB = new IDBFactory();
 });
 
+/** Bytes of. */
 const bytesOf = (...xs: number[]): ArrayBuffer => {
   return new Uint8Array(xs).buffer;
 };

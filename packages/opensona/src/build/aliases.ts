@@ -27,6 +27,7 @@ export type AliasMap = {
   unresolvedRedirects: number;
 };
 
+/** Builds alias map. */
 export const buildAliasMap = (articles: ParsedArticle[], redirects: Redirect[]): AliasMap => {
   const titleLowerToSlug = new Map<string, string>();
   for (const a of articles) {

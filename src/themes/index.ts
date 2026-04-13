@@ -29,6 +29,7 @@ export const themes: ThemeMeta[] = [
 
 export const DEFAULT_THEME_ID = "arasaka";
 
+/** True if valid theme id. */
 export const isValidThemeId = (id: string): boolean => {
   return themes.some((t) => t.id === id);
 };

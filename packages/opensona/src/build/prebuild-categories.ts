@@ -9,6 +9,7 @@ export type CategoryEventMap = {
   skipped: string[]; // categories that were skipped
 };
 
+/** True if skip category. */
 const shouldSkipCategory = (category: string, skip: OpensonaConfig["categorySkip"]): boolean => {
   if (skip.exact.includes(category)) return true;
 
@@ -24,6 +25,7 @@ const shouldSkipCategory = (category: string, skip: OpensonaConfig["categorySkip
   return false;
 };
 
+/** Finds first event in range. */
 const findFirstEventInRange = (
   timeline: Timeline,
   startYear: number,
@@ -37,6 +39,7 @@ const findFirstEventInRange = (
   return null;
 };
 
+/** Match category to event. */
 const matchCategoryToEvent = (
   category: string,
   timeline: Timeline,

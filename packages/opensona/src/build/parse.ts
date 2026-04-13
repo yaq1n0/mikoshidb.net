@@ -58,6 +58,7 @@ const TITLE_SKIP_PREFIXES = ["Quest:"];
 
 const SKIP_CATEGORY_EXACT = new Set(["Disambiguations", "Article stubs"]);
 
+/** True if drop. */
 const shouldDrop = (title: string, wikitext: string, categories: string[]): boolean => {
   for (const prefix of TITLE_SKIP_PREFIXES) {
     if (title.startsWith(prefix)) return true;
@@ -141,6 +142,7 @@ export const parseDump = async (
 type WtfDoc = ReturnType<typeof wtf>;
 type WtfSection = ReturnType<WtfDoc["sections"]>[number];
 
+/** Extracts sections. */
 function extractSections(doc: WtfDoc, wantRaw: boolean): ParsedSection[] {
   const wtfSections = doc.sections() as WtfSection[];
   const result: ParsedSection[] = [];
@@ -168,16 +170,19 @@ type WtfLinkLike = {
   text?: () => string | undefined;
 };
 
+/** Extracts doc links. */
 function extractDocLinks(doc: WtfDoc): string[] {
   const raw = (doc as unknown as { links: () => WtfLinkLike[] }).links?.() ?? [];
   return normalizeLinkList(raw);
 }
 
+/** Extracts section links. */
 function extractSectionLinks(sec: WtfSection): string[] {
   const raw = (sec as unknown as { links?: () => WtfLinkLike[] }).links?.() ?? [];
   return normalizeLinkList(raw);
 }
 
+/** Normalizes link list. */
 function normalizeLinkList(raw: WtfLinkLike[]): string[] {
   const out = new Set<string>();
   for (const l of raw) {
@@ -190,6 +195,7 @@ function normalizeLinkList(raw: WtfLinkLike[]): string[] {
   return [...out];
 }
 
+/** Extracts infobox. */
 function extractInfobox(doc: WtfDoc): Record<string, string> {
   const ib = (doc as unknown as { infobox?: () => unknown }).infobox?.();
   if (!ib || typeof ib !== "object") return {};

@@ -6,6 +6,7 @@ import { useTerminalStore, type ScrollbackLine } from "@/stores/terminal";
 import { openSessionDb, type PersistedScrollbackLine } from "@/storage/db";
 
 // IDB writes in the store are debounced ~100ms. Tests need to wait past that.
+/** Wait for flush. */
 const waitForFlush = async (): Promise<void> => {
   await new Promise((r) => setTimeout(r, 150));
 };
@@ -13,6 +14,7 @@ const waitForFlush = async (): Promise<void> => {
 // Minimal in-memory localStorage shim — the vitest config runs under the
 // "node" environment which lacks browser globals. The terminal store reads
 // from `localStorage` lazily, so installing this once at the top is enough.
+/** Install local storage shim. */
 const installLocalStorageShim = (): void => {
   const map = new Map<string, string>();
   const shim: Storage = {

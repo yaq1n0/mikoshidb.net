@@ -6,6 +6,7 @@ import { verifyBundle } from "../../build/verify.ts";
 import type { GraphVerifyCase } from "../../build/verify.ts";
 import { CliError } from "../errors.ts";
 
+/** Runs. */
 export const run = async (opts: { cases: string; bundle: string }): Promise<void> => {
   const casesRaw = await readFile(opts.cases, "utf-8");
   let cases: GraphVerifyCase[];
@@ -88,6 +89,7 @@ export const run = async (opts: { cases: string; bundle: string }): Promise<void
   }
 };
 
+/** Registers. */
 export const register = (program: Command): void => {
   program
     .command("verify")

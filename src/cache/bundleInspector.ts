@@ -13,10 +13,12 @@ import {
 
 export type BundleStats = CacheStats;
 
+/** Returns bundle stats. */
 export const getBundleStats = async (): Promise<BundleStats> => {
   return bundleGetStats();
 };
 
+/** Evict all bundle. */
 export const evictAllBundle = async (): Promise<void> => {
   return bundleEvictAll();
 };
