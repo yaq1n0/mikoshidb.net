@@ -8,7 +8,13 @@ import { CliError } from "../errors.ts";
 
 export async function run(opts: { cases: string; bundle: string }): Promise<void> {
   const casesRaw = await readFile(opts.cases, "utf-8");
-  const cases: VerifyCase[] = JSON.parse(casesRaw);
+  let cases: VerifyCase[];
+  try {
+    cases = JSON.parse(casesRaw) as VerifyCase[];
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    throw new CliError(`Failed to parse JSON at ${opts.cases}: ${msg}`);
+  }
 
   console.log(`Running ${cases.length} verify cases against: ${opts.bundle}\n`);
 

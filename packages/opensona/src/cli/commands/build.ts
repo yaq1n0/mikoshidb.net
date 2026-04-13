@@ -10,15 +10,27 @@ import { packBundle } from "../../build/pack.ts";
 import { loadConfig } from "../../config.ts";
 import type { Timeline } from "../../types.ts";
 import type { CategoryEventMap } from "../../build/prebuild-categories.ts";
+import { CliError } from "../errors.ts";
+
+function parseJsonFile<T>(raw: string, path: string): T {
+  try {
+    return JSON.parse(raw) as T;
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    throw new CliError(`Failed to parse JSON at ${path}: ${msg}`);
+  }
+}
 
 export async function run(opts: { config: string; output: string; limit?: number }): Promise<void> {
   const config = await loadConfig(opts.config);
 
-  const timelineRaw = await readFile(join(config.generatedDir, "timeline.json"), "utf-8");
-  const timeline: Timeline = JSON.parse(timelineRaw);
+  const timelinePath = join(config.generatedDir, "timeline.json");
+  const timelineRaw = await readFile(timelinePath, "utf-8");
+  const timeline = parseJsonFile<Timeline>(timelineRaw, timelinePath);
 
-  const categoryMapRaw = await readFile(join(config.generatedDir, "category-map.json"), "utf-8");
-  const categoryMap: CategoryEventMap = JSON.parse(categoryMapRaw);
+  const categoryMapPath = join(config.generatedDir, "category-map.json");
+  const categoryMapRaw = await readFile(categoryMapPath, "utf-8");
+  const categoryMap = parseJsonFile<CategoryEventMap>(categoryMapRaw, categoryMapPath);
 
   console.log(`Parsing dump: ${config.dumpPath}`);
   let articles = await parseDump(config.dumpPath);
