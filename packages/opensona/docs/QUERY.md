@@ -6,10 +6,12 @@ How opensona retrieves and ranks RAG chunks at query time. The runtime works in 
 
 The runtime performs **hybrid retrieval**:
 
-1. **Dense scoring** -- brute-force dot product over int8-quantised vectors (~5-15ms for 30k chunks). Timeline filter applied inside the scoring loop.
-2. **Sparse scoring** -- BM25 via MiniSearch with fuzzy matching.
-3. **RRF fusion** -- Reciprocal Rank Fusion (k=60) merges both result sets.
-4. **Prompt assembly** -- top-k chunks formatted as a `<lore>` preamble for the system message.
+1. **Dense scoring** -- brute-force dot product over int8-quantised vectors (~5-15ms for 30k chunks). Timeline and tag filters are applied inside the scoring loop; top 20 survivors advance.
+2. **Sparse scoring** -- BM25 via MiniSearch with `fuzzy: 0.2, prefix: true`; top 20 survivors advance after the same filters.
+3. **RRF fusion** -- Reciprocal Rank Fusion merges both lists using `score(rank) = 1 / (60 + rank)` (k=60), summing per-chunk contributions.
+4. **Prompt assembly** -- top-k fused chunks formatted as a `<lore>` preamble for the system message.
+
+Each `RetrievedChunk` carries a `source` of `"dense" | "bm25" | "both"` so callers can tell which retriever surfaced it.
 
 The embedding model (`Xenova/bge-small-en-v1.5`, 384-dim, ~33MB q8) is loaded via `@huggingface/transformers` and cached in IndexedDB, keyed by the SHA-256 hash of the RAG bundle weights.
 

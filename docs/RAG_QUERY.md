@@ -17,6 +17,20 @@ For full details on how retrieval works internally, see the [opensona QUERY docs
 5. **Assemble lore preamble** -- top-k chunks formatted as a `<lore>` block prepended to the system message
 6. **Stream LLM response** -- the model generates an in-character reply grounded in the retrieved lore
 
+## Prompt assembly
+
+The lore preamble and engram system prompt are concatenated into a **single** `system` message, lore first:
+
+```
+system: <lore source="…" license="…">…</lore>\n\n<engramSystemPrompt>
+...history...
+user: <userMessage>
+```
+
+Lore comes before the engram prompt so the in-character voice instructions are the last (strongest) signal the model sees. The assembly lives in [src/llm/chat.ts](../src/llm/chat.ts); RAG is best-effort — if retrieval fails or returns nothing, the system message contains just the engram prompt and chat still proceeds.
+
+Sampling is tuned for roleplay (temperature 0.9, top_p 0.9, frequency_penalty 0.4, presence_penalty 0.3, max_tokens 384). See [chat.ts](../src/llm/chat.ts) for the rationale on each parameter.
+
 ## Per-engram cutoffs
 
 Each engram defines a `cutoffEventId` that controls what lore the character has access to:

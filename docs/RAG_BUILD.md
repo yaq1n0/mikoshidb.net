@@ -4,7 +4,7 @@ How mikoshidb.net uses [opensona](packages/opensona/) to build the RAG bundle th
 
 ## Overview
 
-The canonical RAG bundle lives at `.opensona/output/` and is committed to git. `public/rag/` is a gitignored publish copy populated via `pnpm rag:publish` (auto-run by `predev`/`prebuild`). The build pipeline downloads a Fandom wiki XML dump, parses it into chunks, embeds them, and packs everything into a compact bundle.
+The canonical RAG bundle lives at `.opensona/output/` and is committed to git. `public/rag/` is a gitignored publish copy populated via `pnpm rag:publish` ([scripts/publish-rag.sh](../scripts/publish-rag.sh)), which is wired to the `predev` and `prebuild` npm lifecycle hooks — so `pnpm dev` and `pnpm build` always serve a fresh copy of `.opensona/output/` without a manual publish step. The build pipeline downloads a Fandom wiki XML dump, parses it into chunks, embeds them, and packs everything into a compact bundle.
 
 For full details on how the pipeline works internally, see the [opensona BUILD docs](packages/opensona/docs/BUILD.md).
 

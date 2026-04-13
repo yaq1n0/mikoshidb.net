@@ -42,10 +42,12 @@ Open the URL shown by Vite. The app will:
 
 Each engram has a **temporal cutoff** -- RAG retrieval automatically excludes lore events that the character wouldn't know about, preventing anachronistic responses.
 
-## RAG documentation
+## Documentation
 
+- [UI.md](docs/UI.md) -- UI architecture: state, theming, terminal, chat streaming, debug mode
 - [RAG_BUILD.md](docs/RAG_BUILD.md) -- how to build the RAG artifacts from wiki data
 - [RAG_QUERY.md](docs/RAG_QUERY.md) -- how the app queries and uses RAG at runtime
+- [opensona](packages/opensona/) -- the RAG package (generic, wiki-agnostic) shipped from this monorepo
 
 ## Development
 
