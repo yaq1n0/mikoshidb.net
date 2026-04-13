@@ -15,7 +15,7 @@ export async function run(opts: { config: string; output: string }): Promise<voi
   console.log(`Parsing dump: ${config.dumpPath}`);
 
   const timelineTitle = config.timelineArticleTitle;
-  const articles = await parseDump(config.dumpPath, new Set([timelineTitle]));
+  const { articles } = await parseDump(config.dumpPath, new Set([timelineTitle]));
   console.log(`Parsed ${articles.length} articles`);
 
   const timelineTitleLower = timelineTitle.toLowerCase();

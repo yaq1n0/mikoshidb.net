@@ -1,0 +1,82 @@
+[
+  {
+    "id": "entity-anchored-direct",
+    "query": "tell me about alt cunningham",
+    "layer": "alias",
+    "alias": "Alt Cunningham",
+    "neighbors": "direct",
+    "characterContext": {
+      "id": "johnny-silverhand",
+      "bio": "Rockerboy, SAMURAI frontman, pre-2023.",
+      "cutoffEventId": "__LAST_EVENT__"
+    },
+    "expectArticleIds": ["altiera-cunningham"]
+  },
+  {
+    "id": "entity-anchored-alias",
+    "query": "what's the deal with alt",
+    "layer": "alias",
+    "alias": "Alt",
+    "neighbors": "direct",
+    "characterContext": {
+      "id": "johnny-silverhand",
+      "bio": "Rockerboy, SAMURAI frontman, pre-2023.",
+      "cutoffEventId": "__LAST_EVENT__"
+    },
+    "expectArticleIds": ["altiera-cunningham"],
+    "allowFailure": true
+  },
+  {
+    "id": "paraphrase-no-anchor",
+    "query": "the rockerboy with the cyberarm",
+    "layer": "alias",
+    "alias": "the rockerboy with the cyberarm",
+    "neighbors": "direct",
+    "characterContext": {
+      "id": "johnny-silverhand",
+      "bio": "Rockerboy, SAMURAI frontman, pre-2023.",
+      "cutoffEventId": "__LAST_EVENT__"
+    },
+    "expectAny": ["johnny-silverhand"],
+    "allowFailure": true
+  },
+  {
+    "id": "negative-unknown",
+    "query": "who's jaxon mckinley",
+    "layer": "alias",
+    "alias": "Jaxon McKinley",
+    "neighbors": "direct",
+    "characterContext": {
+      "id": "johnny-silverhand",
+      "bio": "Rockerboy, SAMURAI frontman, pre-2023.",
+      "cutoffEventId": "__LAST_EVENT__"
+    },
+    "expectEmpty": true
+  },
+  {
+    "id": "relational-two-hop",
+    "query": "how does johnny know rogue",
+    "layer": "alias",
+    "aliases": ["Johnny Silverhand", "Rogue Amendiares"],
+    "neighbors": "direct",
+    "characterContext": {
+      "id": "johnny-silverhand",
+      "bio": "Rockerboy, SAMURAI frontman, pre-2023.",
+      "cutoffEventId": "__LAST_EVENT__"
+    },
+    "expectArticleIds": ["johnny-silverhand", "rogue-amendiares"]
+  },
+  {
+    "id": "cutoff-honored",
+    "query": "what happened at arasaka tower",
+    "layer": "alias",
+    "alias": "Arasaka Tower",
+    "neighbors": "direct",
+    "characterContext": {
+      "id": "johnny-silverhand",
+      "bio": "Rockerboy, SAMURAI frontman, pre-2023.",
+      "cutoffEventId": "august-19-events-of-the-first-half-of-take-place-2023"
+    },
+    "assertNoPostCutoff": true
+  }
+]

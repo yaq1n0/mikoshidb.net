@@ -51,7 +51,7 @@ describe("verify run()", () => {
         name: "c2",
         passed: false,
         query: "q2",
-        chunks: [{ id: "x", header: "h", score: 0.5, textSnippet: "snip" }],
+        chunks: [{ id: "x", header: "h", hops: 1, textSnippet: "snip" }],
         failures: ["missing thing"],
       },
     ]);
@@ -107,7 +107,7 @@ describe("verify run()", () => {
         name: "c1",
         passed: false,
         query: "q1",
-        chunks: [{ id: "chunk-x", header: "Header X", score: 0.1234, textSnippet: "snip" }],
+        chunks: [{ id: "chunk-x", header: "Header X", hops: 2, textSnippet: "snip" }],
         failures: ["assertion failed"],
       },
     ]);

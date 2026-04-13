@@ -22,33 +22,23 @@ export const CategorySkipRulesSchema = z
   })
   .strict();
 
+export const GraphBuildOptionsSchema = z
+  .object({
+    sectionMaxChars: z.number().int().positive(),
+    leadMaxChars: z.number().int().positive(),
+    dropDeadLinks: z.boolean(),
+    includeMentionsEdges: z.boolean(),
+  })
+  .strict();
+
 export const OpensonaConfigSchema = z
   .object({
     dumpPath: z.string().min(1),
     generatedDir: z.string().min(1),
     source: z.url(),
     license: z.string().min(1),
-    embedder: z
-      .object({
-        model: z.string().min(1),
-        dim: z.number().int().positive(),
-        batchSize: z.number().int().positive(),
-      })
-      .strict(),
-    chunking: z
-      .object({
-        targetTokens: z.number().int().positive(),
-        maxTokens: z.number().int().positive(),
-        overlapTokens: z.number().int().nonnegative(),
-      })
-      .strict(),
+    graph: GraphBuildOptionsSchema,
     maxBundleBytes: z.number().int().positive(),
-    bm25: z
-      .object({
-        fields: z.array(z.string().min(1)).min(1),
-        boosts: z.record(z.string(), z.number()),
-      })
-      .strict(),
     timelineArticleTitle: z.string().min(1),
     timelineValidation: z
       .object({
@@ -63,6 +53,7 @@ export const OpensonaConfigSchema = z
 
 export type EditionEra = z.infer<typeof EditionEraSchema>;
 export type CategorySkipRules = z.infer<typeof CategorySkipRulesSchema>;
+export type GraphBuildOptions = z.infer<typeof GraphBuildOptionsSchema>;
 export type OpensonaConfig = z.infer<typeof OpensonaConfigSchema>;
 
 /** A single in-universe event on the timeline. */
@@ -84,135 +75,199 @@ export interface Timeline {
   events: TimelineEvent[];
 }
 
-/** A retrievable unit of lore text, produced by the build pipeline. */
+/** Metadata stamped into the manifest for traceability. */
+export interface TimelineMeta {
+  articleTitle: string;
+  eventCount: number;
+  minYear: number;
+  maxYear: number;
+}
+
+/** A retrievable unit of lore text, produced by graph traversal. */
 export interface Chunk {
-  /** Stable id of the form `articleSlug#chunkIndex`. */
+  /** Stable id, e.g. article slug or `${slug}#${sectionIndex}`. */
   id: string;
   /** Slugified source article id. */
   articleId: string;
   /** Source article title. */
   title: string;
-  /** Breadcrumb header, e.g. `"[Article > Section]"`. */
+  /** Breadcrumb header, e.g. `"[Article > Section]"` or `"[Article]"`. */
   header: string;
-  /** Chunk body text. */
+  /** Body text (article lead, section text, or a short neighbor snippet). */
   text: string;
-  /** Timeline event ids that this chunk references. */
+  /** Timeline event ids associated with the source node. */
   eventIds: string[];
   /** Max `order` among matched events; `-1` means timeless (no events). */
   latestEventOrder: number;
-  /** Free-form tags applied during the build (used by `excludeTags`). */
+  /** Free-form tags (category slugs, typically). */
   tags: string[];
   /** Source wiki categories. */
   categories: string[];
 }
 
-/** Optional parameters accepted by {@link OpensonaRuntime.query} and `inspect`. */
-export interface QueryOptions {
-  /** Number of chunks to return after fusion and filtering. Default `3`. */
-  topK?: number;
-  /** Exclude chunks whose `latestEventOrder` falls after this event's order. */
-  cutoffEventId?: string;
-  /** Drop chunks carrying any of these tags. */
-  excludeTags?: string[];
-  /** Custom post-filter applied after built-in filters. */
-  filter?: (chunk: Chunk) => boolean;
-}
-
-/** A retrieval result: a chunk, its fused score, and which retriever found it. */
+/**
+ * A retrieval result from graph traversal.
+ *
+ * `source` identifies whether this chunk is the resolved entity's lead, one of
+ * its sections, or a neighbor reached via links. `hops` is the link distance
+ * from the resolved entity (0 for the entity itself); results are ordered by
+ * ascending `hops`.
+ */
 export interface RetrievedChunk {
   chunk: Chunk;
-  /** Fused score from RRF (`query`) or raw score (`inspect` sub-results). */
-  score: number;
-  /** Which retriever(s) surfaced the chunk. */
-  source: "dense" | "bm25" | "both";
+  source: "lead" | "section" | "neighbor";
+  /** Number of link hops from the resolved entity (0 for the entity itself). */
+  hops: number;
 }
 
-/** Bundle manifest written by the build pipeline and consumed at load time. */
+/** Caller-supplied projection of an engram, used to ground retrieval. */
+export interface CharacterContext {
+  /** Article id / slug the engram corresponds to (used to anchor neighborhoods). */
+  id: string;
+  /** Short bio — used by the resolver prompt as extra context. */
+  bio: string;
+  /** Timeline event id — chunks whose `latestEventOrder` exceeds this are filtered out. */
+  cutoffEventId?: string;
+  /** Tag slugs; chunks carrying any of these are filtered out. */
+  excludeTags?: string[];
+}
+
+/** Entity vocabulary opensona computes per character switch. */
+export interface EntityVocab {
+  engramId: string;
+  /** Roughly 80–150 aliases: the engram's own article plus 1-hop link neighbors. */
+  names: string[];
+  /** Top-level categories touched by the neighborhood. */
+  categories: string[];
+}
+
+/** Input opensona hands to the resolver callback. */
+export interface ResolverInput {
+  userQuery: string;
+  characterContext: CharacterContext;
+  entityVocab: EntityVocab;
+}
+
+/** Output the resolver callback is expected to return. */
+export interface TraversalDirective {
+  /** Alias strings from `entityVocab.names` that anchor the retrieval. */
+  entities: string[];
+  /** How aggressively to expand from the resolved entities. */
+  neighbors: "none" | "direct" | "two_hop";
+  /** Extra categories to widen the pull with. */
+  include_categories: string[];
+  reasoning?: string;
+}
+
+/**
+ * The callback contract. Callers wire this to their LLM of choice (opensona is
+ * LLM-agnostic). Return `null` to signal "no plan" — the runtime yields `[]`.
+ */
+export type GetTraversalPath = (input: ResolverInput) => Promise<TraversalDirective | null>;
+
+/** Options accepted by {@link OpensonaRuntime.query}. */
+export interface QueryOptions {
+  getTraversalPath: GetTraversalPath;
+  characterContext: CharacterContext;
+  /**
+   * Optional diagnostic hook. Fires once per query, after traversal completes,
+   * with the trace emitted by the graph walker and the directive that produced
+   * it. Skipped when the resolver yields no directive or throws.
+   */
+  onTrace?: (trace: TraverseTrace, directive: TraversalDirective) => void;
+}
+
+/**
+ * Diagnostic trace for a single traversal. Shape mirrors
+ * `runtime/traverse.ts#TraverseTrace`; re-declared here to keep `types.ts`
+ * free of runtime imports.
+ */
+export interface TraverseTrace {
+  resolvedEntities: Array<{ alias: string; articleId: string }>;
+  unresolvedEntities: string[];
+  nodes: Array<{
+    id: string;
+    kind: "article-lead" | "section" | "neighbor";
+    hops: number;
+    included: boolean;
+    droppedReason?: "cutoff" | "excluded-tag" | "unknown-article";
+  }>;
+}
+
+/** File metadata stamped in the manifest for each bundle asset. */
+export interface FileMeta {
+  path: string;
+  sizeBytes: number;
+  sha256: string;
+}
+
+/** Bundle manifest written by the graph build pipeline. */
 export interface Manifest {
-  /** Bundle format version. Current runtime supports `1`. */
-  version: number;
+  /** Bundle format version. Current runtime supports `2`. */
+  version: 2;
+  /** Retrieval kind. Always `"graph"`. */
+  retrieval: "graph";
   /** ISO-8601 build timestamp. */
   buildDate: string;
   /** Attribution URL for the source wiki. */
   source: string;
   /** SPDX-style license string for the source content. */
   license: string;
-  /** Embedder identity; the runtime re-uses the same model to embed queries. */
-  embedder: {
-    library: string;
-    model: string;
-    dim: number;
-    weightsHash: string;
+  /** Graph build parameters, for traceability. */
+  graph: {
+    sectionMaxChars: number;
+    leadMaxChars: number;
+    deadLinkCount: number;
   };
   /** Counts of top-level artifacts in the bundle. */
-  counts: { articles: number; chunks: number; events: number };
+  counts: {
+    articles: number;
+    sections: number;
+    categories: number;
+    aliases: number;
+    edges: number;
+    events: number;
+  };
   /** Full timeline, used for cutoff resolution at query time. */
   timeline: Timeline;
+  /** Source-timeline metadata. */
+  timelineMeta: TimelineMeta;
   /** Map of logical file name → `{ path, sizeBytes, sha256 }`. */
-  files: Record<string, { path: string; sizeBytes: number; sha256: string }>;
+  files: Record<string, FileMeta>;
 }
 
-/**
- * Options bag accepted by `ensureLoaded` / `OpensonaRuntime.load`. The loader
- * also accepts a bare `onProgress` function as its second positional argument
- * for backwards compatibility.
- */
+/** Options bag accepted by `ensureLoaded` / `OpensonaRuntime.load`. */
 export interface EnsureLoadedOptions {
-  /** Callback invoked with `{ phase, ratio }` updates as work progresses. */
   onProgress?: (p: { phase: string; ratio: number }) => void;
   /**
    * Optional per-file fetch hook. When provided, the loader calls this in
    * place of the global `fetch` for each bundle asset, passing the resolved
-   * URL and the manifest's expected SHA-256 for that asset. Lets the embedder
-   * application layer cache, dedupe, or verify bytes without coupling the
-   * loader to any storage backend.
+   * URL and the manifest's expected SHA-256 for that asset.
    */
   fetchOverride?: (url: string, expectedSha256: string) => Promise<Response>;
 }
 
 /**
- * Opaque handle returned by {@link createRuntime}. Lifecycle:
- * `load()` once, then `query()` / `inspect()` / `manifest()` any number of times.
+ * Public runtime handle. Lifecycle: `load()` once, then `query()` /
+ * `warmEngram()` / `manifest()` any number of times.
  */
 export interface OpensonaRuntime {
-  /**
-   * Load and decompress a bundle from `bundlePath` (directory URL or fs path,
-   * with or without a trailing slash). Idempotent — concurrent calls for the
-   * same path are deduplicated. A failed load allows a subsequent retry.
-   *
-   * @param bundlePath Location of the bundle directory containing
-   *   `manifest.json`, `chunks.json.gz`, `embeddings.i8.bin`, `bm25.json.gz`.
-   * @param arg Either a legacy `onProgress` callback (for backwards
-   *   compatibility) or an {@link EnsureLoadedOptions} bag. The bag form lets
-   *   callers also supply a `fetchOverride` hook for caching or instrumentation.
-   */
   load(
     bundlePath: string,
     arg?: ((p: { phase: string; ratio: number }) => void) | EnsureLoadedOptions,
   ): Promise<void>;
 
   /**
-   * Run hybrid retrieval (dense + BM25, fused via RRF) and return the top-k
-   * chunks after timeline, tag, and custom filters are applied.
-   *
-   * @throws If the runtime has not been loaded.
+   * Run graph traversal and return the chunks the resolver + traversal
+   * selected. Returns `[]` if the resolver yields no directive or errors.
    */
-  query(text: string, options?: QueryOptions): Promise<RetrievedChunk[]>;
+  query(userQuery: string, options: QueryOptions): Promise<RetrievedChunk[]>;
 
   /**
-   * Like {@link query}, but returns the intermediate dense and BM25 result
-   * sets alongside the fused output. Useful for debugging retrieval quality.
-   *
-   * @throws If the runtime has not been loaded.
+   * Pre-compute and cache the entity vocabulary for an engram. Idempotent.
+   * Returns the vocabulary for inspection; the runtime also keeps it internally.
    */
-  inspect(
-    text: string,
-    options?: QueryOptions,
-  ): Promise<{
-    dense: RetrievedChunk[];
-    bm25: RetrievedChunk[];
-    fused: RetrievedChunk[];
-  }>;
+  warmEngram(engramId: string): EntityVocab;
 
   /** Returns the loaded {@link Manifest}, or `null` if `load()` has not completed. */
   manifest(): Manifest | null;
