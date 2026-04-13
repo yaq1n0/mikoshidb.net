@@ -28,18 +28,14 @@ import type {
 import { appendRagLog } from "./ragLog";
 import type { ResolverFallback } from "@/stores/rag";
 import { createCachedFetcher, sweepStale } from "@/storage/bundleCache";
+import { pad, formatProgressBar } from "./formatters";
+import { budgetChunks } from "./budget";
 
 export type Command = {
   name: string;
   usage: string;
   summary: string;
   run: (args: string[]) => Promise<void> | void;
-};
-
-/** Pad a string to a column width (space-padded, right side). */
-const pad = (s: string, n: number): string => {
-  if (s.length >= n) return s.slice(0, n);
-  return s + " ".repeat(n - s.length);
 };
 
 /** Unknown. */
@@ -208,20 +204,11 @@ export const commands: Command[] = [
       const fwProgress = pushProgress("[          ]   0%  initializing firmware");
       const ragProgress = pushProgress("[          ]   0%  initializing lore db");
 
-      function formatBar(pct: number, label: string): string {
-        const clamped = Math.max(0, Math.min(1, pct));
-        const bars = Math.round(clamped * 20);
-        const bar = "#".repeat(bars) + "-".repeat(20 - bars);
-        return `[${bar}] ${Math.round(clamped * 100)
-          .toString()
-          .padStart(3, " ")}%  ${label.slice(0, 60)}`;
-      }
-
       try {
         // Load firmware and RAG bundle in parallel
         const firmwarePromise = loadFirmware(f, (p) => {
           fwProgress.progress = p.progress;
-          fwProgress.text = formatBar(p.progress, p.text);
+          fwProgress.text = formatProgressBar(p.progress, p.text);
         });
 
         const ragPromise = (async () => {
@@ -231,7 +218,7 @@ export const commands: Command[] = [
             await runtime.load("/rag/", {
               onProgress: (p) => {
                 ragProgress.progress = p.ratio;
-                ragProgress.text = formatBar(p.ratio, p.phase);
+                ragProgress.text = formatProgressBar(p.ratio, p.phase);
               },
               fetchOverride: createCachedFetcher(),
             });
@@ -247,7 +234,7 @@ export const commands: Command[] = [
           } catch (err) {
             // RAG is best-effort — don't block firmware loading
             const msg = err instanceof Error ? err.message : String(err);
-            ragProgress.text = formatBar(0, `lore db unavailable: ${msg}`);
+            ragProgress.text = formatProgressBar(0, `lore db unavailable: ${msg}`);
             finishProgress(ragProgress);
             return null;
           }
@@ -258,13 +245,13 @@ export const commands: Command[] = [
         engineRef.value = engine;
         store.currentFirmwareId = f.id;
         fwProgress.progress = 1;
-        fwProgress.text = formatBar(1, "FLASH COMPLETE");
+        fwProgress.text = formatProgressBar(1, "FLASH COMPLETE");
         finishProgress(fwProgress);
 
         if (ragRuntime) {
           ragRef.value = ragRuntime;
           ragProgress.progress = 1;
-          ragProgress.text = formatBar(1, "LORE DB ONLINE");
+          ragProgress.text = formatProgressBar(1, "LORE DB ONLINE");
           finishProgress(ragProgress);
         }
 
@@ -670,17 +657,7 @@ const retrieveLore = async (userInput: string): Promise<RetrievalBundle> => {
       source: manifest?.source ?? "",
       license: manifest?.license ?? "",
     };
-    // Keep only enough prefix chunks (hops-sorted) to fit the preamble budget.
-    // We count raw chunk text, not the assembled wrapper, so the budget tracks
-    // the dominant cost regardless of the <lore> scaffolding around it.
-    const budgetedChunks: RetrievedChunk[] = [];
-    let chunkCharTotal = 0;
-    for (const c of chunks) {
-      const cost = c.chunk.header.length + c.chunk.text.length + 1;
-      if (budgetedChunks.length > 0 && chunkCharTotal + cost > PREAMBLE_CHAR_BUDGET) break;
-      budgetedChunks.push(c);
-      chunkCharTotal += cost;
-    }
+    const budgetedChunks = budgetChunks(chunks, PREAMBLE_CHAR_BUDGET);
     const preamble = assembleLorePreamble(budgetedChunks, meta);
     timing.assemble = Math.round(performance.now() - tAssemble);
 
