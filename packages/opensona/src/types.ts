@@ -153,6 +153,24 @@ export interface Manifest {
 }
 
 /**
+ * Options bag accepted by `ensureLoaded` / `OpensonaRuntime.load`. The loader
+ * also accepts a bare `onProgress` function as its second positional argument
+ * for backwards compatibility.
+ */
+export interface EnsureLoadedOptions {
+  /** Callback invoked with `{ phase, ratio }` updates as work progresses. */
+  onProgress?: (p: { phase: string; ratio: number }) => void;
+  /**
+   * Optional per-file fetch hook. When provided, the loader calls this in
+   * place of the global `fetch` for each bundle asset, passing the resolved
+   * URL and the manifest's expected SHA-256 for that asset. Lets the embedder
+   * application layer cache, dedupe, or verify bytes without coupling the
+   * loader to any storage backend.
+   */
+  fetchOverride?: (url: string, expectedSha256: string) => Promise<Response>;
+}
+
+/**
  * Opaque handle returned by {@link createRuntime}. Lifecycle:
  * `load()` once, then `query()` / `inspect()` / `manifest()` any number of times.
  */
@@ -164,12 +182,13 @@ export interface OpensonaRuntime {
    *
    * @param bundlePath Location of the bundle directory containing
    *   `manifest.json`, `chunks.json.gz`, `embeddings.i8.bin`, `bm25.json.gz`.
-   * @param onProgress Optional callback invoked with `{ phase, ratio }` updates
-   *   as the manifest and assets are fetched and parsed.
+   * @param arg Either a legacy `onProgress` callback (for backwards
+   *   compatibility) or an {@link EnsureLoadedOptions} bag. The bag form lets
+   *   callers also supply a `fetchOverride` hook for caching or instrumentation.
    */
   load(
     bundlePath: string,
-    onProgress?: (p: { phase: string; ratio: number }) => void,
+    arg?: ((p: { phase: string; ratio: number }) => void) | EnsureLoadedOptions,
   ): Promise<void>;
 
   /**

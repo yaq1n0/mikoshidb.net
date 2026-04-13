@@ -2,8 +2,15 @@
 // Idempotent bundle loader — fetches and parses all bundle assets
 
 import MiniSearch from "minisearch";
-import type { Chunk, Manifest } from "../types.ts";
+import type { Chunk, EnsureLoadedOptions, Manifest } from "../types.ts";
 import { gunzip } from "./util.ts";
+
+type ProgressCb = (p: { phase: string; ratio: number }) => void;
+type EnsureLoadedArg = ProgressCb | EnsureLoadedOptions;
+
+function normalizeOptions(arg?: EnsureLoadedArg): EnsureLoadedOptions {
+  return typeof arg === "function" ? { onProgress: arg } : (arg ?? {});
+}
 
 /**
  * Parsed and in-memory form of a bundle, returned by the loader. Exposed so
@@ -29,14 +36,11 @@ export interface LoadedBundle {
 /** Module-level promise cache keyed by bundlePath for deduplication. */
 const loading = new Map<string, Promise<LoadedBundle>>();
 
-export function ensureLoaded(
-  bundlePath: string,
-  onProgress?: (p: { phase: string; ratio: number }) => void,
-): Promise<LoadedBundle> {
+export function ensureLoaded(bundlePath: string, arg?: EnsureLoadedArg): Promise<LoadedBundle> {
   const existing = loading.get(bundlePath);
   if (existing) return existing;
 
-  const promise = doLoad(bundlePath, onProgress);
+  const promise = doLoad(bundlePath, normalizeOptions(arg));
   loading.set(bundlePath, promise);
 
   // On failure, allow retry
@@ -47,23 +51,34 @@ export function ensureLoaded(
   return promise;
 }
 
-function progress(
-  cb: ((p: { phase: string; ratio: number }) => void) | undefined,
-  phase: string,
-  ratio: number,
-): void {
+function progress(cb: ProgressCb | undefined, phase: string, ratio: number): void {
   if (cb) cb({ phase, ratio });
 }
 
-async function doLoad(
-  bundlePath: string,
-  onProgress?: (p: { phase: string; ratio: number }) => void,
-): Promise<LoadedBundle> {
+/** Fetch `name` either via the override (passing the manifest sha256) or the
+ * global fetch. Returns the raw Response so the caller can pick arrayBuffer/json. */
+async function fetchAsset(
+  url: string,
+  name: string,
+  manifest: Manifest,
+  fetchOverride: EnsureLoadedOptions["fetchOverride"],
+): Promise<Response> {
+  if (fetchOverride) {
+    const sha = manifest.files[name]?.sha256 ?? "";
+    return fetchOverride(url, sha);
+  }
+  return fetch(url);
+}
+
+async function doLoad(bundlePath: string, opts: EnsureLoadedOptions): Promise<LoadedBundle> {
+  const { onProgress, fetchOverride } = opts;
   const base = bundlePath.endsWith("/") ? bundlePath : bundlePath + "/";
 
-  // Step 1: fetch manifest
+  // Step 1: fetch manifest (no sha256 known yet — pass empty string to override)
   progress(onProgress, "manifest", 0);
-  const manifestRes = await fetch(base + "manifest.json");
+  const manifestRes = await (fetchOverride
+    ? fetchOverride(base + "manifest.json", "")
+    : fetch(base + "manifest.json"));
   if (!manifestRes.ok) {
     throw new Error(`Failed to fetch manifest: ${manifestRes.status}`);
   }
@@ -86,7 +101,7 @@ async function doLoad(
   const [chunksResult, embeddingsResult, bm25Result] = await Promise.all([
     // chunks.json.gz
     (async () => {
-      const res = await fetch(base + "chunks.json.gz");
+      const res = await fetchAsset(base + "chunks.json.gz", "chunks", manifest, fetchOverride);
       if (!res.ok) throw new Error(`Failed to fetch chunks: ${res.status}`);
       const compressed = await res.arrayBuffer();
       progress(onProgress, "assets", 0.2);
@@ -97,7 +112,12 @@ async function doLoad(
 
     // embeddings.i8.bin
     (async () => {
-      const res = await fetch(base + "embeddings.i8.bin");
+      const res = await fetchAsset(
+        base + "embeddings.i8.bin",
+        "embeddings",
+        manifest,
+        fetchOverride,
+      );
       if (!res.ok) throw new Error(`Failed to fetch embeddings: ${res.status}`);
       const buf = await res.arrayBuffer();
       progress(onProgress, "assets", 0.5);
@@ -106,7 +126,7 @@ async function doLoad(
 
     // bm25.json.gz
     (async () => {
-      const res = await fetch(base + "bm25.json.gz");
+      const res = await fetchAsset(base + "bm25.json.gz", "bm25", manifest, fetchOverride);
       if (!res.ok) throw new Error(`Failed to fetch bm25: ${res.status}`);
       const compressed = await res.arrayBuffer();
       progress(onProgress, "assets", 0.8);

@@ -3,6 +3,7 @@
 
 export type {
   Chunk,
+  EnsureLoadedOptions,
   Manifest,
   OpensonaRuntime,
   QueryOptions,
@@ -14,7 +15,13 @@ export type {
 export type { LoadedBundle } from "./loader.ts";
 export type { LoreMeta } from "./prompt.ts";
 
-import type { Manifest, OpensonaRuntime, QueryOptions, RetrievedChunk } from "../types.ts";
+import type {
+  EnsureLoadedOptions,
+  Manifest,
+  OpensonaRuntime,
+  QueryOptions,
+  RetrievedChunk,
+} from "../types.ts";
 
 import type { LoadedBundle } from "./loader.ts";
 import { ensureLoaded } from "./loader.ts";
@@ -34,10 +41,10 @@ export function createRuntime(): OpensonaRuntime {
   return {
     async load(
       path: string,
-      onProgress?: (p: { phase: string; ratio: number }) => void,
+      arg?: ((p: { phase: string; ratio: number }) => void) | EnsureLoadedOptions,
     ): Promise<void> {
       bundlePath = path;
-      loadedBundle = await ensureLoaded(path, onProgress);
+      loadedBundle = await ensureLoaded(path, arg);
     },
 
     async query(text: string, options?: QueryOptions): Promise<RetrievedChunk[]> {

@@ -49,7 +49,10 @@ function okResponse(body = "") {
         c.close();
       },
     }),
-    headers: new Headers({ "last-modified": "Wed, 11 Mar 2026 15:44:40 GMT", "content-length": "1" }),
+    headers: new Headers({
+      "last-modified": "Wed, 11 Mar 2026 15:44:40 GMT",
+      "content-length": "1",
+    }),
   } as unknown as Response;
 }
 
@@ -71,7 +74,9 @@ describe("dumpUrl()", () => {
   });
 
   it("handles single-character subdomain", () => {
-    expect(dumpUrl("a")).toBe("https://s3.amazonaws.com/wikia_xml_dumps/a/a/a_pages_current.xml.7z");
+    expect(dumpUrl("a")).toBe(
+      "https://s3.amazonaws.com/wikia_xml_dumps/a/a/a_pages_current.xml.7z",
+    );
   });
 
   it("allows hyphens and digits", () => {
@@ -160,7 +165,9 @@ describe("download run()", () => {
       headers: new Headers(),
     } as unknown as Response);
 
-    await expect(run({ wiki: "cyberpunk", output: "/tmp/o.xml" })).rejects.toThrow(/Empty response/);
+    await expect(run({ wiki: "cyberpunk", output: "/tmp/o.xml" })).rejects.toThrow(
+      /Empty response/,
+    );
   });
 
   it("throws CliError when extracted XML is missing from archive", async () => {
@@ -169,9 +176,9 @@ describe("download run()", () => {
     statMock.mockRejectedValueOnce(new Error("ENOENT")); // first: existence check
     statMock.mockRejectedValueOnce(new Error("ENOENT")); // second: extracted file missing
 
-    await expect(
-      run({ wiki: "cyberpunk", output: "/tmp/o.xml", force: true }),
-    ).rejects.toThrow(/not found/);
+    await expect(run({ wiki: "cyberpunk", output: "/tmp/o.xml", force: true })).rejects.toThrow(
+      /not found/,
+    );
   });
 
   it("falls back to copy+unlink when rename hits EXDEV", async () => {

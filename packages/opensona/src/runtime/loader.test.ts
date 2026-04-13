@@ -325,4 +325,55 @@ describe("ensureLoaded()", () => {
     const path = uniqueBundlePath();
     await expect(ensureLoaded(path)).rejects.toThrow(/Failed to fetch bm25/);
   });
+
+  it("fetchOverride: invoked with url + expected sha256 per asset; legacy positional onProgress still works", async () => {
+    const built = await buildBundle();
+    // Stub global fetch to ensure it is NOT used when fetchOverride is set.
+    const fetchSpy = vi.fn(async () => notFound());
+    vi.stubGlobal("fetch", fetchSpy);
+
+    // Resolve the manifest first so we can assert sha256s passed to override.
+    const manifestBuf = built.filesByName.get("manifest.json")!;
+    const manifestObj = JSON.parse(new TextDecoder().decode(manifestBuf));
+    const expectedShas: Record<string, string> = {
+      "manifest.json": "", // manifest itself has no pre-known sha; loader passes ""
+      "chunks.json.gz": manifestObj.files.chunks.sha256,
+      "embeddings.i8.bin": manifestObj.files.embeddings.sha256,
+      "bm25.json.gz": manifestObj.files.bm25.sha256,
+    };
+
+    const overrideCalls: { url: string; sha: string }[] = [];
+    const fetchOverride = vi.fn(async (url: string, expectedSha256: string) => {
+      overrideCalls.push({ url, sha: expectedSha256 });
+      const name = url.split("/").pop() ?? "";
+      const data = built.filesByName.get(name);
+      if (!data) return notFound();
+      return ok(data);
+    });
+
+    const path = uniqueBundlePath();
+    const bundle = await ensureLoaded(path, { fetchOverride });
+
+    // Override drives downstream parsing — verify it was used.
+    expect(bundle.manifest.version).toBe(1);
+    expect(bundle.count).toBe(built.chunks.length);
+    // Global fetch must not have been called when override is provided.
+    expect(fetchSpy).not.toHaveBeenCalled();
+    // One call per asset (manifest + 3 files).
+    expect(fetchOverride).toHaveBeenCalledTimes(4);
+    // Each call's (url, sha) matches the manifest.
+    for (const { url, sha } of overrideCalls) {
+      const name = url.split("/").pop() ?? "";
+      expect(sha).toBe(expectedShas[name]);
+    }
+
+    // Legacy positional onProgress: passing a bare function as the 2nd arg
+    // must still fire progress callbacks, with no override / no bag.
+    vi.unstubAllGlobals();
+    installFetchStub(built);
+    const events: { phase: string; ratio: number }[] = [];
+    await ensureLoaded(uniqueBundlePath(), (p) => events.push(p));
+    expect(events.some((e) => e.phase === "manifest")).toBe(true);
+    expect(events.some((e) => e.phase === "assets" && e.ratio === 1)).toBe(true);
+  });
 });
