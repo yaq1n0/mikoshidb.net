@@ -1,8 +1,17 @@
 <script setup lang="ts">
-import { nextTick, onMounted, ref, watch } from "vue";
-import { session, print, focusInput } from "@/terminal/session";
+import { computed, nextTick, onMounted, ref, watch } from "vue";
+import { print, focusInput, getResumeHandler } from "@/terminal/session";
 import { parse } from "@/terminal/parser";
 import { runCommand, runSlashCommand, sendChat } from "@/terminal/commands";
+import { useSessionStore } from "@/stores/session";
+import { useTerminalStore } from "@/stores/terminal";
+import { findEngram } from "@/engrams";
+
+const sessionStore = useSessionStore();
+const terminalStore = useTerminalStore();
+const currentEngram = computed(() =>
+  sessionStore.currentEngramId ? findEngram(sessionStore.currentEngramId) : null,
+);
 
 const emit = defineEmits<{ (e: "reboot"): void }>();
 
@@ -10,8 +19,6 @@ const inputRef = ref<HTMLInputElement | null>(null);
 const scrollRef = ref<HTMLDivElement | null>(null);
 const draft = ref("");
 const busy = ref(false);
-const history = ref<string[]>([]);
-const historyIndex = ref<number | null>(null);
 
 function scrollToBottom(): void {
   nextTick(() => {
@@ -21,19 +28,52 @@ function scrollToBottom(): void {
   });
 }
 
+const visibleLines = computed(() => terminalStore.visibleLines);
+
 watch(
-  () => session.scrollback.length,
-  () => scrollToBottom(),
+  () => visibleLines.value.length,
+  (newLen, oldLen) => {
+    // Only auto-scroll on append. Prepend (load-earlier) is handled by the
+    // scroll-anchor logic in maybeLoadEarlier so the view doesn't jump.
+    if (newLen > oldLen) scrollToBottom();
+  },
 );
 // Also re-scroll when the last line's text mutates (streaming chat reply,
 // live progress bar) — length alone doesn't change in those cases.
 watch(
   () => {
-    const last = session.scrollback[session.scrollback.length - 1];
+    const lines = visibleLines.value;
+    const last = lines[lines.length - 1];
     return last ? last.text.length + (last.progress ?? 0) : 0;
   },
   () => scrollToBottom(),
 );
+
+// Auto-fire loadEarlierPage when the user scrolls near the top. Preserve
+// scroll position with the scrollHeight-delta trick so the viewport stays
+// anchored on the line the user was looking at.
+let loadingEarlier = false;
+async function maybeLoadEarlier(): Promise<void> {
+  const el = scrollRef.value;
+  if (!el) return;
+  if (loadingEarlier) return;
+  if (!terminalStore.canLoadEarlier) return;
+  if (el.scrollTop > 40) return;
+  loadingEarlier = true;
+  const prevHeight = el.scrollHeight;
+  try {
+    await terminalStore.loadEarlierPage();
+    await nextTick();
+    const newHeight = el.scrollHeight;
+    el.scrollTop = el.scrollTop + (newHeight - prevHeight);
+  } finally {
+    loadingEarlier = false;
+  }
+}
+
+function onScroll(): void {
+  void maybeLoadEarlier();
+}
 
 watch(focusInput, () => inputRef.value?.focus());
 
@@ -43,10 +83,10 @@ onMounted(() => {
 });
 
 function promptPrefix(): string {
-  if (session.mode === "chat" && session.currentEngram) {
-    return `${session.currentEngram.handle}> `;
+  if (sessionStore.mode === "chat" && currentEngram.value) {
+    return `${currentEngram.value.handle}> `;
   }
-  if (session.mode === "loading") return "flashing... ";
+  if (sessionStore.mode === "loading") return "flashing... ";
   return "mikoshi> ";
 }
 
@@ -54,14 +94,33 @@ async function onSubmit(): Promise<void> {
   if (busy.value) return;
   const raw = draft.value;
   draft.value = "";
-  historyIndex.value = null;
 
-  if (raw.trim()) history.value.push(raw);
+  // recordCommand handles trim/empty/dedup/cap and resets nav cursor.
+  // In chat mode we deliberately skip it — the store is shell-history only.
+  if (sessionStore.mode !== "chat") {
+    terminalStore.recordCommand(raw);
+  } else {
+    terminalStore.resetNav();
+  }
 
   // Echo the line into scrollback
   print(`${promptPrefix()}${raw}`, "cmd");
 
-  if (session.mode === "chat") {
+  // Resume-prompt interception: if App.vue installed a handler while a prior
+  // chat session was detected, the first submit is an answer to "[Y/n]" — not
+  // a command. The handler clears itself once consumed (see App.vue).
+  const resumeHandler = getResumeHandler();
+  if (resumeHandler) {
+    busy.value = true;
+    try {
+      await resumeHandler(raw);
+    } finally {
+      busy.value = false;
+    }
+    return;
+  }
+
+  if (sessionStore.mode === "chat") {
     if (!raw.trim()) return;
     // '/' is the in-link escape prefix: slash commands (/disconnect, /status,
     // /help, ...) run locally instead of being streamed to the engram.
@@ -101,27 +160,18 @@ async function onSubmit(): Promise<void> {
 
 function onKeyDown(e: KeyboardEvent): void {
   if (e.key === "ArrowUp") {
+    // Inert in chat mode — let the input handle the keystroke natively.
+    if (sessionStore.mode === "chat") return;
     e.preventDefault();
-    if (history.value.length === 0) return;
-    if (historyIndex.value === null) {
-      historyIndex.value = history.value.length - 1;
-    } else if (historyIndex.value > 0) {
-      historyIndex.value -= 1;
-    }
-    draft.value = history.value[historyIndex.value] ?? "";
+    draft.value = terminalStore.navigatePrev(draft.value);
   } else if (e.key === "ArrowDown") {
+    if (sessionStore.mode === "chat") return;
     e.preventDefault();
-    if (historyIndex.value === null) return;
-    if (historyIndex.value < history.value.length - 1) {
-      historyIndex.value += 1;
-      draft.value = history.value[historyIndex.value] ?? "";
-    } else {
-      historyIndex.value = null;
-      draft.value = "";
-    }
+    draft.value = terminalStore.navigateNext();
   } else if (e.ctrlKey && e.key.toLowerCase() === "l") {
     e.preventDefault();
-    session.scrollback.length = 0;
+    // Fire-and-forget: UI doesn't need to block on the IDB wipe.
+    void terminalStore.clearScrollback();
   }
 }
 
@@ -151,9 +201,9 @@ function lineClass(kind: string): string {
 
 <template>
   <div class="h-full flex flex-col" @click="inputRef?.focus()">
-    <div ref="scrollRef" class="flex-1 overflow-y-auto px-6 py-4 space-y-0">
+    <div ref="scrollRef" class="flex-1 overflow-y-auto px-6 py-4 space-y-0" @scroll="onScroll">
       <div
-        v-for="line in session.scrollback"
+        v-for="line in visibleLines"
         :key="line.id"
         :class="['whitespace-pre-wrap break-words font-mono', lineClass(line.kind)]"
       >
@@ -177,7 +227,7 @@ function lineClass(kind: string): string {
         autocorrect="off"
         autocapitalize="off"
         spellcheck="false"
-        :disabled="busy && session.mode !== 'chat'"
+        :disabled="busy && sessionStore.mode !== 'chat'"
         class="flex-1 bg-transparent outline-none border-none text-fg glow caret-accent"
         @keydown="onKeyDown"
       />
