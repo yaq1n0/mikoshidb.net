@@ -52,8 +52,10 @@ const makeOverride = (manifest: Manifest) => async (url: string) => {
   if (url.endsWith("manifest.json")) {
     return new Response(JSON.stringify(manifest), { status: 200 });
   }
-  if (url.endsWith("graph-nodes.json.gz")) return new Response(gzJson(nodesPayload), { status: 200 });
-  if (url.endsWith("graph-edges.json.gz")) return new Response(gzJson(edgesPayload), { status: 200 });
+  if (url.endsWith("graph-nodes.json.gz"))
+    return new Response(gzJson(nodesPayload), { status: 200 });
+  if (url.endsWith("graph-edges.json.gz"))
+    return new Response(gzJson(edgesPayload), { status: 200 });
   if (url.endsWith("aliases.json.gz")) return new Response(gzJson(aliasesPayload), { status: 200 });
   return new Response("", { status: 404 });
 };

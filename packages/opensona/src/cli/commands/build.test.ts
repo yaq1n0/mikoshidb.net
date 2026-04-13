@@ -27,7 +27,9 @@ const mkdirMock = mkdir as unknown as ReturnType<typeof vi.fn>;
 const parseDumpMock = parseDump as unknown as ReturnType<typeof vi.fn>;
 const buildGraphMock = buildGraph as unknown as ReturnType<typeof vi.fn>;
 const packGraphMock = packGraph as unknown as ReturnType<typeof vi.fn>;
-const generateCategoryEventMapMock = generateCategoryEventMap as unknown as ReturnType<typeof vi.fn>;
+const generateCategoryEventMapMock = generateCategoryEventMap as unknown as ReturnType<
+  typeof vi.fn
+>;
 const loadConfigMock = loadConfig as unknown as ReturnType<typeof vi.fn>;
 
 const mkConfig = () => ({
@@ -36,7 +38,12 @@ const mkConfig = () => ({
   timelineArticleTitle: "Timeline",
   source: "https://example.fandom.com",
   license: "L",
-  graph: { sectionMaxChars: 2000, leadMaxChars: 600, dropDeadLinks: true, includeMentionsEdges: false },
+  graph: {
+    sectionMaxChars: 2000,
+    leadMaxChars: 600,
+    dropDeadLinks: true,
+    includeMentionsEdges: false,
+  },
   maxBundleBytes: 50_000_000,
   timelineValidation: { minYearHeadings: 0, minEvents: 0 },
   editionEras: [],
@@ -55,7 +62,13 @@ const mkArticles = (n: number) =>
 
 const mkGraph = () => ({
   nodes: { articles: new Map(), sections: new Map(), categories: new Map(), events: new Map() },
-  edges: { links: new Map(), contains: new Map(), inCategory: new Map(), inEvent: new Map(), mentions: new Map() },
+  edges: {
+    links: new Map(),
+    contains: new Map(),
+    inCategory: new Map(),
+    inEvent: new Map(),
+    mentions: new Map(),
+  },
   aliases: new Map(),
   deadLinkCount: 0,
 });

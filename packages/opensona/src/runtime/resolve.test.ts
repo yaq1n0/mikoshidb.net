@@ -77,9 +77,7 @@ describe("parseTraversalDirective()", () => {
   });
 
   it("falls back neighbors to 'none' when field is not a string", () => {
-    const out = parseTraversalDirective(
-      '{"entities":[],"neighbors":5,"include_categories":[]}',
-    );
+    const out = parseTraversalDirective('{"entities":[],"neighbors":5,"include_categories":[]}');
     expect(out!.neighbors).toBe("none");
   });
 
