@@ -4,6 +4,7 @@
   "description": "Toolkit for building RAG pipelines using Fandom wiki data, used to enhance LLM personas. Ships a Node CLI (download, prebuild, build, verify) and a browser + Node runtime (hybrid dense + BM25 retrieval with timeline-aware filtering).",
   "license": "MIT",
   "author": "yaq1n0",
+  "homepage": "https://github.com/yaq1n0/mikoshidb.net/tree/main/packages/opensona#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yaq1n0/mikoshidb.net.git",
@@ -35,7 +36,7 @@
     }
   },
   "bin": {
-    "opensona": "./dist/cli/index.js"
+    "opensona": "dist/cli/index.js"
   },
   "files": [
     "dist",
