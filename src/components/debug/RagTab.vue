@@ -1,26 +1,12 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { ragLog, clearRagLog, exportRagLogJson } from "@/terminal/ragLog";
+import { useDebugStore } from "@/stores/debug";
 
 const PREVIEW_CHARS = 200;
 
-const expandedEntries = ref<Set<number>>(new Set());
-const expandedTexts = ref<Set<string>>(new Set());
+const debug = useDebugStore();
 const copied = ref(false);
-
-function toggleEntry(id: number): void {
-  const s = new Set(expandedEntries.value);
-  if (s.has(id)) s.delete(id);
-  else s.add(id);
-  expandedEntries.value = s;
-}
-
-function toggleText(key: string): void {
-  const s = new Set(expandedTexts.value);
-  if (s.has(key)) s.delete(key);
-  else s.add(key);
-  expandedTexts.value = s;
-}
 
 async function onCopy(): Promise<void> {
   try {
@@ -53,10 +39,12 @@ function fmtTime(ts: number): string {
 </script>
 
 <template>
-  <aside class="h-full w-full flex flex-col border-l border-dim font-mono text-sm bg-bg-alt/90">
-    <!-- Header -->
+  <div class="h-full flex flex-col">
+    <!-- Toolbar -->
     <div class="flex items-center justify-between px-3 py-2 border-b border-dim shrink-0 gap-2">
-      <span class="text-accent glow text-xs font-bold tracking-widest">RAG DEBUG</span>
+      <span class="text-xs text-dim">
+        {{ ragLog.length }} logged quer{{ ragLog.length === 1 ? "y" : "ies" }}
+      </span>
       <div class="flex items-center gap-1">
         <button
           class="text-xs px-2 py-0.5 border border-dim rounded text-dim hover:text-fg hover:border-fg cursor-pointer"
@@ -82,11 +70,6 @@ function fmtTime(ts: number): string {
       </div>
     </div>
 
-    <!-- Summary -->
-    <div class="px-3 py-1 border-b border-dim text-xs text-dim shrink-0">
-      {{ ragLog.length }} logged quer{{ ragLog.length === 1 ? "y" : "ies" }}
-    </div>
-
     <!-- Scrollable body -->
     <div class="flex-1 overflow-y-auto px-3 py-2 space-y-2">
       <div v-if="ragLog.length === 0" class="text-dim text-xs italic py-4">No retrieval data</div>
@@ -95,10 +78,10 @@ function fmtTime(ts: number): string {
         <!-- Entry header (clickable) -->
         <button
           class="w-full text-left px-2 py-1.5 flex items-start gap-2 hover:bg-fg/5 cursor-pointer"
-          @click="toggleEntry(entry.id)"
+          @click="debug.toggleEntry(entry.id)"
         >
           <span class="text-dim text-xs shrink-0 w-4">
-            {{ expandedEntries.has(entry.id) ? "▾" : "▸" }}
+            {{ debug.isEntryExpanded(entry.id) ? "▾" : "▸" }}
           </span>
           <div class="flex-1 min-w-0">
             <div class="flex items-baseline gap-2 text-xs">
@@ -113,7 +96,10 @@ function fmtTime(ts: number): string {
         </button>
 
         <!-- Expanded chunks -->
-        <div v-if="expandedEntries.has(entry.id)" class="border-t border-dim px-2 py-2 space-y-2">
+        <div
+          v-if="debug.isEntryExpanded(entry.id)"
+          class="border-t border-dim px-2 py-2 space-y-2"
+        >
           <div v-if="entry.cutoffEventId" class="text-xs">
             <span class="text-dim">cutoffEventId: </span>
             <span class="text-fg break-all">{{ entry.cutoffEventId }}</span>
@@ -158,7 +144,7 @@ function fmtTime(ts: number): string {
               <div class="text-dim">text:</div>
               <div class="text-fg/80 break-words whitespace-pre-wrap">
                 {{
-                  expandedTexts.has(`${entry.id}:${i}`) || rc.chunk.text.length <= PREVIEW_CHARS
+                  debug.isTextExpanded(`${entry.id}:${i}`) || rc.chunk.text.length <= PREVIEW_CHARS
                     ? rc.chunk.text
                     : rc.chunk.text.slice(0, PREVIEW_CHARS) + "…"
                 }}
@@ -166,14 +152,14 @@ function fmtTime(ts: number): string {
               <button
                 v-if="rc.chunk.text.length > PREVIEW_CHARS"
                 class="text-accent hover:text-fg text-xs mt-0.5 cursor-pointer"
-                @click="toggleText(`${entry.id}:${i}`)"
+                @click="debug.toggleText(`${entry.id}:${i}`)"
               >
-                {{ expandedTexts.has(`${entry.id}:${i}`) ? "[less]" : "[more]" }}
+                {{ debug.isTextExpanded(`${entry.id}:${i}`) ? "[less]" : "[more]" }}
               </button>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </aside>
+  </div>
 </template>
