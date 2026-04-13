@@ -6,6 +6,8 @@ Responses are grounded in Fandom wiki lore through [opensona](packages/opensona/
 
 Character engrams have a temporal cut-off that's lore accurate to when their engram would be created.
 
+Within the mikoshidb.net monorepo, opensona is consumed as a workspace package (`"opensona": "workspace:*"`).
+
 ## Dev Prerequisites
 
 - **Node.js** >= 22
