@@ -17,7 +17,7 @@ export type FetchOverride = (url: string, expectedSha256: string) => Promise<Res
  *
  * Empty/falsy sha → direct pass-through to `fetch(url)` (no read/write).
  */
-export function createCachedFetcher(): FetchOverride {
+export const createCachedFetcher = (): FetchOverride => {
   return async function cachedFetch(url: string, expectedSha256: string): Promise<Response> {
     if (!expectedSha256) {
       // No integrity hint — don't touch the cache, just fetch.
@@ -67,14 +67,14 @@ export function createCachedFetcher(): FetchOverride {
       headers: { "Content-Type": "application/octet-stream" },
     });
   };
-}
+};
 
 /**
  * Delete every bundle-asset whose sha is not in `keepShas`. Returns the
  * number of entries deleted. Safe to call in the background after a
  * successful load.
  */
-export async function sweepStale(keepShas: Set<string>): Promise<number> {
+export const sweepStale = async (keepShas: Set<string>): Promise<number> => {
   const db = await openCacheDb();
   try {
     const keys = await db.getAllKeys("bundle-assets");
@@ -89,7 +89,7 @@ export async function sweepStale(keepShas: Set<string>): Promise<number> {
   } finally {
     db.close();
   }
-}
+};
 
 export type CacheStats = {
   count: number;
@@ -97,7 +97,7 @@ export type CacheStats = {
 };
 
 /** Lightweight aggregate over the bundle-assets store. */
-export async function getCacheStats(): Promise<CacheStats> {
+export const getCacheStats = async (): Promise<CacheStats> => {
   const db = await openCacheDb();
   try {
     const entries = await db.getAll("bundle-assets");
@@ -107,24 +107,24 @@ export async function getCacheStats(): Promise<CacheStats> {
   } finally {
     db.close();
   }
-}
+};
 
 /** Wipe the entire bundle cache. */
-export async function evictAll(): Promise<void> {
+export const evictAll = async (): Promise<void> => {
   const db = await openCacheDb();
   try {
     await db.clear("bundle-assets");
   } finally {
     db.close();
   }
-}
+};
 
 /** Evict a single sha. Silent if the key is absent. */
-export async function evictSha(sha: string): Promise<void> {
+export const evictSha = async (sha: string): Promise<void> => {
   const db = await openCacheDb();
   try {
     await db.delete("bundle-assets", sha);
   } finally {
     db.close();
   }
-}
+};

@@ -8,7 +8,7 @@ const PREVIEW_CHARS = 200;
 const debug = useDebugStore();
 const copied = ref(false);
 
-async function onCopy(): Promise<void> {
+const onCopy = async (): Promise<void> => {
   try {
     await navigator.clipboard.writeText(exportRagLogJson());
     copied.value = true;
@@ -16,9 +16,9 @@ async function onCopy(): Promise<void> {
   } catch (err) {
     console.warn("[ragLog] clipboard failed:", err);
   }
-}
+};
 
-function onDownload(): void {
+const onDownload = (): void => {
   const blob = new Blob([exportRagLogJson()], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -26,21 +26,21 @@ function onDownload(): void {
   a.download = `rag-log-${new Date().toISOString().replace(/[:.]/g, "-")}.json`;
   a.click();
   URL.revokeObjectURL(url);
-}
+};
 
-function onClear(): void {
+const onClear = (): void => {
   if (confirm("Clear all logged RAG queries?")) clearRagLog();
-}
+};
 
-function fmtTime(ts: number): string {
+const fmtTime = (ts: number): string => {
   const d = new Date(ts);
   return d.toLocaleTimeString(undefined, { hour12: false });
-}
+};
 
-function fmtDirective(out: unknown): string {
+const fmtDirective = (out: unknown): string => {
   if (!out) return "null";
   return JSON.stringify(out, null, 2);
-}
+};
 </script>
 
 <template>

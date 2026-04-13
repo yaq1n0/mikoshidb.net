@@ -37,15 +37,15 @@ export type Command = {
 };
 
 /** Pad a string to a column width (space-padded, right side). */
-function pad(s: string, n: number): string {
+const pad = (s: string, n: number): string => {
   if (s.length >= n) return s.slice(0, n);
   return s + " ".repeat(n - s.length);
-}
+};
 
-function unknown(cmd: string): void {
+const unknown = (cmd: string): void => {
   print(`mikoshi: unknown command: ${cmd}`, "error");
   print("type 'help' for a list of available commands.", "info");
-}
+};
 
 export const commands: Command[] = [
   {
@@ -400,14 +400,14 @@ export const commands: Command[] = [
 ];
 
 /** Run a shell command by parsed name. */
-export async function runCommand(name: string, args: string[]): Promise<void> {
+export const runCommand = async (name: string, args: string[]): Promise<void> => {
   const cmd = commands.find((c) => c.name === name);
   if (!cmd) {
     unknown(name);
     return;
   }
   await cmd.run(args);
-}
+};
 
 /**
  * Slash commands available inside a neural link. `/` is the escape prefix —
@@ -513,7 +513,7 @@ const slashCommands: SlashCommand[] = [
  * Dispatch a slash command typed inside chat mode. Input is the raw line,
  * including the leading `/`.
  */
-export async function runSlashCommand(input: string): Promise<void> {
+export const runSlashCommand = async (input: string): Promise<void> => {
   const body = input.trim().slice(1).trim();
   if (!body) {
     print("type '/help' for link commands.", "info");
@@ -527,7 +527,7 @@ export async function runSlashCommand(input: string): Promise<void> {
     return;
   }
   await cmd.run(args);
-}
+};
 
 /**
  * Full per-turn retrieval result — opensona runs the graph traversal, the
@@ -571,7 +571,7 @@ const EMPTY_RETRIEVAL: RetrievalBundle = {
   timing: {},
 };
 
-async function retrieveLore(userInput: string): Promise<RetrievalBundle> {
+const retrieveLore = async (userInput: string): Promise<RetrievalBundle> => {
   const rag = ragRef.value;
   const engine = engineRef.value;
   const store = useSessionStore();
@@ -706,10 +706,10 @@ async function retrieveLore(userInput: string): Promise<RetrievalBundle> {
       timing,
     };
   }
-}
+};
 
 /** Handle free-form chat input while in chat mode. */
-export async function sendChat(userInput: string): Promise<void> {
+export const sendChat = async (userInput: string): Promise<void> => {
   const engine = engineRef.value;
   const store = useSessionStore();
   const engram = store.currentEngramId ? findEngram(store.currentEngramId) : null;
@@ -770,4 +770,4 @@ export async function sendChat(userInput: string): Promise<void> {
     replyLine.text += `\n[link error: ${msg}]`;
     finishChatReply(replyLine);
   }
-}
+};

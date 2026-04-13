@@ -13,13 +13,13 @@ import {
 
 export type BundleStats = CacheStats;
 
-export async function getBundleStats(): Promise<BundleStats> {
+export const getBundleStats = async (): Promise<BundleStats> => {
   return bundleGetStats();
-}
+};
 
-export async function evictAllBundle(): Promise<void> {
+export const evictAllBundle = async (): Promise<void> => {
   return bundleEvictAll();
-}
+};
 
 /**
  * Delete every bundle-asset whose sha is not in `keepShas`. Delegates to
@@ -28,6 +28,6 @@ export async function evictAllBundle(): Promise<void> {
  * Caller is responsible for sourcing `keepShas` — typically the sha set
  * extracted from the active runtime's `manifest().files[*].sha256`.
  */
-export async function evictStaleBundle(keepShas: Set<string>): Promise<number> {
+export const evictStaleBundle = async (keepShas: Set<string>): Promise<number> => {
   return sweepStale(keepShas);
-}
+};

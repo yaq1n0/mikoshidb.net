@@ -13,13 +13,13 @@ import {
 type ProgressCb = (p: { phase: string; ratio: number }) => void;
 type EnsureLoadedArg = ProgressCb | EnsureLoadedOptions;
 
-function normalizeOptions(arg?: EnsureLoadedArg): EnsureLoadedOptions {
+const normalizeOptions = (arg?: EnsureLoadedArg): EnsureLoadedOptions => {
   return typeof arg === "function" ? { onProgress: arg } : (arg ?? {});
-}
+};
 
 const loading = new Map<string, Promise<LoadedGraph>>();
 
-export function ensureLoaded(bundlePath: string, arg?: EnsureLoadedArg): Promise<LoadedGraph> {
+export const ensureLoaded = (bundlePath: string, arg?: EnsureLoadedArg): Promise<LoadedGraph> => {
   const existing = loading.get(bundlePath);
   if (existing) return existing;
 
@@ -31,24 +31,24 @@ export function ensureLoaded(bundlePath: string, arg?: EnsureLoadedArg): Promise
   });
 
   return promise;
-}
+};
 
-function progress(cb: ProgressCb | undefined, phase: string, ratio: number): void {
+const progress = (cb: ProgressCb | undefined, phase: string, ratio: number): void => {
   if (cb) cb({ phase, ratio });
-}
+};
 
-async function fetchAsset(
+const fetchAsset = async (
   url: string,
   name: "nodes" | "edges" | "aliases",
   manifest: Manifest,
   fetchOverride: EnsureLoadedOptions["fetchOverride"],
-): Promise<Response> {
+): Promise<Response> => {
   if (fetchOverride) {
     const sha = manifest.files[name]?.sha256 ?? "";
     return fetchOverride(url, sha);
   }
   return fetch(url);
-}
+};
 
 async function doLoad(bundlePath: string, opts: EnsureLoadedOptions): Promise<LoadedGraph> {
   const { onProgress, fetchOverride } = opts;

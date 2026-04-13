@@ -20,13 +20,13 @@ const scrollRef = ref<HTMLDivElement | null>(null);
 const draft = ref("");
 const busy = ref(false);
 
-function scrollToBottom(): void {
+const scrollToBottom = (): void => {
   nextTick(() => {
     if (scrollRef.value) {
       scrollRef.value.scrollTop = scrollRef.value.scrollHeight;
     }
   });
-}
+};
 
 const visibleLines = computed(() => terminalStore.visibleLines);
 
@@ -53,7 +53,7 @@ watch(
 // scroll position with the scrollHeight-delta trick so the viewport stays
 // anchored on the line the user was looking at.
 let loadingEarlier = false;
-async function maybeLoadEarlier(): Promise<void> {
+const maybeLoadEarlier = async (): Promise<void> => {
   const el = scrollRef.value;
   if (!el) return;
   if (loadingEarlier) return;
@@ -69,11 +69,11 @@ async function maybeLoadEarlier(): Promise<void> {
   } finally {
     loadingEarlier = false;
   }
-}
+};
 
-function onScroll(): void {
+const onScroll = (): void => {
   void maybeLoadEarlier();
-}
+};
 
 watch(focusInput, () => inputRef.value?.focus());
 
@@ -82,15 +82,15 @@ onMounted(() => {
   scrollToBottom();
 });
 
-function promptPrefix(): string {
+const promptPrefix = (): string => {
   if (sessionStore.mode === "chat" && currentEngram.value) {
     return `${currentEngram.value.handle}> `;
   }
   if (sessionStore.mode === "loading") return "flashing... ";
   return "mikoshi> ";
-}
+};
 
-async function onSubmit(): Promise<void> {
+const onSubmit = async (): Promise<void> => {
   if (busy.value) return;
   const raw = draft.value;
   draft.value = "";
@@ -156,9 +156,9 @@ async function onSubmit(): Promise<void> {
   } finally {
     busy.value = false;
   }
-}
+};
 
-function onKeyDown(e: KeyboardEvent): void {
+const onKeyDown = (e: KeyboardEvent): void => {
   if (e.key === "ArrowUp") {
     // Inert in chat mode — let the input handle the keystroke natively.
     if (sessionStore.mode === "chat") return;
@@ -173,9 +173,9 @@ function onKeyDown(e: KeyboardEvent): void {
     // Fire-and-forget: UI doesn't need to block on the IDB wipe.
     void terminalStore.clearScrollback();
   }
-}
+};
 
-function lineClass(kind: string): string {
+const lineClass = (kind: string): string => {
   switch (kind) {
     case "cmd":
       return "text-fg/80";
@@ -196,7 +196,7 @@ function lineClass(kind: string): string {
     default:
       return "text-fg";
   }
-}
+};
 </script>
 
 <template>

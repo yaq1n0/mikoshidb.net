@@ -6,7 +6,7 @@ import { verifyBundle } from "../../build/verify.ts";
 import type { GraphVerifyCase } from "../../build/verify.ts";
 import { CliError } from "../errors.ts";
 
-export async function run(opts: { cases: string; bundle: string }): Promise<void> {
+export const run = async (opts: { cases: string; bundle: string }): Promise<void> => {
   const casesRaw = await readFile(opts.cases, "utf-8");
   let cases: GraphVerifyCase[];
   try {
@@ -86,13 +86,13 @@ export async function run(opts: { cases: string; bundle: string }): Promise<void
   if (report.blocked) {
     throw new CliError("verify: bundle is not shippable");
   }
-}
+};
 
-export function register(program: Command): void {
+export const register = (program: Command): void => {
   program
     .command("verify")
     .description("Graph integrity + alias-retrieval sanity checks")
     .requiredOption("--cases <path>", "Verify cases JSON path")
     .requiredOption("--bundle <dir>", "Bundle directory")
     .action(run);
-}
+};

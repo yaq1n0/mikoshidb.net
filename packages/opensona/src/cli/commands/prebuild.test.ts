@@ -28,7 +28,7 @@ const loadConfigMock = loadConfig as unknown as ReturnType<typeof vi.fn>;
 const mkdirMock = mkdir as unknown as ReturnType<typeof vi.fn>;
 const writeFileMock = writeFile as unknown as ReturnType<typeof vi.fn>;
 
-function makeConfig(overrides: Record<string, unknown> = {}) {
+const makeConfig = (overrides: Record<string, unknown> = {}) => {
   return {
     dumpPath: "/tmp/dump.xml",
     generatedDir: "/tmp/generated",
@@ -36,7 +36,7 @@ function makeConfig(overrides: Record<string, unknown> = {}) {
     editionEras: [],
     ...overrides,
   };
-}
+};
 
 describe("prebuild run()", () => {
   let logSpy: ReturnType<typeof vi.spyOn>;

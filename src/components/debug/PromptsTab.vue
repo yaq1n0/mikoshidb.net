@@ -8,23 +8,23 @@ const ragStore = useRagStore();
 
 const entries = computed(() => ragStore.ragLog);
 
-function fmtTime(ts: number): string {
+const fmtTime = (ts: number): string => {
   const d = new Date(ts);
   return d.toLocaleTimeString(undefined, { hour12: false });
-}
+};
 
 /** Max bar width in px for the timing breakdown rows. */
 const BAR_MAX_PX = 120;
 
-function maxTimingMs(timing: Record<string, number>): number {
+const maxTimingMs = (timing: Record<string, number>): number => {
   let m = 0;
   for (const v of Object.values(timing)) if (v > m) m = v;
   return m || 1; // avoid div-by-zero — empty/zeroed timing collapses to a 1px bar
-}
+};
 
-function barWidthPx(value: number, max: number): number {
+const barWidthPx = (value: number, max: number): number => {
   return Math.max(2, Math.round((value / max) * BAR_MAX_PX));
-}
+};
 </script>
 
 <template>

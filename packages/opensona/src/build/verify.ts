@@ -78,7 +78,7 @@ export type VerifyReport = {
   blocked: boolean;
 };
 
-async function loadBundle(bundleDir: string): Promise<{ manifest: Manifest; graph: LoadedGraph }> {
+const loadBundle = async (bundleDir: string): Promise<{ manifest: Manifest; graph: LoadedGraph }> => {
   const manifestRaw = await readFile(join(bundleDir, "manifest.json"), "utf-8");
   const manifest = JSON.parse(manifestRaw) as Manifest;
   if (manifest.version !== 2 || manifest.retrieval !== "graph") {
@@ -98,9 +98,9 @@ async function loadBundle(bundleDir: string): Promise<{ manifest: Manifest; grap
 
   const graph = hydrateGraph(manifest, nodes, edges, aliases);
   return { manifest, graph };
-}
+};
 
-export function verifyIntegrity(graph: LoadedGraph): IntegrityReport {
+export const verifyIntegrity = (graph: LoadedGraph): IntegrityReport => {
   const dangling: IntegrityReport["dangling"] = {
     edgeSrc: [],
     edgeDst: [],
@@ -176,9 +176,9 @@ export function verifyIntegrity(graph: LoadedGraph): IntegrityReport {
     dangling,
     passed: !hasIssues,
   };
-}
+};
 
-function runAliasCase(testCase: GraphVerifyCase, graph: LoadedGraph): CaseResult {
+const runAliasCase = (testCase: GraphVerifyCase, graph: LoadedGraph): CaseResult => {
   const failures: string[] = [];
 
   const entities: string[] = testCase.aliases
@@ -272,13 +272,13 @@ function runAliasCase(testCase: GraphVerifyCase, graph: LoadedGraph): CaseResult
     })),
     failures,
   };
-}
+};
 
-export async function verifyBundle(
+export const verifyBundle = async (
   bundleDir: string,
   cases: GraphVerifyCase[],
   onProgress?: (done: number, total: number) => void,
-): Promise<VerifyReport> {
+): Promise<VerifyReport> => {
   const { graph } = await loadBundle(bundleDir);
 
   const integrity = verifyIntegrity(graph);
@@ -304,4 +304,4 @@ export async function verifyBundle(
   const blocked = !integrity.passed || results.some((r) => !r.passed && !r.allowedFailure);
 
   return { integrity, cases: results, blocked };
-}
+};

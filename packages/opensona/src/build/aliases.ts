@@ -7,18 +7,18 @@
 import type { ParsedArticle, Redirect } from "./parse.ts";
 
 /** Aggressive normalization: lower-case, collapse non-alphanumerics to nothing. */
-export function normalize(s: string): string {
+export const normalize = (s: string): string => {
   return s.toLowerCase().replace(/[^a-z0-9]+/g, "");
-}
+};
 
 /** Lighter variant: lower-case, strip only punctuation; retain spacing. */
-export function softNormalize(s: string): string {
+export const softNormalize = (s: string): string => {
   return s
     .toLowerCase()
     .replace(/[^\p{L}\p{N}\s]+/gu, " ")
     .replace(/\s+/g, " ")
     .trim();
-}
+};
 
 export type AliasMap = {
   /** Normalized string → article slug. */
@@ -27,7 +27,7 @@ export type AliasMap = {
   unresolvedRedirects: number;
 };
 
-export function buildAliasMap(articles: ParsedArticle[], redirects: Redirect[]): AliasMap {
+export const buildAliasMap = (articles: ParsedArticle[], redirects: Redirect[]): AliasMap => {
   const titleLowerToSlug = new Map<string, string>();
   for (const a of articles) {
     titleLowerToSlug.set(a.title.toLowerCase(), a.slug);
@@ -73,7 +73,7 @@ export function buildAliasMap(articles: ParsedArticle[], redirects: Redirect[]):
   }
 
   return { map, unresolvedRedirects };
-}
+};
 
 /** Infobox list fields are often comma/semicolon/bullet separated. */
 function splitInfoboxList(raw: string): string[] {
@@ -87,9 +87,9 @@ function splitInfoboxList(raw: string): string[] {
  * Resolve a user/LLM-supplied string to an article id using the alias map.
  * Tries the most permissive normalization last.
  */
-export function resolveAlias(raw: string, aliases: Map<string, string>): string | null {
+export const resolveAlias = (raw: string, aliases: Map<string, string>): string | null => {
   const lower = raw.toLowerCase();
   return (
     aliases.get(lower) ?? aliases.get(softNormalize(raw)) ?? aliases.get(normalize(raw)) ?? null
   );
-}
+};

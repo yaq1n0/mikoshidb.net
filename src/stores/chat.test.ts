@@ -6,15 +6,15 @@ import { openSessionDb, type PersistedChatSession } from "@/storage/db";
 
 const KEY = "current";
 
-function flushMicrotasks(): Promise<void> {
+const flushMicrotasks = (): Promise<void> => {
   return new Promise((r) => setTimeout(r, 0));
-}
+};
 
 // $subscribe runs on a trailing 250ms debounce — tests that want to observe a
 // persisted write need to wait past that window.
-function waitForPersist(): Promise<void> {
+const waitForPersist = (): Promise<void> => {
   return new Promise((r) => setTimeout(r, 320));
-}
+};
 
 describe("useChatStore", () => {
   beforeEach(() => {

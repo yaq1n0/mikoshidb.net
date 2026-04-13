@@ -13,7 +13,7 @@ const DEFAULT_CONFIG_PATH = join(__dirname, "..", "config.default.json");
  * Deep-merge source into target. Arrays are replaced, not concatenated.
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function deepMerge(target: any, source: any): any {
+export const deepMerge = (target: any, source: any): any => {
   const result = { ...target };
   for (const key of Object.keys(source)) {
     const val = source[key];
@@ -31,7 +31,7 @@ export function deepMerge(target: any, source: any): any {
     }
   }
   return result;
-}
+};
 
 /**
  * Load opensona config by merging config.default.json with an optional
@@ -41,7 +41,7 @@ export function deepMerge(target: any, source: any): any {
  * the merged result is validated — this catches typos, unknown keys, and
  * invalid values in the override without needing a separate partial schema.
  */
-export async function loadConfig(overridePath?: string): Promise<OpensonaConfig> {
+export const loadConfig = async (overridePath?: string): Promise<OpensonaConfig> => {
   const defaultRaw = await readFile(DEFAULT_CONFIG_PATH, "utf-8");
   const defaults = OpensonaConfigSchema.parse(JSON.parse(defaultRaw));
 
@@ -51,4 +51,4 @@ export async function loadConfig(overridePath?: string): Promise<OpensonaConfig>
   const overrides = JSON.parse(overrideRaw);
 
   return OpensonaConfigSchema.parse(deepMerge(defaults, overrides));
-}
+};

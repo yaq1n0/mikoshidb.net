@@ -39,12 +39,12 @@ export type ParseResult = {
 };
 
 /** Slugify a title: lowercase, replace non-alphanumerics with hyphens, collapse, trim */
-export function slugify(text: string): string {
+export const slugify = (text: string): string => {
   return text
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
-}
+};
 
 const SKIP_CATEGORY_PREFIXES = [
   "Disambiguation",
@@ -58,7 +58,7 @@ const TITLE_SKIP_PREFIXES = ["Quest:"];
 
 const SKIP_CATEGORY_EXACT = new Set(["Disambiguations", "Article stubs"]);
 
-function shouldDrop(title: string, wikitext: string, categories: string[]): boolean {
+const shouldDrop = (title: string, wikitext: string, categories: string[]): boolean => {
   for (const prefix of TITLE_SKIP_PREFIXES) {
     if (title.startsWith(prefix)) return true;
   }
@@ -74,7 +74,7 @@ function shouldDrop(title: string, wikitext: string, categories: string[]): bool
   if (plainLength < 200) return true;
 
   return false;
-}
+};
 
 type RawPage = {
   title: string;
@@ -90,10 +90,10 @@ type RawPage = {
  * Articles returned: namespace 0, non-redirect, not filtered by `shouldDrop`.
  * Redirects returned: every namespace-0 redirect page with a resolved target.
  */
-export async function parseDump(
+export const parseDump = async (
   dumpPath: string,
   keepRawSections?: Set<string>,
-): Promise<ParseResult> {
+): Promise<ParseResult> => {
   const pages = await extractPages(dumpPath);
   const articles: ParsedArticle[] = [];
   const redirects: Redirect[] = [];
@@ -135,7 +135,7 @@ export async function parseDump(
   }
 
   return { articles, redirects };
-}
+};
 
 /** wtf_wikipedia's shape is loose; narrow at the call site. */
 type WtfDoc = ReturnType<typeof wtf>;

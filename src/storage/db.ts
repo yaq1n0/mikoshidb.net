@@ -78,7 +78,7 @@ export interface CacheDbSchema extends DBSchema {
 
 // --- Openers ---
 
-export function openSessionDb(): Promise<IDBPDatabase<SessionDbSchema>> {
+export const openSessionDb = (): Promise<IDBPDatabase<SessionDbSchema>> => {
   return openDB<SessionDbSchema>(SESSION_DB_NAME, DB_SCHEMA_VERSION, {
     upgrade(db, oldVersion) {
       if (!db.objectStoreNames.contains("scrollback")) {
@@ -105,9 +105,9 @@ export function openSessionDb(): Promise<IDBPDatabase<SessionDbSchema>> {
       }
     },
   });
-}
+};
 
-export function openCacheDb(): Promise<IDBPDatabase<CacheDbSchema>> {
+export const openCacheDb = (): Promise<IDBPDatabase<CacheDbSchema>> => {
   return openDB<CacheDbSchema>(CACHE_DB_NAME, DB_SCHEMA_VERSION, {
     upgrade(db) {
       if (!db.objectStoreNames.contains("bundle-assets")) {
@@ -116,4 +116,4 @@ export function openCacheDb(): Promise<IDBPDatabase<CacheDbSchema>> {
       }
     },
   });
-}
+};

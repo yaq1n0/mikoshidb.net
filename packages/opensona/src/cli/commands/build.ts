@@ -11,16 +11,16 @@ import { loadConfig } from "../../config.ts";
 import type { Timeline, TimelineMeta } from "../../types.ts";
 import { CliError } from "../errors.ts";
 
-function parseJsonFile<T>(raw: string, path: string): T {
+const parseJsonFile = <T>(raw: string, path: string): T => {
   try {
     return JSON.parse(raw) as T;
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     throw new CliError(`Failed to parse JSON at ${path}: ${msg}`);
   }
-}
+};
 
-function buildTimelineMeta(timeline: Timeline, articleTitle: string): TimelineMeta {
+const buildTimelineMeta = (timeline: Timeline, articleTitle: string): TimelineMeta => {
   if (timeline.events.length === 0) {
     return { articleTitle, eventCount: 0, minYear: 0, maxYear: 0 };
   }
@@ -31,9 +31,9 @@ function buildTimelineMeta(timeline: Timeline, articleTitle: string): TimelineMe
     minYear: Math.min(...years),
     maxYear: Math.max(...years),
   };
-}
+};
 
-export async function run(opts: { config: string; output: string; limit?: number }): Promise<void> {
+export const run = async (opts: { config: string; output: string; limit?: number }): Promise<void> => {
   const config = await loadConfig(opts.config);
 
   const timelinePath = join(config.generatedDir, "timeline.json");
@@ -91,9 +91,9 @@ export async function run(opts: { config: string; output: string; limit?: number
   console.log(`  Events:     ${m.counts.events}`);
   console.log(`  Bundle:     ${(totalBytes / 1024 / 1024).toFixed(2)} MB`);
   console.log(`  Build date: ${m.buildDate}`);
-}
+};
 
-export function register(program: Command): void {
+export const register = (program: Command): void => {
   program
     .command("build")
     .description("Parse dump, build graph, and pack into RAG bundle")
@@ -101,4 +101,4 @@ export function register(program: Command): void {
     .requiredOption("--output <dir>", "Output directory for bundle files")
     .option("--limit <n>", "Only process the first N articles (for fast partial builds)", parseInt)
     .action(run);
-}
+};

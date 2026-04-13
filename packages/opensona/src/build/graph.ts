@@ -69,7 +69,7 @@ export type GraphArtifact = {
  *
  * Ported from the legacy chunk.ts pipeline.
  */
-export function parseSectionYear(heading: string): number | null {
+export const parseSectionYear = (heading: string): number | null => {
   const re = /\b(19|20)(\d{2})s?\b/g;
   const years: number[] = [];
   let m: RegExpExecArray | null;
@@ -78,18 +78,18 @@ export function parseSectionYear(heading: string): number | null {
   }
   if (years.length === 0) return null;
   return Math.max(...years);
-}
+};
 
-function addEdge(map: Map<string, Set<string>>, src: string, dst: string): void {
+const addEdge = (map: Map<string, Set<string>>, src: string, dst: string): void => {
   let set = map.get(src);
   if (!set) {
     set = new Set();
     map.set(src, set);
   }
   set.add(dst);
-}
+};
 
-function truncate(text: string, maxChars: number): string {
+const truncate = (text: string, maxChars: number): string => {
   if (text.length <= maxChars) return text;
   // Try to end at a sentence boundary within maxChars.
   const slice = text.slice(0, maxChars);
@@ -98,15 +98,15 @@ function truncate(text: string, maxChars: number): string {
     return slice.slice(0, lastStop + 1).trim();
   }
   return slice.trim();
-}
+};
 
-export function buildGraph(
+export const buildGraph = (
   articles: ParsedArticle[],
   redirects: Redirect[],
   timeline: Timeline,
   categoryMap: CategoryEventMap,
   config: OpensonaConfig,
-): GraphArtifact {
+): GraphArtifact => {
   const eventOrderMap = new Map<string, number>();
   for (const e of timeline.events) eventOrderMap.set(e.id, e.order);
 
@@ -269,13 +269,13 @@ export function buildGraph(
     aliases,
     deadLinkCount,
   };
-}
+};
 
 /** Total edge count across all types — stamped into the manifest. */
-export function countEdges(edges: GraphArtifact["edges"]): number {
+export const countEdges = (edges: GraphArtifact["edges"]): number => {
   let n = 0;
   for (const m of Object.values(edges)) {
     for (const set of m.values()) n += set.size;
   }
   return n;
-}
+};

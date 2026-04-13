@@ -44,7 +44,7 @@ export { traverse } from "./traverse.ts";
  * Create a new {@link OpensonaRuntime}. The returned object holds no bundle
  * state until `load()` is called.
  */
-export function createRuntime(): OpensonaRuntime {
+export const createRuntime = (): OpensonaRuntime => {
   let bundlePath: string | null = null;
   let loadedGraph: LoadedGraph | null = null;
   const vocabCache = new Map<string, EntityVocab>();
@@ -109,4 +109,4 @@ export function createRuntime(): OpensonaRuntime {
       return loadedGraph?.manifest ?? null;
     },
   };
-}
+};

@@ -19,7 +19,7 @@ const usagePercent = computed<number | null>(() => {
   return (est.usage / est.quota) * 100;
 });
 
-function fmtBytes(n: number | null | undefined): string {
+const fmtBytes = (n: number | null | undefined): string => {
   if (n === null || n === undefined || !Number.isFinite(n)) return "?";
   if (n < 1024) return `${n} B`;
   const units = ["KB", "MB", "GB", "TB"];
@@ -30,34 +30,34 @@ function fmtBytes(n: number | null | undefined): string {
     i++;
   }
   return `${v.toFixed(v >= 100 ? 0 : v >= 10 ? 1 : 2)} ${units[i]}`;
-}
+};
 
-function fmtTime(ts: number | null): string {
+const fmtTime = (ts: number | null): string => {
   if (!ts) return "(never)";
   return new Date(ts).toLocaleTimeString(undefined, { hour12: false });
-}
+};
 
-async function onRefresh(): Promise<void> {
+const onRefresh = async (): Promise<void> => {
   await cache.refresh();
-}
+};
 
-async function onEvictWebLLM(): Promise<void> {
+const onEvictWebLLM = async (): Promise<void> => {
   if (!confirm("Evict ALL WebLLM caches? Models will redownload on next firmware load.")) return;
   await cache.evictWebLLM();
-}
+};
 
-async function onEvictBundleAll(): Promise<void> {
+const onEvictBundleAll = async (): Promise<void> => {
   if (!confirm("Evict ALL bundle-cache assets? Engram bundle will redownload on next jack-in.")) {
     return;
   }
   await cache.evictBundleAll();
-}
+};
 
-async function onEvictBundleStale(): Promise<void> {
+const onEvictBundleStale = async (): Promise<void> => {
   if (!ragLoaded.value) return;
   if (!confirm("Evict bundle assets not referenced by the currently loaded runtime?")) return;
   await cache.evictBundleStale();
-}
+};
 
 onMounted(() => {
   if (cacheApiAvailable && cache.lastRefreshedAt === null) {

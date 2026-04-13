@@ -66,20 +66,20 @@ export type RawEdgesPayload = {
   mentions: Record<string, string[]>;
 };
 
-function objToAdjacency(obj: Record<string, string[]>): Map<string, Set<string>> {
+const objToAdjacency = (obj: Record<string, string[]>): Map<string, Set<string>> => {
   const out = new Map<string, Set<string>>();
   for (const [k, arr] of Object.entries(obj)) {
     out.set(k, new Set(arr));
   }
   return out;
-}
+};
 
-export function hydrateGraph(
+export const hydrateGraph = (
   manifest: Manifest,
   nodes: RawNodesPayload,
   edges: RawEdgesPayload,
   aliases: Record<string, string>,
-): LoadedGraph {
+): LoadedGraph => {
   const articles = new Map<string, ArticleNode>();
   for (const a of nodes.articles) articles.set(a.id, a);
 
@@ -115,4 +115,4 @@ export function hydrateGraph(
     aliases: aliasMap,
     eventOrder,
   };
-}
+};

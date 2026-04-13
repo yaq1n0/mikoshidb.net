@@ -8,7 +8,7 @@ import { generateTimeline } from "../../build/timeline.ts";
 import { loadConfig } from "../../config.ts";
 import { CliError } from "../errors.ts";
 
-export async function run(opts: { config: string; output: string }): Promise<void> {
+export const run = async (opts: { config: string; output: string }): Promise<void> => {
   const config = await loadConfig(opts.config);
 
   console.log(`Parsing dump: ${config.dumpPath}`);
@@ -58,13 +58,13 @@ export async function run(opts: { config: string; output: string }): Promise<voi
   }
 
   console.log(`\nTotal: ${timeline.events.length} events`);
-}
+};
 
-export function register(program: Command): void {
+export const register = (program: Command): void => {
   program
     .command("prebuild")
     .description("Generate timeline from wiki dump")
     .requiredOption("--config <path>", "Config JSON path (overrides config.default.json)")
     .requiredOption("--output <dir>", "Output directory for generated files")
     .action(run);
-}
+};

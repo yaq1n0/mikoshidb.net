@@ -33,9 +33,9 @@ export type ScrollbackLine = {
 // In-memory line id sequence — monotonically increasing, unrelated to the IDB
 // autoinc id. Used as the Vue :key for rendering.
 let lineSeq = 0;
-function nextLineId(): number {
+const nextLineId = (): number => {
   return ++lineSeq;
-}
+};
 
 /**
  * Terminal store — owns shell command history, arrow-nav state, and scrollback.
@@ -442,6 +442,6 @@ export const useTerminalStore = defineStore(
 );
 
 /** Re-exported so test helpers can synthesize new in-memory lines. */
-export function _nextLineId(): number {
+export const _nextLineId = (): number => {
   return nextLineId();
-}
+};

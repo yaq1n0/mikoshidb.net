@@ -6,7 +6,7 @@ import { openSessionDb, type PersistedRagEntry } from "@/storage/db";
 
 type StubInput = Omit<RagLogEntry, "id" | "timestamp" | "schemaVersion">;
 
-function stub(overrides: Partial<StubInput> = {}): StubInput {
+const stub = (overrides: Partial<StubInput> = {}): StubInput => {
   return {
     query: "",
     engramId: null,
@@ -24,7 +24,7 @@ function stub(overrides: Partial<StubInput> = {}): StubInput {
     timing: {},
     ...overrides,
   };
-}
+};
 
 describe("useRagStore", () => {
   beforeEach(() => {

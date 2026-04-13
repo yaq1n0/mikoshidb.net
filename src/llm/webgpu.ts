@@ -2,7 +2,7 @@
  * Returns true if the browser exposes a usable WebGPU adapter.
  * Runs the adapter request lazily — only call once per session boot.
  */
-export async function detectWebGPU(): Promise<boolean> {
+export const detectWebGPU = async (): Promise<boolean> => {
   const nav = navigator as Navigator & {
     gpu?: { requestAdapter: () => Promise<unknown | null> };
   };
@@ -13,4 +13,4 @@ export async function detectWebGPU(): Promise<boolean> {
   } catch {
     return false;
   }
-}
+};

@@ -18,23 +18,23 @@ export type PackGraphResult = {
   files: PackedFile[];
 };
 
-function sha256(bytes: Uint8Array): string {
+const sha256 = (bytes: Uint8Array): string => {
   return createHash("sha256").update(bytes).digest("hex");
-}
+};
 
-function gzip(text: string): Uint8Array {
+const gzip = (text: string): Uint8Array => {
   return zlibGzipSync(Buffer.from(text, "utf-8"));
-}
+};
 
-function adjacencyToObject(map: Map<string, Set<string>>): Record<string, string[]> {
+const adjacencyToObject = (map: Map<string, Set<string>>): Record<string, string[]> => {
   const out: Record<string, string[]> = {};
   for (const [k, v] of map) out[k] = [...v];
   return out;
-}
+};
 
-function nodeMapToArray<T>(map: Map<string, T>): T[] {
+const nodeMapToArray = <T>(map: Map<string, T>): T[] => {
   return [...map.values()];
-}
+};
 
 export type PackGraphOptions = {
   timeline: Timeline;
@@ -42,10 +42,10 @@ export type PackGraphOptions = {
   config: OpensonaConfig;
 };
 
-export async function packGraph(
+export const packGraph = async (
   graph: GraphArtifact,
   options: PackGraphOptions,
-): Promise<PackGraphResult> {
+): Promise<PackGraphResult> => {
   const { timeline, timelineMeta, config } = options;
 
   const nodesPayload = {
@@ -135,4 +135,4 @@ export async function packGraph(
   };
 
   return { manifest, files };
-}
+};

@@ -7,9 +7,9 @@ beforeEach(() => {
   globalThis.indexedDB = new IDBFactory();
 });
 
-function bytesOf(...xs: number[]): ArrayBuffer {
+const bytesOf = (...xs: number[]): ArrayBuffer => {
   return new Uint8Array(xs).buffer;
-}
+};
 
 describe("bundleInspector", () => {
   it("evictStaleBundle delegates to sweepStale: drops shas not in keep-set", async () => {

@@ -8,7 +8,7 @@ export type ParsedCommand = {
   raw: string;
 };
 
-export function parse(input: string): ParsedCommand | null {
+export const parse = (input: string): ParsedCommand | null => {
   const trimmed = input.trim();
   if (!trimmed) return null;
 
@@ -37,4 +37,4 @@ export function parse(input: string): ParsedCommand | null {
     args: tokens.slice(1),
     raw: trimmed,
   };
-}
+};

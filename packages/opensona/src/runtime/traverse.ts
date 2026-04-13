@@ -21,30 +21,30 @@ export type TraverseOptions = {
 
 const DEFAULT_MAX_CHUNKS = 40;
 
-function resolveCutoffOrder(characterContext: CharacterContext, graph: LoadedGraph): number {
+const resolveCutoffOrder = (characterContext: CharacterContext, graph: LoadedGraph): number => {
   const cutoff = characterContext.cutoffEventId;
   if (!cutoff || cutoff === "__LAST_EVENT__") return Infinity;
   const order = graph.eventOrder.get(cutoff);
   return order ?? Infinity;
-}
+};
 
-function passesCutoff(latestEventOrder: number, cutoffOrder: number): boolean {
+const passesCutoff = (latestEventOrder: number, cutoffOrder: number): boolean => {
   if (latestEventOrder === -1) return true;
   return latestEventOrder <= cutoffOrder;
-}
+};
 
-function passesTags(tags: string[], excluded: Set<string>): boolean {
+const passesTags = (tags: string[], excluded: Set<string>): boolean => {
   if (excluded.size === 0) return true;
   for (const t of tags) if (excluded.has(t)) return false;
   return true;
-}
+};
 
-export function traverse(
+export const traverse = (
   directive: TraversalDirective,
   graph: LoadedGraph,
   characterContext: CharacterContext,
   options?: TraverseOptions,
-): { chunks: RetrievedChunk[]; trace: TraverseTrace } {
+): { chunks: RetrievedChunk[]; trace: TraverseTrace } => {
   const trace: TraverseTrace = {
     resolvedEntities: [],
     unresolvedEntities: [],
@@ -215,4 +215,4 @@ export function traverse(
   });
 
   return { chunks, trace };
-}
+};

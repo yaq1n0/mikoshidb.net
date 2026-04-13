@@ -10,7 +10,7 @@ import type { Command } from "commander";
 import _7z from "7zip-min";
 import { CliError } from "../errors.ts";
 
-export function dumpUrl(wiki: string): string {
+export const dumpUrl = (wiki: string): string => {
   if (!/^[a-z0-9-]+$/i.test(wiki) || wiki.length < 1) {
     throw new CliError(`Invalid wiki subdomain: ${wiki}`);
   }
@@ -18,9 +18,9 @@ export function dumpUrl(wiki: string): string {
   const a = lower[0];
   const ab = lower.slice(0, Math.min(2, lower.length));
   return `https://s3.amazonaws.com/wikia_xml_dumps/${a}/${ab}/${lower}_pages_current.xml.7z`;
-}
+};
 
-export async function run(opts: { wiki: string; output: string; force?: boolean }): Promise<void> {
+export const run = async (opts: { wiki: string; output: string; force?: boolean }): Promise<void> => {
   if (!opts.force) {
     try {
       const s = await stat(opts.output);
@@ -86,14 +86,14 @@ export async function run(opts: { wiki: string; output: string; force?: boolean 
 
   const finalStat = await stat(opts.output);
   console.log(`\nDump saved to ${opts.output} (${(finalStat.size / 1024 / 1024).toFixed(1)} MB)`);
-}
+};
 
 async function mkdtempScratch(): Promise<string> {
   const { mkdtemp } = await import("node:fs/promises");
   return mkdtemp(join(tmpdir(), "opensona-dump-"));
 }
 
-export function register(program: Command): void {
+export const register = (program: Command): void => {
   program
     .command("download")
     .description("Download a Fandom wiki XML dump to .opensona/.cache/dump.xml")
@@ -101,4 +101,4 @@ export function register(program: Command): void {
     .option("--output <path>", "Output path for dump XML", ".opensona/.cache/dump.xml")
     .option("--force", "Re-download even if dump.xml already exists")
     .action(run);
-}
+};

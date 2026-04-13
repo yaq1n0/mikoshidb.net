@@ -6,7 +6,7 @@ import { register as registerPrebuild } from "./commands/prebuild.ts";
 import { register as registerBuild } from "./commands/build.ts";
 import { register as registerVerify } from "./commands/verify.ts";
 
-export function buildProgram(): Command {
+export const buildProgram = (): Command => {
   const program = new Command();
 
   program
@@ -20,9 +20,9 @@ export function buildProgram(): Command {
   registerVerify(program);
 
   return program;
-}
+};
 
-export async function main(argv?: readonly string[]): Promise<void> {
+export const main = async (argv?: readonly string[]): Promise<void> => {
   const program = buildProgram();
   try {
     await program.parseAsync(argv as string[] | undefined);
@@ -34,7 +34,7 @@ export async function main(argv?: readonly string[]): Promise<void> {
       throw err;
     }
   }
-}
+};
 
 // Only auto-run when invoked directly (not when imported in tests).
 // import.meta.url is the file URL; process.argv[1] is the entry script path.

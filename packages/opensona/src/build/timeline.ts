@@ -8,7 +8,7 @@ import { slugify } from "./parse.ts";
 /**
  * Extract all [[wiki links]] from raw wikitext, returning the page names.
  */
-function extractWikiLinks(raw: string): string[] {
+const extractWikiLinks = (raw: string): string[] => {
   const links: string[] = [];
   const re = /\[\[([^\]|#]+)(?:[|#][^\]]*)?]]/g;
   let match: RegExpExecArray | null;
@@ -19,14 +19,14 @@ function extractWikiLinks(raw: string): string[] {
     }
   }
   return links;
-}
+};
 
 /**
  * Try to parse an explicit date from a bullet line.
  * Looks for patterns like '''Month Day''': or '''Month''':
  * Returns the day-of-year (1-366) for ordering, or null if no date found.
  */
-function parseExplicitDate(raw: string): number | null {
+const parseExplicitDate = (raw: string): number | null => {
   // Match '''Month Day''' or '''Month'''
   const dateRe = /'''([A-Z][a-z]+)(?:\s+(\d{1,2}))?'''/;
   const m = dateRe.exec(raw);
@@ -57,12 +57,12 @@ function parseExplicitDate(raw: string): number | null {
   // Convert to a rough day-of-year for ordering
   const daysPerMonth = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
   return daysPerMonth[monthIdx] + day;
-}
+};
 
 /**
  * Strip wiki markup from text to produce a clean event name.
  */
-function stripMarkup(text: string): string {
+const stripMarkup = (text: string): string => {
   return (
     text
       // Remove bold/italic markers
@@ -79,20 +79,20 @@ function stripMarkup(text: string): string {
       .replace(/\s+/g, " ")
       .trim()
   );
-}
+};
 
 /**
  * Determine if a heading looks like a year heading (e.g. "2013", "2077").
  */
-function isYearHeading(heading: string): boolean {
+const isYearHeading = (heading: string): boolean => {
   return /^\d{3,4}$/.test(heading.trim());
-}
+};
 
 /**
  * Parse the timeline article and generate a Timeline.
  * Requires that the ParsedArticle has rawText on its sections.
  */
-export function generateTimeline(timelineArticle: ParsedArticle, config: OpensonaConfig): Timeline {
+export const generateTimeline = (timelineArticle: ParsedArticle, config: OpensonaConfig): Timeline => {
   const events: TimelineEvent[] = [];
 
   // We need raw section text for link and date extraction.
@@ -181,4 +181,4 @@ export function generateTimeline(timelineArticle: ParsedArticle, config: Openson
   events.sort((a, b) => a.order - b.order);
 
   return { events };
-}
+};

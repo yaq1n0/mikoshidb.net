@@ -27,7 +27,7 @@ Rules:
 - Return an empty entities array if the query has no clear anchor in the vocabulary — do not guess.
 - Keep reasoning under 40 words.`;
 
-function formatUser(input: ResolverInput): string {
+const formatUser = (input: ResolverInput): string => {
   const { userQuery, characterContext, entityVocab } = input;
   const namesBlock = entityVocab.names.join(", ");
   const catsBlock = entityVocab.categories.join(", ");
@@ -43,15 +43,15 @@ function formatUser(input: ResolverInput): string {
     "",
     "Respond with the JSON directive only.",
   ].join("\n");
-}
+};
 
 /** Build the resolver message list. Callers hand these to their LLM of choice. */
-export function buildResolverMessages(input: ResolverInput): ResolverMessage[] {
+export const buildResolverMessages = (input: ResolverInput): ResolverMessage[] => {
   return [
     { role: "system", content: SYSTEM_PROMPT },
     { role: "user", content: formatUser(input) },
   ];
-}
+};
 
 /**
  * Parse + validate raw LLM output into a {@link TraversalDirective}.
@@ -59,7 +59,7 @@ export function buildResolverMessages(input: ResolverInput): ResolverMessage[] {
  * Tolerant of surrounding prose: extracts the first `{...}` JSON block. Returns
  * `null` on any parse or shape failure so callers can decide what to do next.
  */
-export function parseTraversalDirective(raw: string): TraversalDirective | null {
+export const parseTraversalDirective = (raw: string): TraversalDirective | null => {
   if (!raw) return null;
   const text = raw.trim();
   const firstBrace = text.indexOf("{");
@@ -97,7 +97,7 @@ export function parseTraversalDirective(raw: string): TraversalDirective | null 
     include_categories: includeCategories,
     ...(reasoning !== undefined ? { reasoning } : {}),
   };
-}
+};
 
 const VOCAB_NAME_LIMIT = 150;
 const VOCAB_CATEGORY_LIMIT = 40;
@@ -110,7 +110,7 @@ const VOCAB_CATEGORY_LIMIT = 40;
  * Exposed so callers can pre-warm the vocab on character switch; the runtime
  * calls it internally on first query.
  */
-export function warmEngram(engramId: string, graph: LoadedGraph): EntityVocab {
+export const warmEngram = (engramId: string, graph: LoadedGraph): EntityVocab => {
   const article = graph.articles.get(engramId);
   if (!article) {
     return { engramId, names: [], categories: [] };
@@ -152,7 +152,7 @@ export function warmEngram(engramId: string, graph: LoadedGraph): EntityVocab {
   }
 
   return { engramId, names, categories };
-}
+};
 
 /** Normalized alias lookup. Exported for debug/introspection parity with build. */
 export { normalize as normalizeAlias, softNormalize as softNormalizeAlias };

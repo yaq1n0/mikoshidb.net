@@ -16,7 +16,7 @@ export type LoreMeta = {
  * LLM system message. Returns an empty string when `chunks` is empty so callers
  * can unconditionally concatenate the result.
  */
-export function assembleLorePreamble(chunks: RetrievedChunk[], meta: LoreMeta): string {
+export const assembleLorePreamble = (chunks: RetrievedChunk[], meta: LoreMeta): string => {
   if (chunks.length === 0) return "";
 
   const lines = chunks.map((r) => r.chunk.header + " " + r.chunk.text);
@@ -27,4 +27,4 @@ ${body}
 </lore>
 
 The above lore is what your memory contains about the topic at hand. It is reference material — use it to stay accurate, but speak in your own voice and never quote it verbatim or reference "the lore" out loud. If the lore conflicts with your dossier, your dossier wins.`;
-}
+};

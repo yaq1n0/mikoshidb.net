@@ -55,6 +55,6 @@ export const firmware: Firmware[] = [
   },
 ];
 
-export function findFirmware(id: string): Firmware | undefined {
+export const findFirmware = (id: string): Firmware | undefined => {
   return firmware.find((f) => f.id === id);
-}
+};
