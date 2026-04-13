@@ -141,7 +141,6 @@ export const useTerminalStore = defineStore(
       draft.value = "";
     }
 
-    // --- Scrollback --------------------------------------------------------
 
     function snapshot(line: ScrollbackLine): PersistedScrollbackLine {
       // Snapshot-before-write per PLAN §2: fix streaming=false, progress=1 (or

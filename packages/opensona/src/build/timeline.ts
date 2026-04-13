@@ -133,7 +133,6 @@ export const generateTimeline = (timelineArticle: ParsedArticle, config: Openson
         order = baseOrder + bulletIndex + 1;
       }
 
-      // Extract keywords from wiki links
       const keywords = extractWikiLinks(cleanBullet);
 
       // Generate event name: stripped markup, truncated to ~80 chars

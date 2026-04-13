@@ -56,7 +56,6 @@ describe("session db", () => {
       timestamp: 1_700_000_000_000,
     });
 
-    // by-timestamp index
     const byTs = await db.getAllFromIndex("scrollback", "by-timestamp");
     expect(byTs.map((r) => r.timestamp)).toEqual([1_700_000_000_000, 1_700_000_000_500]);
 
