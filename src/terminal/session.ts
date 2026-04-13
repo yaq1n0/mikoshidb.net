@@ -2,7 +2,7 @@ import { reactive, ref, shallowRef } from "vue";
 import type { MLCEngineInterface } from "@mlc-ai/web-llm";
 import type { Engram } from "@/engrams";
 import type { Firmware } from "@/firmware";
-import type { RetrievedChunk, OpensonaRuntime } from "opensona/runtime";
+import type { OpensonaRuntime } from "opensona/runtime";
 
 export type LineKind =
   | "out" // plain output
@@ -39,7 +39,6 @@ export interface Session {
   currentEngram: Engram | null;
   currentFirmware: Firmware | null;
   chatHistory: ChatHistoryEntry[];
-  lastRetrieval: RetrievedChunk[];
 }
 
 let lineSeq = 0;
@@ -52,7 +51,6 @@ export const session = reactive<Session>({
   currentEngram: null,
   currentFirmware: null,
   chatHistory: [],
-  lastRetrieval: [],
 });
 
 // Engine lives outside reactive state so Vue does not try to proxy it.

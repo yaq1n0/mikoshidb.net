@@ -14,6 +14,7 @@ import {
   beginChatReply,
 } from "./session";
 import type { RetrievedChunk } from "opensona/runtime";
+import { appendRagLog } from "./ragLog";
 
 export interface Command {
   name: string;
@@ -504,7 +505,12 @@ export async function sendChat(userInput: string): Promise<void> {
 
   // RAG retrieval (best-effort)
   const { preamble: lorePreamble, chunks: retrievedChunks } = await retrieveLore(userInput);
-  session.lastRetrieval = retrievedChunks;
+  appendRagLog({
+    query: userInput,
+    engramId: engram.id,
+    cutoffEventId: engram.cutoffEventId ?? null,
+    chunks: retrievedChunks,
+  });
 
   const replyLine = beginChatReply();
   try {
