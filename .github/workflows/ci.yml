@@ -39,3 +39,14 @@ jobs:
 
       - name: Format check
         run: pnpm fmt
+
+      - name: opensona coverage
+        run: pnpm --filter opensona test:coverage
+
+      - name: Upload opensona coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: opensona-coverage
+          path: packages/opensona/coverage/lcov.info
+          if-no-files-found: ignore
