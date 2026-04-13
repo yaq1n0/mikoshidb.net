@@ -7,8 +7,8 @@ on:
     branches: [main]
 
 jobs:
-  ci:
-    name: typecheck / build / lint / fmt
+  app:
+    name: mikoshidb.net (typecheck / build / lint / fmt)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -39,3 +39,41 @@ jobs:
 
       - name: Format check
         run: pnpm fmt
+
+  opensona:
+    name: opensona (typecheck / test / build)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm --filter opensona typecheck
+
+      - name: Test with coverage
+        run: pnpm --filter opensona test:coverage
+
+      - name: Build
+        run: pnpm --filter opensona build
+
+      - name: Upload coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: opensona-coverage
+          path: packages/opensona/coverage/lcov.info
+          if-no-files-found: ignore

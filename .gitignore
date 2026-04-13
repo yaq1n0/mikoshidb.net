@@ -1,10 +1,11 @@
 node_modules
 dist
 dist-ssr
-.vscode/*
-!.vscode/extensions.json
-!.vscode/settings.json
+coverage
 .idea
 .DS_Store
 *.local
 *.log
+
+# Ignore the public/rag/ directory. Use "rag:publish" to copy from .opensona/output/rag/ to public/rag/. This is done "prebuild" and "predev"
+public/rag/

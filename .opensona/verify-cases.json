@@ -1,0 +1,145 @@
+[
+  {
+    "name": "Johnny knows Adam Smasher (pre-raid)",
+    "query": "who is adam smasher",
+    "cutoffEventId": "august-19-events-of-the-first-half-of-take-place-2023",
+    "mustContain": ["Smasher"]
+  },
+  {
+    "name": "Johnny knows SAMURAI",
+    "query": "tell me about the band samurai",
+    "cutoffEventId": "august-19-events-of-the-first-half-of-take-place-2023",
+    "mustContain": ["SAMURAI"]
+  },
+  {
+    "name": "Johnny knows Alt Cunningham",
+    "query": "who is alt cunningham",
+    "cutoffEventId": "august-19-events-of-the-first-half-of-take-place-2023",
+    "mustContain": ["Cunningham"]
+  },
+  {
+    "name": "Johnny knows Rogue Amendiares",
+    "query": "who is rogue amendiares",
+    "cutoffEventId": "august-19-events-of-the-first-half-of-take-place-2023",
+    "mustContain": ["Rogue"]
+  },
+  {
+    "name": "Johnny knows the Fourth Corporate War",
+    "query": "what is the fourth corporate war",
+    "cutoffEventId": "august-19-events-of-the-first-half-of-take-place-2023",
+    "mustContain": ["Corporate War"]
+  },
+  {
+    "name": "Johnny does NOT see post-raid events",
+    "query": "tell me about V and the relic",
+    "cutoffEventId": "august-19-events-of-the-first-half-of-take-place-2023",
+    "mustNotContain": ["V stole", "Heist", "Konpeki"]
+  },
+  {
+    "name": "Johnny does NOT know about the nuke aftermath",
+    "query": "what happened at arasaka tower",
+    "cutoffEventId": "august-19-events-of-the-first-half-of-take-place-2023"
+  },
+  {
+    "name": "Johnny does NOT know V the merc",
+    "query": "who is V the night city mercenary",
+    "cutoffEventId": "august-19-events-of-the-first-half-of-take-place-2023",
+    "mustNotContain": ["Konpeki", "biochip", "Jackie Welles"]
+  },
+  {
+    "name": "V knows Johnny Silverhand",
+    "query": "who is johnny silverhand",
+    "cutoffEventId": "__LAST_EVENT__",
+    "mustContain": ["Silverhand"]
+  },
+  {
+    "name": "V knows Jackie Welles",
+    "query": "who is jackie welles",
+    "cutoffEventId": "__LAST_EVENT__",
+    "mustContain": ["Jackie"]
+  },
+  {
+    "name": "V knows Konpeki Plaza",
+    "query": "what happened at konpeki plaza",
+    "cutoffEventId": "__LAST_EVENT__",
+    "mustContain": ["Konpeki"]
+  },
+  {
+    "name": "V knows Goro Takemura",
+    "query": "who is goro takemura",
+    "cutoffEventId": "__LAST_EVENT__",
+    "mustContain": ["Takemura"]
+  },
+  {
+    "name": "V knows the Relic biochip",
+    "query": "what is the relic biochip",
+    "cutoffEventId": "__LAST_EVENT__",
+    "mustContain": ["Relic"]
+  },
+  {
+    "name": "V knows Panam Palmer",
+    "query": "who is panam palmer",
+    "cutoffEventId": "__LAST_EVENT__",
+    "mustContain": ["Panam"]
+  },
+  {
+    "name": "V knows Mikoshi",
+    "query": "what is mikoshi",
+    "cutoffEventId": "__LAST_EVENT__",
+    "mustContain": ["Mikoshi"]
+  },
+  {
+    "name": "V knows Dexter DeShawn",
+    "query": "who is dexter deshawn",
+    "cutoffEventId": "__LAST_EVENT__",
+    "mustContain": ["DeShawn"]
+  },
+  {
+    "name": "Alt knows Soulkiller",
+    "query": "what is soulkiller",
+    "cutoffEventId": "april-v-and-jackie-are-hired-by-fixer-dexter-deshawn-to-ca-2077",
+    "mustContain": ["Soulkiller"]
+  },
+  {
+    "name": "Alt knows the Blackwall",
+    "query": "what is the blackwall",
+    "cutoffEventId": "april-v-and-jackie-are-hired-by-fixer-dexter-deshawn-to-ca-2077",
+    "mustContain": ["Blackwall"]
+  },
+  {
+    "name": "Alt knows the DataKrash",
+    "query": "what was the datakrash",
+    "cutoffEventId": "april-v-and-jackie-are-hired-by-fixer-dexter-deshawn-to-ca-2077",
+    "mustContain": ["DataKrash"]
+  },
+  {
+    "name": "Alt knows Rache Bartmoss",
+    "query": "who is rache bartmoss",
+    "cutoffEventId": "april-v-and-jackie-are-hired-by-fixer-dexter-deshawn-to-ca-2077",
+    "mustContain": ["Bartmoss"]
+  },
+  {
+    "name": "Saburo knows Yorinobu",
+    "query": "who is yorinobu arasaka",
+    "cutoffEventId": "october-november-prologue-takes-place-v-and-jackie-welles-2076",
+    "mustContain": ["Yorinobu"]
+  },
+  {
+    "name": "Saburo knows Hanako",
+    "query": "who is hanako arasaka",
+    "cutoffEventId": "october-november-prologue-takes-place-v-and-jackie-welles-2076",
+    "mustContain": ["Hanako"]
+  },
+  {
+    "name": "Saburo knows Adam Smasher",
+    "query": "who is adam smasher",
+    "cutoffEventId": "october-november-prologue-takes-place-v-and-jackie-welles-2076",
+    "mustContain": ["Smasher"]
+  },
+  {
+    "name": "Saburo does NOT know about his own death",
+    "query": "how did saburo arasaka die",
+    "cutoffEventId": "october-november-prologue-takes-place-v-and-jackie-welles-2076",
+    "mustNotContain": ["strangled", "Yorinobu killed", "murdered by his son"]
+  }
+]

@@ -2,6 +2,7 @@ import { reactive, ref, shallowRef } from "vue";
 import type { MLCEngineInterface } from "@mlc-ai/web-llm";
 import type { Engram } from "@/engrams";
 import type { Firmware } from "@/firmware";
+import type { OpensonaRuntime } from "opensona/runtime";
 
 export type LineKind =
   | "out" // plain output
@@ -54,6 +55,9 @@ export const session = reactive<Session>({
 
 // Engine lives outside reactive state so Vue does not try to proxy it.
 export const engineRef = shallowRef<MLCEngineInterface | null>(null);
+
+// RAG runtime — non-reactive (same reason as engineRef).
+export const ragRef = shallowRef<OpensonaRuntime | null>(null);
 
 // Input focus trigger for Terminal.vue
 export const focusInput = ref(0);

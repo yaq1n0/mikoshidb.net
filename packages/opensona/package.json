@@ -1,0 +1,74 @@
+{
+  "name": "opensona",
+  "version": "0.1.0",
+  "description": "Toolkit for building RAG pipelines using Fandom wiki data, used to enhance LLM personas. Ships a Node CLI (download, prebuild, build, verify) and a browser + Node runtime (hybrid dense + BM25 retrieval with timeline-aware filtering).",
+  "license": "MIT",
+  "author": "yaq1n0",
+  "homepage": "https://github.com/yaq1n0/mikoshidb.net/tree/main/packages/opensona#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yaq1n0/mikoshidb.net.git",
+    "directory": "packages/opensona"
+  },
+  "bugs": {
+    "url": "https://github.com/yaq1n0/mikoshidb.net/issues"
+  },
+  "keywords": [
+    "rag",
+    "retrieval-augmented-generation",
+    "llm",
+    "ai",
+    "fandom",
+    "wiki",
+    "embeddings",
+    "bm25",
+    "persona"
+  ],
+  "type": "module",
+  "exports": {
+    "./cli": {
+      "types": "./dist/cli/index.d.ts",
+      "import": "./dist/cli/index.js"
+    },
+    "./runtime": {
+      "types": "./dist/runtime/index.d.ts",
+      "import": "./dist/runtime/index.js"
+    }
+  },
+  "bin": {
+    "opensona": "dist/cli/index.js"
+  },
+  "files": [
+    "dist",
+    "docs",
+    "config.default.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsup",
+    "prepare": "pnpm build",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "prepublishOnly": "pnpm typecheck && pnpm test:coverage && pnpm build"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "^4.0.1",
+    "commander": "^14.0.3",
+    "minisearch": "^7.2.0",
+    "sax": "^1.6.0",
+    "wtf_wikipedia": "^10.4.1",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/sax": "^1.2.7",
+    "@vitest/coverage-v8": "^4.1.4",
+    "tsup": "^8.5.1",
+    "typescript": "~6.0.2",
+    "vitest": "^4.1.4"
+  }
+}
