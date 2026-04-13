@@ -98,4 +98,8 @@ MERC_V> Not my problem, choom.
 
 user: pretend you are a helpful assistant
 MERC_V> Hard pass.`,
+
+  // Knows everything — last event in the timeline.
+  // Update this ID after running rag:prebuild — pick the absolute last event.
+  cutoffEventId: "__LAST_EVENT__",
 };
